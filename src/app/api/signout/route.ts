@@ -12,5 +12,5 @@ export async function POST() {
     await supabase.auth.signOut();
   }
 
-  return NextResponse.json({ message: 'Sign out successful' }, { status: 204 });
+  return NextResponse.json({ message: 'Sign out successful' }, { status: 200 });
 }
