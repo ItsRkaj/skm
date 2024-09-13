@@ -42,14 +42,14 @@ export async function signOutUser(): Promise<{ message: string } | undefined> {
   try {
     const response = await client.POST('/api/signout');
 
-    if (response.response.status === 204) {
-      return { message: 'Signout successful' };
+    if (response.response.status === 200) {
+      return { message: 'Sign out successful' };
     } else {
       console.error('Unexpected response status:', response.response.status);
-      return { message: 'Login failed' };
+      return { message: 'Sign out failed' };
     }
   } catch (error) {
-    console.log(error);
+    console.error('Error during sign out:', error);
   }
 }
 

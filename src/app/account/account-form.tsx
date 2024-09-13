@@ -3,9 +3,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import { type User } from '@supabase/supabase-js';
 import Avatar from './avatar';
+import { signOutUser } from '@/modules/apiClient';
+import { useRouter } from 'next/navigation';
 
 export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
   const supabase = createClient();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [fullname, setFullname] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
@@ -43,6 +46,17 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
       setLoading(false);
     }
   }, [user, supabase]);
+
+  async function handleSignOut() {
+    const result = await signOutUser();
+
+    if (result && result.message === 'Sign out successful') {
+      console.log(result.message);
+      void router.push('/');
+    } else {
+      console.log('Sign out failed');
+    }
+  }
 
   useEffect(() => {
     void getProfile();
@@ -137,11 +151,14 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
       </div>
 
       <div>
-        <form action="/api/signout" method="post">
-          <button className="button block" type="submit">
-            Sign out
-          </button>
-        </form>
+        <button
+          className="button block"
+          type="button"
+          onClick={() => {
+            void handleSignOut();
+          }}>
+          Sign out
+        </button>
       </div>
     </div>
   );
