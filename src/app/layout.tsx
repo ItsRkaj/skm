@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
+import '@/app/globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
-import Link from 'next/link';
-import { ModeToggle } from '@/components/mode-toggle';
+import { Navbar } from '@/components/navbar';
+import { UserProvider } from '@/context/UserContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,27 +18,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="sv" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange>
-          <div>
-            <Link href="/" className="p-3">
-              Home
-            </Link>
-            <Link href="/marshals" className="p-3">
-              Marshals
-            </Link>
-            <Link href="/login" className="p-3">
-              Login
-            </Link>
-            <ModeToggle />
-          </div>
-          {children}
-        </ThemeProvider>
+        <UserProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange>
+            <Navbar />
+            <main className="px-4 py-4 md:px-6 md:py-6">{children}</main>
+          </ThemeProvider>
+        </UserProvider>
       </body>
     </html>
   );

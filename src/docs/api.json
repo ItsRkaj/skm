@@ -236,6 +236,96 @@
           }
         }
       }
+    },
+    "/api/user": {
+      "get": {
+        "summary": "Get the authenticated user",
+        "description": "Retrieves the authenticated user's information using Supabase.",
+        "operationId": "getUser",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "12345-abcde"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "user@example.com"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "example": "+1234567890"
+                    },
+                    "app_metadata": {
+                      "type": "object",
+                      "example": {
+                        "provider": "email",
+                        "providers": ["email"]
+                      }
+                    },
+                    "user_metadata": {
+                      "type": "object",
+                      "example": {
+                        "name": "John Doe",
+                        "role": "user"
+                      }
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2023-09-01T12:34:56.789Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Error user not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -279,6 +369,18 @@
           "message": { "type": "string" }
         }
       }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
 }
