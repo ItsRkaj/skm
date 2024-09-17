@@ -1,0 +1,78 @@
+.hero-section {
+  @apply flex justify-center items-center;
+  background-color: rgb(--background);
+}
+
+.hero-content {
+  @apply flex flex-row max-w-screen-xl w-full;
+  @apply flex-col-reverse md:flex-row; 
+}
+
+.text-container {
+  @apply flex-auto px-5 py-5;
+  @apply md:py-20; 
+  @apply w-full md:w-auto; 
+}
+
+.hero-title {
+  @apply text-4xl font-bold mb-5 font-serif;
+  color: rgb(--foreground);
+}
+
+.hero-subtitle {
+  @apply text-lg mb-4;
+  color: rgb(--foreground);
+}
+
+.hero-features {
+  @apply list-none p-0 my-5;
+}
+
+.hero-features li {
+  @apply mb-2 text-base leading-6;
+  color: rgb(--foreground);
+}
+
+.button-group {
+  @apply flex gap-4 flex-wrap;
+}
+.cta-button {
+  @apply px-6 py-3 text-sm rounded border-none cursor-pointer transition ease-in-out;
+}
+
+.cta-button.primary {
+  background-color: hsl(var(--primary)); 
+  color: hsl(var(--primary-foreground)); 
+  border:2px solid hsl(var(--primary));
+  border-radius: var(--radius); 
+}
+
+.cta-button.primary:hover {
+  background-color: transparent;
+  color:  hsl(var(--primary));
+  border:2px solid hsl(var(--primary));
+}
+
+
+.cta-button.secondary {
+  background-color: hsl(var(--primary)); 
+  color: hsl(var(--primary-foreground)); 
+  border:2px solid hsl(var(--primary));
+  border-radius: var(--radius)
+}
+
+
+.cta-button.secondary:hover {
+  background-color: transparent;
+  color:  hsl(var(--primary));
+  border:2px solid hsl(var(--primary)); 
+
+}
+.image-container {
+  @apply flex justify-end items-end;
+  
+}
+
+.hero-image {
+  @apply max-w-full h-auto;
+}
