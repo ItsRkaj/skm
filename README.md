@@ -29,19 +29,22 @@ Ensure the following are installed on your machine:
    git clone https://your-repository-url.git
    cd skm
    ```
+
 2. **Install dependencies**:
 
    ```bash
    yarn install
    ```
-4. **Set up enviroment variable**:
+
+3. **Set up enviroment variable**:
 
    Copy the .env.local.example file to .env.local and configure your environment variables.
 
    ```bash
    cp .env.local.example .env.local
    ```
-6. **Start the decelopment server**:
+
+4. **Start the decelopment server**:
 
    ```bash
    yarn run dev
@@ -50,28 +53,29 @@ Ensure the following are installed on your machine:
    This will start the application locally at http://localhost:3000.
 
 ## 📜 Scripts
+
 The project comes with several npm scripts to help with development, testing, and deployment.
 
-| Script              | Description                                                                            |
-| ------------------- | -------------------------------------------------------------------------------------- |
-| `yarn run dev`       | Runs the development server with hot reloading.                                         |
-| `yarn run build`     | Compiles the project for production.                                                    |
-| `yarn run start`     | Starts the compiled production build.                                                   |
-| `yarn run lint`      | Runs ESLint to check for linting errors.                                                |
-| `yarn run lint:fix`  | Automatically fixes linting issues.                                                     |
-| `yarn run format`    | Formats code using Prettier.                                                            |
-| `yarn run format:check` | Checks if the code adheres to the Prettier formatting rules.                        |
-| `yarn run test`      | Runs all Jest tests.                                                                    |
-| `yarn run test:watch` | Watches files and reruns tests upon changes.                                           |
-| `yarn run test:ts`   | Type-checks the entire project using TypeScript.                                        |
-| `yarn run openapi`   | Generates TypeScript types from the OpenAPI spec file located at `src/docs/api.json`.    |
+| Script                  | Description                                                                           |
+| ----------------------- | ------------------------------------------------------------------------------------- |
+| `yarn run dev`          | Runs the development server with hot reloading.                                       |
+| `yarn run build`        | Compiles the project for production.                                                  |
+| `yarn run start`        | Starts the compiled production build.                                                 |
+| `yarn run lint`         | Runs ESLint to check for linting errors.                                              |
+| `yarn run lint:fix`     | Automatically fixes linting issues.                                                   |
+| `yarn run format`       | Formats code using Prettier.                                                          |
+| `yarn run format:check` | Checks if the code adheres to the Prettier formatting rules.                          |
+| `yarn run test`         | Runs all Jest tests.                                                                  |
+| `yarn run test:watch`   | Watches files and reruns tests upon changes.                                          |
+| `yarn run test:ts`      | Type-checks the entire project using TypeScript.                                      |
+| `yarn run openapi`      | Generates TypeScript types from the OpenAPI spec file located at `src/docs/api.json`. |
 
 ## 📐 Code Formatting & Linting
 
 We enforce strict code quality rules using ESLint and Prettier:
 
-* **ESLint**: Lints JavaScript/TypeScript code to catch common issues.
-* **Prettier**: Formats code to maintain consistency.
+- **ESLint**: Lints JavaScript/TypeScript code to catch common issues.
+- **Prettier**: Formats code to maintain consistency.
 
 You can run both linters and auto-fix issues by running:
 
@@ -82,6 +86,7 @@ yarn format
 ```
 
 ## 🧪 Testing
+
 This project uses Jest and Testing Library for unit and component testing.
 To run all tests:
 
@@ -96,15 +101,15 @@ yarn test:watch
 ```
 
 ## 🎨 Tailwind CSS
-Tailwind CSS is configured and ready to use. You can start adding custom styles by modifying the ``tailwind.config.js`` file and using utility classes directly within your components.
+
+Tailwind CSS is configured and ready to use. You can start adding custom styles by modifying the `tailwind.config.js` file and using utility classes directly within your components.
 
 ## 📡 API Integration
+
 The project uses openapi-typescript and openapi-fetch to handle API requests and TypeScript type generation from the OpenAPI spec. To regenerate types after updating the API spec:
 
 ```bash
 yarn openapi
 ```
 
-This will regenerate the ``src/generated/api.d.ts`` file based on the API spec located at ``src/docs/api.json``.
-
-   
+This will regenerate the `src/generated/api.d.ts` file based on the API spec located at `src/docs/api.json`.
