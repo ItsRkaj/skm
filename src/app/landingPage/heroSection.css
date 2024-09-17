@@ -1,6 +1,6 @@
 .hero-section {
   @apply flex justify-center items-center;
-  background-color: rgb(--background);
+  background-color: hsl(--background);
 }
 
 .hero-content {
@@ -16,12 +16,12 @@
 
 .hero-title {
   @apply text-4xl font-bold mb-5 font-serif;
-  color: rgb(--foreground);
+  color: hsl(--foreground);
 }
 
 .hero-subtitle {
   @apply text-lg mb-4;
-  color: rgb(--foreground);
+  color: hsl(--foreground);
 }
 
 .hero-features {
@@ -30,7 +30,7 @@
 
 .hero-features li {
   @apply mb-2 text-base leading-6;
-  color: rgb(--foreground);
+  color: hsl(--foreground);
 }
 
 .button-group {
