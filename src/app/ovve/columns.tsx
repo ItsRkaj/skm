@@ -1,12 +1,16 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, CellContext } from '@tanstack/react-table';
 
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
 import React from 'react';
 import Link from 'next/link';
+
+interface ExtendedCellContext extends CellContext<LeaderboardEntry, unknown> {
+  placement: number; // Add placement to the context
+}
 
 // Person type used throughout the code
 type Person = {
@@ -52,7 +56,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     id: 'placement',
     header: () => <div className="text-center">Plats</div>,
     cell: (props) => {
-      const placement = (props as any).placement;
+      const placement = (props as ExtendedCellContext).placement;
       return (
         <div className="text-2xl text-center">
           {placement === 1 ? (
@@ -72,7 +76,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     accessorKey: 'person',
     header: 'Namn',
     cell: ({ row }) => {
-      const person = row.getValue('person') as Person;
+      const person: Person = row.getValue('person');
 
       return (
         // ADD PROFILE LINK HERE
@@ -87,10 +91,9 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
         </Link>
       );
     },
-    filterFn: (row, columnId, filterValue) => {
-      return (row.getValue(columnId) as Person).name
-        .toLowerCase()
-        .includes(filterValue.toLowerCase());
+    filterFn: (row, columnId, filterValue: string) => {
+      const person: Person = row.getValue(columnId);
+      return person.name.toLowerCase().includes(filterValue.toLowerCase());
     },
   },
   {
