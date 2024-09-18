@@ -1,17 +1,17 @@
 .hero-section {
-  @apply flex justify-center items-center;
+  @apply flex justify-around items-center;
   background-color: hsl(--background);
 }
 
 .hero-content {
   @apply flex flex-row max-w-screen-xl w-full;
-  @apply flex-col-reverse md:flex-row; 
+  @apply flex-col-reverse md:flex-row;
 }
 
 .text-container {
   @apply flex-auto px-5 py-5;
-  @apply md:py-20; 
-  @apply w-full md:w-auto; 
+  @apply md:py-20;
+  @apply w-full md:w-auto;
 }
 
 .hero-title {
@@ -41,36 +41,32 @@
 }
 
 .cta-button.primary {
-  background-color: hsl(var(--primary)); 
-  color: hsl(var(--primary-foreground)); 
-  border:2px solid hsl(var(--primary));
-  border-radius: var(--radius); 
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: 2px solid hsl(var(--primary));
+  border-radius: var(--radius);
 }
 
 .cta-button.primary:hover {
   background-color: transparent;
-  color:  hsl(var(--primary));
-  border:2px solid hsl(var(--primary));
+  color: hsl(var(--primary));
+  border: 2px solid hsl(var(--primary));
 }
-
 
 .cta-button.secondary {
-  background-color: hsl(var(--primary)); 
-  color: hsl(var(--primary-foreground)); 
-  border:2px solid hsl(var(--primary));
-  border-radius: var(--radius)
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: 2px solid hsl(var(--primary));
+  border-radius: var(--radius);
 }
-
 
 .cta-button.secondary:hover {
   background-color: transparent;
-  color:  hsl(var(--primary));
-  border:2px solid hsl(var(--primary)); 
-
+  color: hsl(var(--primary));
+  border: 2px solid hsl(var(--primary));
 }
 .image-container {
-  @apply flex justify-end items-end;
-  
+  @apply flex items-end;
 }
 
 .hero-image {

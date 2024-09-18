@@ -25,44 +25,43 @@ const generateDummyEvents = (): Event[] => {
 };
 
 const EventsSection: React.FC = () => {
-    const events = generateDummyEvents().slice(0, 6); // Display only the first 6 events
-  
-    return (
-      <section className="events-section py-8">
-        <h2 className="text-2xl font-serif mb-6">KOMMANDE EVENEMANG</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {events.map((event, index) => (
-            <div
-            
-              style = {{backgroundColor: 'hsl(var(--background))',
-              border: '2px solid hsl(var(--secondary))'
+  const events = generateDummyEvents().slice(0, 6); // Display only the first 6 events
 
-              }}
-              key={index}
-              className=" event-card p-4 rounded-lg flex items-center gap-4"
-            >
-              <div 
-                style = {{backgroundColor: 'hsl(var(--primary))'}}
-                className="overflow-y-auto date-box text-center p-2 rounded-md">
-                <p className="text-sm">{event.month}</p>
-                <p className="text-2xl font-bold">{event.day}</p>
-              </div>
-              <div>
-                <h3 
-                    style = {{color: 'hsl(var(--foreground))'}}
-                    className="text-lg font-semibold">{event.title}</h3>
-                <p 
-                style = {{color: 'hsl(var(--primary))'}}
-                className="text-sm text-gray-600 flex items-center gap-1">
-                  <span
-                   className="material-icons">Tid</span> {event.time}
-                </p>
-              </div>
+  return (
+    <section className="events-section py-8">
+      <h2 className="text-2xl font-serif mb-6">KOMMANDE EVENEMANG</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {events.map((event, index) => (
+          <div
+            style={{
+              backgroundColor: 'hsl(var(--background))',
+              border: '2px solid hsl(var(--secondary))',
+            }}
+            key={index}
+            className=" event-card p-4 rounded-lg flex items-center gap-4">
+            <div
+              style={{ backgroundColor: 'hsl(var(--primary))' }}
+              className="overflow-y-auto date-box text-center p-2 rounded-md">
+              <p className="text-sm">{event.month}</p>
+              <p className="text-2xl font-bold">{event.day}</p>
             </div>
-          ))}
-        </div>
-      </section>
-    );
-  };
-  
+            <div>
+              <h3
+                style={{ color: 'hsl(var(--foreground))' }}
+                className="text-lg font-semibold">
+                {event.title}
+              </h3>
+              <p
+                style={{ color: 'hsl(var(--primary))' }}
+                className="text-sm text-gray-600 flex items-center gap-1">
+                <span className="material-icons">Tid</span> {event.time}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
 export default EventsSection;

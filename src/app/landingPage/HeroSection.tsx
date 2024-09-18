@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import './heroSection.css';
 
 const HeroSection: React.FC = () => {
@@ -7,10 +8,8 @@ const HeroSection: React.FC = () => {
       <div className="hero-content">
         <div className="text-container">
           <h1 className="hero-title">Here you can insert the title</h1>
-          
-          <p className="hero-subtitle">
-          Here you can insert the subtitle
-          </p>
+
+          <p className="hero-subtitle">Here you can insert the subtitle</p>
           <ul className="hero-features">
             <li>
               <strong>fun fact 1</strong> - fun fact 1 discription.
@@ -27,12 +26,14 @@ const HeroSection: React.FC = () => {
             <button className="cta-button secondary">LÄS MER</button>
           </div>
         </div>
-        
+
         <div className="image-container">
-          <img
+          <Image
+            className="hero_image"
             src="/img.jpeg"
-            alt="Group of people having fun"
-            className="hero-image"
+            width={800}
+            height={300}
+            alt="A group of prople having fun"
           />
         </div>
       </div>
