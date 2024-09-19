@@ -13,7 +13,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:ts": "tsc --noEmit",
-    "openapi": "openapi-typescript src/docs/api.json -o src/generated/api.d.ts"
+    "openapi": "openapi-typescript src/docs/api.json -o src/generated/api.d.ts",
+    "supabase-gen-types": "npx supabase gen types typescript --linked > src/generated/supabase.d.ts"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.0",
