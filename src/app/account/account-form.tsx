@@ -43,7 +43,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
         console.error('User ID is undefined');
       }
     } catch (error) {
-      alert('Error loading user data!');
+      console.error('Error:', error);
     } finally {
       setLoading(false);
     }
