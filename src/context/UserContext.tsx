@@ -21,8 +21,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       const user = await getUser();
       setIsLoggedIn(user !== undefined && user !== null);
     }
-    void fetchUser();
-  }, []);
+    if (isLoggedIn) {
+      void fetchUser();
+    }
+  }, [isLoggedIn]);
 
   const login = async ({
     email,
