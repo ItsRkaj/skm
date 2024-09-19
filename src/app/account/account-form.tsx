@@ -19,27 +19,29 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
     try {
       setLoading(true);
 
-      const { data, error, status } = await supabase
-        .from('profiles')
-        .select(`full_name, username, website, avatar_url`)
-        .eq('id', user?.id)
-        .single();
+      if (user) {
+        const { data, error } = await supabase
+          .from('users')
+          .select(`first_name, nickname, avatar_url`)
+          .eq('id', user?.id)
+          .single();
 
-      if (error && status !== 406) {
-        console.log(error);
-      }
+        if (error) {
+          console.log(error);
+        }
 
-      if (data) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setFullname(data.full_name);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setUsername(data.username);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setWebsite(data.website);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setAvatar_url(data.avatar_url);
+        if (data) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setFullname(data.first_name);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setUsername(data.nickname);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          setAvatar_url(data.avatar_url);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } else {
+        console.error('User ID is undefined');
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert('Error loading user data!');
     } finally {
@@ -75,7 +77,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
     try {
       setLoading(true);
 
-      const { error } = await supabase.from('profiles').upsert({
+      const { error } = await supabase.from('users').upsert({
         id: user?.id as string,
         full_name: fullname,
         username,
