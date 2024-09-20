@@ -4,3 +4,4 @@ public
 .git
 .github
 *.js
+*.d.ts
