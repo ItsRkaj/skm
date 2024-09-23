@@ -1,9 +1,13 @@
+import HeroSection from '@/components/landing-page/hero-section';
+import EventsSection from '../components/landing-page/coming-events';
+import News from '../components/landing-page/news-section';
+import '../app/globals.css';
 export default function Home() {
   return (
-    <div>
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-        Home
-      </h1>
-    </div>
+    <>
+      <HeroSection />
+      <EventsSection />
+      <News />
+    </>
   );
 }
