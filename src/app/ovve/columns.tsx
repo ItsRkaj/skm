@@ -1,11 +1,11 @@
 'use client';
 
 import { ColumnDef, CellContext } from '@tanstack/react-table';
-
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 interface ExtendedCellContext extends CellContext<LeaderboardEntry, unknown> {
@@ -13,10 +13,11 @@ interface ExtendedCellContext extends CellContext<LeaderboardEntry, unknown> {
 }
 
 // Person type used throughout the code
-type Person = {
+export type Person = {
+  id: string;
   avatar: string;
   name: string;
-  nickname: string;
+  nickname: string | null;
 };
 
 // This type is used to define the shape of the data
@@ -51,6 +52,24 @@ const SortableHeader: React.FC<SortableHeaderProps> = ({
   );
 };
 
+// Avatar component
+const AvatarComponent: React.FC = () => {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  return (
+    <Avatar>
+      {!isLoaded && (
+        <Skeleton className="w-[100px] h-[100px] rounded-full bg-[#3b82f6]" />
+      )}
+      <AvatarImage
+        src="https://github.com/shadcn.png"
+        onLoad={() => setIsLoaded(true)}
+        className={`${isLoaded ? 'block' : 'none'}`}
+      />
+    </Avatar>
+  );
+};
+
 export const columns: ColumnDef<LeaderboardEntry>[] = [
   {
     id: 'placement',
@@ -81,9 +100,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
       return (
         // ADD PROFILE LINK HERE
         <Link href={'/'} className="flex flex-row gap-2">
-          <Avatar>
-            <AvatarImage src={person.avatar} />
-          </Avatar>
+          <AvatarComponent />
           <div className="flex flex-col">
             <span className="text-foreground">{person.name}</span>
             <span className="text-muted-foreground">{person.nickname}</span>
