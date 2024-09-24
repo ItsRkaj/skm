@@ -1,33 +1,33 @@
 export default function Contact() {
   return (
     <div className="flex flex-col gap-10 p-5">
+      <div className="flex flex-col items-center gap-5 p-5">
+        <p className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+          Tveka inte att höra av dig.
+        </p>
+        <div className="flex flex-col md:flex-row items-center gap-5 p-5 w-full">
+          <div className="flex flex-col  items-center gap-5 p-5 w-full">
+            <h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+              Medlemskap
+            </h2>
+            <p>medlem@skm.se</p>
+          </div>
 
-<div className="flex flex-col items-center gap-5 p-5">
+          <div className="flex flex-col  items-center gap-5 p-5 w-full">
+            <h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+              Event frågor
+            </h2>
+            <p>event@skm.se</p>
+          </div>
 
-<p className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-Tveka inte att höra av dig.
-          </p>
-<div className="flex flex-col md:flex-row items-center gap-5 p-5 w-full">
-
-<div className="flex flex-col  items-center gap-5 p-5 w-full">
-  <h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Medlemskap</h2>
-  <p>medlem@skm.se</p>
-</div>
-
-<div className="flex flex-col  items-center gap-5 p-5 w-full">
-<h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Event frågor</h2>
-<p>event@skm.se</p>
-</div>
-
-<div  className="flex flex-col items-center gap-5 p-5 w-full">
-<h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Annat</h2>
-<p>annta@skm.se</p>
-</div>
-
-</div>
-
-</div>
-      
+          <div className="flex flex-col items-center gap-5 p-5 w-full">
+            <h2 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+              Annat
+            </h2>
+            <p>annta@skm.se</p>
+          </div>
+        </div>
+      </div>
 
       <div className="flex flex-col md:flex-row items-center gap-5 p-5">
         <div className="flex flex-col items-center w-full">
