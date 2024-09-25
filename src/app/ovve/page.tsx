@@ -18,7 +18,7 @@ async function LeaderboardData() {
   return <DataTable columns={columns} data={data ?? []} />;
 }
 
-export default async function Ovve() {
+export default function Ovve() {
   return (
     <div>
       <h1 className="text-4xl lg:text-5xl font-semibold text-center">

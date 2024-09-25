@@ -28,9 +28,7 @@ export async function GET() {
         pins,
         person: {
           id,
-          name: ((users.first_name as string) +
-            ' ' +
-            users.last_name) as string,
+          name: (users.first_name as string) + ' ' + users.last_name,
           nickname: users?.nickname,
           avatar: users.avatar_url as string,
         },
