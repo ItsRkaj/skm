@@ -59,7 +59,7 @@ const AvatarComponent: React.FC = () => {
   return (
     <Avatar>
       {!isLoaded && (
-        <Skeleton className="w-[100px] h-[100px] rounded-full bg-[#3b82f6]" />
+        <Skeleton className="w-[100px] h-[100px] rounded-full bg-white" />
       )}
       <AvatarImage
         src="https://github.com/shadcn.png"
