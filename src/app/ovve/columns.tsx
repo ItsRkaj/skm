@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { LeaderboardEntry } from '@/modules/apiTypes';
 
 interface ExtendedCellContext extends CellContext<LeaderboardEntry, unknown> {
   placement: number; // Add placement to the context
@@ -18,16 +19,6 @@ export type Person = {
   avatar: string;
   name: string;
   nickname: string | null;
-};
-
-// This type is used to define the shape of the data
-export type LeaderboardEntry = {
-  person: Person;
-  total_patches: number;
-  sewn_patches: number;
-  not_sewn_patches: number;
-  medals: number;
-  pins: number;
 };
 
 // The header used for sortable columns
@@ -133,7 +124,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     header: ({ column }) => {
       return (
         <SortableHeader
-          text="Fastsydda märken"
+          text="Sydda märken"
           toggleSorting={column.toggleSorting}
           isSorted={column.getIsSorted()}
         />
@@ -148,7 +139,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
     header: ({ column }) => {
       return (
         <SortableHeader
-          text="Ej Fastsydda Märken"
+          text="Osydda märken"
           toggleSorting={column.toggleSorting}
           isSorted={column.getIsSorted()}
         />
