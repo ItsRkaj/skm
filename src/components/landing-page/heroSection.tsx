@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 
@@ -24,7 +25,19 @@ const HeroSection: React.FC = () => {
           </ul>
           <div className="flex gap-4 flex-wrap">
             <Button variant="default">ANSÖK TILL SKM HÄR!</Button>
-            <Button variant="secondary">LÄS MER</Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                const aboutSection = document.getElementById('about-us');
+                if (aboutSection) {
+                  aboutSection.scrollIntoView({ behavior: 'smooth' });
+                  const yOffset = -80;
+                  const y = aboutSection.getBoundingClientRect().top + yOffset;
+                  window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+              }}>
+              LÄS MER
+            </Button>
           </div>
         </div>
 
