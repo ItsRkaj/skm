@@ -3,9 +3,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getUser, logInUser, signOutUser } from '@/modules/apiClient';
 import { useRouter } from 'next/navigation';
+import { UserResponse } from '@supabase/supabase-js';
 
 interface UserContextType {
   isLoggedIn: boolean;
+  user: UserResponse | undefined;
   login: (credentials: { email: string; password: string }) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -14,15 +16,19 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [user, setUser] = useState<UserResponse | undefined>(undefined);
   const router = useRouter();
 
   useEffect(() => {
     async function fetchUser() {
       const user = await getUser();
       setIsLoggedIn(user !== undefined && user !== null);
+      setUser(user);
     }
     if (isLoggedIn) {
       void fetchUser();
+    } else {
+      setUser(undefined);
     }
   }, [isLoggedIn]);
 
@@ -50,7 +56,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ isLoggedIn, login, signOut }}>
+    <UserContext.Provider value={{ isLoggedIn, user, login, signOut }}>
       {children}
     </UserContext.Provider>
   );
