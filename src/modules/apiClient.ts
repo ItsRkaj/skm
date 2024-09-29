@@ -1,7 +1,7 @@
 import { Marshal, LeaderboardEntry } from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
-import { UserResponse } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 
 const client = createClient<paths>({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL
@@ -89,11 +89,11 @@ export async function signUpUser(formData: {
   }
 }
 
-export async function getUser(): Promise<UserResponse | undefined> {
+export async function getUser(): Promise<User | undefined> {
   try {
     const response = await client.GET('/api/user');
     if (response.response.status === 200) {
-      return response.data as UserResponse;
+      return response.data as User;
     }
     return undefined;
   } catch (e) {
