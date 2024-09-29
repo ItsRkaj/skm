@@ -6,6 +6,7 @@ import {
   ThickArrowLeftIcon,
 } from '@radix-ui/react-icons';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 
 const newsData = [
   {
@@ -38,12 +39,10 @@ const NewsDetail = ({ params }: { params: { id: string } }) => {
   if (!news) {
     return (
       <div>
-        <button
-          className="flex items-center hover:text-[hsl(var(--primary))]"
-          onClick={() => router.back()}>
+        <Button variant="link" onClick={() => router.back()}>
           <ThickArrowLeftIcon />
           Tillbaka
-        </button>
+        </Button>
         <Image
           src={'/skmLogo.png'}
           alt={'skmlogo'}
