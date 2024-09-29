@@ -38,6 +38,82 @@
         }
       }
     },
+    "/api/leaderboard": {
+      "get": {
+        "summary": "Retrieve leaderboard",
+        "description": "Returns all users and their scores. Requires authentication.",
+        "responses": {
+          "200": {
+            "description": "Array of leaderboard entries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LeaderboardEntry"
+                  }
+                },
+                "example": [
+                  {
+                    "person": {
+                      "avatar": "https://example.com/avatar1.jpg",
+                      "name": "John Doe",
+                      "nickname": "Johnny"
+                    },
+                    "sewn_patches": 7,
+                    "not_sewn_patches": 3,
+                    "medals": 2,
+                    "pins": 5
+                  },
+                  {
+                    "person": {
+                      "avatar": "https://example.com/avatar2.jpg",
+                      "name": "Jane Smith",
+                      "nickname": "Janie"
+                    },
+                    "sewn_patches": 10,
+                    "not_sewn_patches": 0,
+                    "medals": 3,
+                    "pins": 4
+                  }
+                ]
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/login": {
       "post": {
         "summary": "User Login",
@@ -360,6 +436,73 @@
           }
         },
         "type": "object"
+      },
+      "LeaderboardEntry": {
+        "title": "Leaderboard entry",
+        "description": "Data for a row in the leaderboard",
+        "type": "object",
+        "properties": {
+          "person": {
+            "type": "object",
+            "description": "Details about the person",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "UID of the person",
+                "example": "1a1abcd1-a1a1-12a1-12a1-12a12ab1a123"
+              },
+              "avatar": {
+                "type": "string",
+                "description": "URL of the person's avatar",
+                "example": "https://example.com/avatar.jpg"
+              },
+              "name": {
+                "type": "string",
+                "description": "Full name of the person",
+                "example": "John Doe"
+              },
+              "nickname": {
+                "type": ["string", "null"],
+                "description": "Nickname of the person (can be null)",
+                "example": "Johnny"
+              }
+            },
+            "required": ["id", "avatar", "name", "nickname"]
+          },
+          "total_patches": {
+            "type": "integer",
+            "description": "Number of total patches",
+            "example": 10
+          },
+          "sewn_patches": {
+            "type": "integer",
+            "description": "Number of patches that have been sewn",
+            "example": 7
+          },
+          "not_sewn_patches": {
+            "type": "integer",
+            "description": "Number of patches that have not been sewn",
+            "example": 3
+          },
+          "medals": {
+            "type": "integer",
+            "description": "Number of medals earned by the person",
+            "example": 2
+          },
+          "pins": {
+            "type": "integer",
+            "description": "Number of pins earned by the person",
+            "example": 5
+          }
+        },
+        "required": [
+          "person",
+          "total_patches",
+          "sewn_patches",
+          "not_sewn_patches",
+          "medals",
+          "pins"
+        ]
       },
       "Error": {
         "type": "object",

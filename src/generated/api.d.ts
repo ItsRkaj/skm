@@ -24,6 +24,66 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/leaderboard': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Retrieve leaderboard
+     * @description Returns all users and their scores. Requires authentication.
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Array of leaderboard entries */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['LeaderboardEntry'][];
+          };
+        };
+        /** @description Internal server error. */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Internal server error */
+              error?: string;
+            };
+          };
+        };
+        /** @description error */
+        default: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/login': {
     parameters: {
       query?: never;
@@ -294,6 +354,60 @@ export interface components {
        * @description Email of the marshal
        */
       email?: string;
+    };
+    /**
+     * Leaderboard entry
+     * @description Data for a row in the leaderboard
+     */
+    LeaderboardEntry: {
+      /** @description Details about the person */
+      person: {
+        /**
+         * @description UID of the person
+         * @example 1a1abcd1-a1a1-12a1-12a1-12a12ab1a123
+         */
+        id: string;
+        /**
+         * @description URL of the person's avatar
+         * @example https://example.com/avatar.jpg
+         */
+        avatar: string;
+        /**
+         * @description Full name of the person
+         * @example John Doe
+         */
+        name: string;
+        /**
+         * @description Nickname of the person (can be null)
+         * @example Johnny
+         */
+        nickname: string | null;
+      };
+      /**
+       * @description Number of total patches
+       * @example 10
+       */
+      total_patches: number;
+      /**
+       * @description Number of patches that have been sewn
+       * @example 7
+       */
+      sewn_patches: number;
+      /**
+       * @description Number of patches that have not been sewn
+       * @example 3
+       */
+      not_sewn_patches: number;
+      /**
+       * @description Number of medals earned by the person
+       * @example 2
+       */
+      medals: number;
+      /**
+       * @description Number of pins earned by the person
+       * @example 5
+       */
+      pins: number;
     };
     Error: {
       code: number;
