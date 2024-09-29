@@ -17,6 +17,7 @@
     "supabase-gen-types": "npx supabase gen types typescript --linked > src/generated/supabase.d.ts"
   },
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
