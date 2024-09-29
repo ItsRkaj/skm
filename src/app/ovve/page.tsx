@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { DataTable } from './data-table';
+import PersonalBanner from '@/components/ovve-page/PersonalBanner';
 
 export const metadata: Metadata = {
   title: 'Ovve-lista | Systrarna KM',
@@ -15,7 +16,12 @@ async function LeaderboardData() {
   const { getLeaderboard } = await import('@/modules/apiClient');
   const { columns } = await import('./columns');
   const data = await getLeaderboard();
-  return <DataTable columns={columns} data={data ?? []} />;
+  return (
+    <>
+      <PersonalBanner leaderboard={data ?? []} />
+      <DataTable columns={columns} data={data ?? []} />
+    </>
+  );
 }
 
 export default function Ovve() {
