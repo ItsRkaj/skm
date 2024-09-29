@@ -34,11 +34,12 @@ export function Navbar() {
   const links: Link[] = [
     { key: 0, href: '/', label: 'Hem' },
     { key: 1, href: '/marshals', label: 'Marskalkar' },
-    { key: 2, href: '/contact', label: 'Kontakta oss' },
+    { key: 2, href: '/about', label: 'Om oss' },
+    { key: 3, href: '/contact', label: 'Kontakta oss' },
   ];
 
   return (
-    <header className="sticky z-50 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+    <header className="container mx-auto sticky z-50 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="/"
