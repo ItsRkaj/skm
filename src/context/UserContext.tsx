@@ -3,11 +3,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getUser, logInUser, signOutUser } from '@/modules/apiClient';
 import { useRouter } from 'next/navigation';
-import { UserResponse } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 
 interface UserContextType {
   isLoggedIn: boolean;
-  user: UserResponse | undefined;
+  user: User | undefined;
   login: (credentials: { email: string; password: string }) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -16,7 +16,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<UserResponse | undefined>(undefined);
+  const [user, setUser] = useState<User | undefined>(undefined);
   const router = useRouter();
 
   useEffect(() => {

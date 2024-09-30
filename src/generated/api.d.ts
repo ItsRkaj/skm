@@ -469,27 +469,103 @@ export interface operations {
           'application/json': {
             /** @example 12345-abcde */
             id?: string;
-            /** @example user@example.com */
-            email?: string;
+            app_metadata?: {
+              /** @example email */
+              provider?: string;
+              /** @example [
+               *       "email"
+               *     ] */
+              providers?: string[];
+            };
+            user_metadata?: {
+              /** @example John Doe */
+              name?: string;
+              /** @example user */
+              role?: string;
+            };
+            /** @example authenticated */
+            aud?: string;
+            /**
+             * Format: date-time
+             * @example 2023-09-01T12:34:56.789Z
+             */
+            confirmation_sent_at?: string | null;
+            /**
+             * Format: date-time
+             * @example 2023-09-01T12:34:56.789Z
+             */
+            recovery_sent_at?: string | null;
+            /**
+             * Format: date-time
+             * @example 2023-09-01T12:34:56.789Z
+             */
+            email_change_sent_at?: string | null;
+            /** @example new_user@example.com */
+            new_email?: string | null;
             /** @example +1234567890 */
-            phone?: string;
-            /** @example {
-             *       "provider": "email",
-             *       "providers": [
-             *         "email"
-             *       ]
-             *     } */
-            app_metadata?: Record<string, never>;
-            /** @example {
-             *       "name": "John Doe",
-             *       "role": "user"
-             *     } */
-            user_metadata?: Record<string, never>;
+            new_phone?: string | null;
+            /**
+             * Format: date-time
+             * @example 2023-09-01T12:34:56.789Z
+             */
+            invited_at?: string | null;
+            /** @example https://supabase.io/verify_email */
+            action_link?: string | null;
+            /** @example user@example.com */
+            email?: string | null;
+            /** @example +1234567890 */
+            phone?: string | null;
             /**
              * Format: date-time
              * @example 2023-09-01T12:34:56.789Z
              */
             created_at?: string;
+            /**
+             * Format: date-time
+             * @example 2023-09-01T12:34:56.789Z
+             */
+            confirmed_at?: string | null;
+            /**
+             * Format: date-time
+             * @example 2023-09-01T12:34:56.789Z
+             */
+            email_confirmed_at?: string | null;
+            /**
+             * Format: date-time
+             * @example 2023-09-01T12:34:56.789Z
+             */
+            phone_confirmed_at?: string | null;
+            /**
+             * Format: date-time
+             * @example 2023-09-01T12:34:56.789Z
+             */
+            last_sign_in_at?: string | null;
+            /** @example user */
+            role?: string | null;
+            /**
+             * Format: date-time
+             * @example 2023-09-01T12:34:56.789Z
+             */
+            updated_at?: string | null;
+            identities?: {
+              /** @example identity-12345 */
+              id?: string;
+              /** @example email */
+              provider?: string;
+              /**
+               * Format: date-time
+               * @example 2023-09-01T12:34:56.789Z
+               */
+              created_at?: string;
+            }[];
+            /** @example false */
+            is_anonymous?: boolean | null;
+            factors?: {
+              /** @example factor-12345 */
+              id?: string;
+              /** @example verified */
+              status?: string;
+            }[];
           };
         };
       };
@@ -500,7 +576,7 @@ export interface operations {
         };
         content: {
           'application/json': {
-            /** @example Error user not found */
+            /** @example User not found */
             message?: string;
           };
         };
