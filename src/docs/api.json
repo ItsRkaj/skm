@@ -41,7 +41,7 @@
     "/api/leaderboard": {
       "get": {
         "summary": "Retrieve leaderboard",
-        "description": "Returns all users and their scores. Requires authentication.",
+        "description": "Returns all users and their scores.",
         "responses": {
           "200": {
             "description": "Array of leaderboard entries",
@@ -56,6 +56,7 @@
                 "example": [
                   {
                     "person": {
+                      "id": "1a1abcd1-a1a1-12a1-12a1-12a12ab1a123",
                       "avatar": "https://example.com/avatar1.jpg",
                       "name": "John Doe",
                       "nickname": "Johnny"
@@ -102,6 +103,90 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update personal score",
+        "description": "Allows a user to update their personal score on the leaderboard.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "1a1abcd1-a1a1-12a1-12a1-12a12ab1a123"
+                  },
+                  "sewn_patches": {
+                    "type": "integer",
+                    "example": 8
+                  },
+                  "not_sewn_patches": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "medals": {
+                    "type": "integer",
+                    "example": 3
+                  },
+                  "pins": {
+                    "type": "integer",
+                    "example": 6
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Personal score updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Score updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
                 }
               }
             }

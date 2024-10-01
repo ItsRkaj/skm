@@ -14,99 +14,103 @@ import { Skeleton } from '../ui/skeleton';
 import { Input } from '@/components/ui/input';
 import { Button } from '../ui/button';
 import { useUser } from '@/context/UserContext';
+import { putLeaderboard } from '@/modules/apiClient';
 
 interface InputFieldProps {
   label: string;
   value: number;
-  setValue: React.Dispatch<React.SetStateAction<number>>;
+  onChange: (value: number) => void;
   isDisabled?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
   label,
   value,
-  setValue,
+  onChange,
   isDisabled,
-}) => {
-  return (
-    <div className="flex flex-row items-center gap-2">
-      <CardDescription>{label}: </CardDescription>
-      <Input
-        type={!isDisabled ? 'number' : ''}
-        disabled={isDisabled}
-        value={value}
-        onChange={(e) => {
-          const newValue = Number(e.target.value);
-          if (newValue >= 0) {
-            setValue(newValue);
-          }
-        }}
-        className={isDisabled ? 'w-14' : 'w-20'}
-      />
-    </div>
-  );
-};
+}) => (
+  <div className="flex flex-row items-center gap-2">
+    <CardDescription>{label}: </CardDescription>
+    <Input
+      type={!isDisabled ? 'number' : 'text'}
+      disabled={isDisabled}
+      value={value}
+      onChange={(e) => {
+        const newValue = Number(e.target.value);
+        if (newValue >= 0) {
+          onChange(newValue);
+        }
+      }}
+      className={isDisabled ? 'w-14' : 'w-20'}
+    />
+  </div>
+);
 
 interface PersonalBannerProps {
   leaderboard: LeaderboardEntry[];
+  updateLeaderboard: () => Promise<void>;
 }
 
-const PersonalBanner: React.FC<PersonalBannerProps> = ({ leaderboard }) => {
-  const { user, isLoggedIn } = useUser();
+const PersonalBanner: React.FC<PersonalBannerProps> = ({
+  leaderboard,
+  updateLeaderboard,
+}) => {
+  const { user } = useUser();
 
-  console.log(user);
-  console.log('log:', isLoggedIn);
+  const personalData = leaderboard.find(
+    (entry) => entry.person.id === user?.id,
+  );
 
-  if (!user) {
-    return null;
-  }
-
-  const personalData = leaderboard.find((entry) => entry.person.id === user.id);
-
-  if (!personalData) {
-    return null;
-  }
-
-  const [originalValues, setOriginalValues] = useState({
-    sewn_patches: personalData?.sewn_patches,
-    not_sewn_patches: personalData?.not_sewn_patches,
-    medals: personalData?.medals,
-    pins: personalData?.pins,
-  });
-  const [fieldsChanged, setFieldsChanged] = useState(false);
+  const [sewnPatches, setSewnPatches] = useState<number>(
+    personalData?.sewn_patches ?? 0,
+  );
+  const [notSewnPatches, setNotSewnPatches] = useState<number>(
+    personalData?.not_sewn_patches ?? 0,
+  );
+  const [medals, setMedals] = useState<number>(personalData?.medals ?? 0);
+  const [pins, setPins] = useState<number>(personalData?.pins ?? 0);
+  const [loading, setLoading] = useState(false);
   const [isAvatarLoaded, setIsAvatarLoaded] = useState(false);
-  const [sewnPatches, setSewnPatches] = useState(personalData.sewn_patches);
-  const [notSewnPatches, setNotSewnPatches] = useState(
-    personalData.not_sewn_patches,
-  );
-  const [patches, setPatches] = useState(
-    personalData.sewn_patches + personalData.not_sewn_patches,
-  );
-  const [medals, setMedals] = useState(personalData.medals);
-  const [pins, setPins] = useState(personalData.pins);
 
-  useEffect(() => {
-    setPatches(sewnPatches + notSewnPatches);
-  }, [sewnPatches, notSewnPatches]);
+  const [fieldsChanged, setFieldsChanged] = useState(false);
+  const [originalValues, setOriginalValues] = useState({
+    sewn_patches: personalData?.sewn_patches ?? 0,
+    not_sewn_patches: personalData?.not_sewn_patches ?? 0,
+    medals: personalData?.medals ?? 0,
+    pins: personalData?.pins ?? 0,
+  });
 
   useEffect(() => {
     const hasChanged =
-      originalValues.sewn_patches !== sewnPatches ||
-      originalValues.not_sewn_patches !== notSewnPatches ||
-      originalValues.medals !== medals ||
-      originalValues.pins !== pins;
+      sewnPatches !== originalValues.sewn_patches ||
+      notSewnPatches !== originalValues.not_sewn_patches ||
+      medals !== originalValues.medals ||
+      pins !== originalValues.pins;
 
     setFieldsChanged(hasChanged);
   }, [sewnPatches, notSewnPatches, medals, pins, originalValues]);
 
-  const handleSave = () => {
-    setOriginalValues({
-      sewn_patches: sewnPatches,
-      not_sewn_patches: notSewnPatches,
-      medals,
-      pins,
-    });
-    setFieldsChanged(false);
+  if (!personalData || !user) {
+    return null;
+  }
+
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      await putLeaderboard(user.id, sewnPatches, notSewnPatches, medals, pins);
+      setOriginalValues({
+        sewn_patches: sewnPatches,
+        not_sewn_patches: notSewnPatches,
+        medals: medals,
+        pins: pins,
+      });
+      setFieldsChanged(false);
+      await updateLeaderboard();
+    } catch (error) {
+      console.error('Error updating leaderboard:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -123,33 +127,36 @@ const PersonalBanner: React.FC<PersonalBannerProps> = ({ leaderboard }) => {
           />
         </Avatar>
         <div className="flex flex-col">
-          <CardTitle>John Smith</CardTitle>
-          <CardDescription>El Cabron</CardDescription>
+          <CardTitle>{personalData.person.name}</CardTitle>
+          <CardDescription>{personalData.person.nickname}</CardDescription>
         </div>
       </CardHeader>
+
       <CardContent className="flex flex-row pt-6 gap-4">
         <InputField
           label="Märken"
-          value={patches}
-          setValue={setPatches}
+          value={sewnPatches + notSewnPatches}
+          onChange={() => {}}
           isDisabled
         />
         <InputField
           label="Sydda märken"
           value={sewnPatches}
-          setValue={setSewnPatches}
+          onChange={setSewnPatches}
         />
         <InputField
           label="Osydda märken"
           value={notSewnPatches}
-          setValue={setNotSewnPatches}
+          onChange={setNotSewnPatches}
         />
-        <InputField label="Medaljer" value={medals} setValue={setMedals} />
-        <InputField label="Pins" value={pins} setValue={setPins} />
+        <InputField label="Medaljer" value={medals} onChange={setMedals} />
+        <InputField label="Pins" value={pins} onChange={setPins} />
       </CardContent>
+
       <CardFooter className="pt-6">
-        <Button disabled={!fieldsChanged} onClick={handleSave}>
-          Spara
+        {/* eslint-disable-next-line */}
+        <Button disabled={!fieldsChanged || loading} onClick={handleSave}>
+          {loading ? 'Sparar...' : 'Spara'}
         </Button>
       </CardFooter>
     </Card>

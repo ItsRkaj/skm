@@ -33,7 +33,7 @@ export interface paths {
     };
     /**
      * Retrieve leaderboard
-     * @description Returns all users and their scores. Requires authentication.
+     * @description Returns all users and their scores.
      */
     get: {
       parameters: {
@@ -76,7 +76,69 @@ export interface paths {
         };
       };
     };
-    put?: never;
+    /**
+     * Update personal score
+     * @description Allows a user to update their personal score on the leaderboard.
+     */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': {
+            /** @example 1a1abcd1-a1a1-12a1-12a1-12a12ab1a123 */
+            id?: string;
+            /** @example 8 */
+            sewn_patches?: number;
+            /** @example 2 */
+            not_sewn_patches?: number;
+            /** @example 3 */
+            medals?: number;
+            /** @example 6 */
+            pins?: number;
+          };
+        };
+      };
+      responses: {
+        /** @description Personal score updated successfully */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Score updated successfully */
+              message?: string;
+            };
+          };
+        };
+        /** @description Invalid request data */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Internal server error. */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Internal server error */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
     post?: never;
     delete?: never;
     options?: never;

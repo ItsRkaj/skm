@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { DataTable } from './data-table';
+import { revalidatePath } from 'next/cache';
 import PersonalBanner from '@/components/ovve-page/PersonalBanner';
 
 export const metadata: Metadata = {
@@ -8,18 +9,28 @@ export const metadata: Metadata = {
   description: 'Systrarna KMs topplista',
 };
 
-// Revalidate the cache every 5 minutes
-export const revalidate = 60 * 5;
+// Don't cache the leaderboard
+export const revalidate = 0;
 
-// Compontent used for data fetching
+/* eslint-disable */
+const updateLeaderboard = async () => {
+  'use server';
+  revalidatePath('/leaderboard');
+};
+/* eslint-enable */
+
 async function LeaderboardData() {
   const { getLeaderboard } = await import('@/modules/apiClient');
   const { columns } = await import('./columns');
-  const data = await getLeaderboard();
+  const leaderboard = await getLeaderboard();
+
   return (
     <>
-      <PersonalBanner leaderboard={data ?? []} />
-      <DataTable columns={columns} data={data ?? []} />
+      <PersonalBanner
+        updateLeaderboard={updateLeaderboard}
+        leaderboard={leaderboard ?? []}
+      />
+      <DataTable columns={columns} data={leaderboard ?? []} />
     </>
   );
 }
