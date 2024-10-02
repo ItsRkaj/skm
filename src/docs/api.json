@@ -38,6 +38,43 @@
         }
       }
     },
+    "/api/events": {
+      "get": {
+        "summary": "Retrieve events",
+        "description": "Retrieves a list of all events",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/leaderboard": {
       "get": {
         "summary": "Retrieve leaderboard",
@@ -573,6 +610,79 @@
           }
         },
         "type": "object"
+      },
+      "Event": {
+        "title": "Event model",
+        "description": "Event object representing an event with details",
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Description of the event"
+          },
+          "end_time": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time",
+            "description": "End time of the event"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the event"
+          },
+          "invitation_type": {
+            "type": "string",
+            "enum": ["Everyone", "Gamlingar", "Aktiva"],
+            "description": "Invitation type for the event"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location of the event"
+          },
+          "organizer": {
+            "type": "string",
+            "description": "Organizer of the event"
+          },
+          "price": {
+            "type": "number",
+            "nullable": true,
+            "description": "Price of the event"
+          },
+          "publisher": {
+            "type": "string",
+            "description": "Publisher of the event"
+          },
+          "registration_deadline": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time",
+            "description": "Registration deadline for the event"
+          },
+          "registration_link": {
+            "type": "string",
+            "nullable": true,
+            "description": "Registration link for the event"
+          },
+          "start_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start time of the event"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the event"
+          }
+        },
+        "required": [
+          "id",
+          "invitation_type",
+          "location",
+          "organizer",
+          "publisher",
+          "start_time",
+          "title"
+        ]
       },
       "LeaderboardEntry": {
         "title": "Leaderboard entry",

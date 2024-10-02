@@ -6,3 +6,5 @@ export type MarshalsRequest =
 export type Marshal = components['schemas']['Marshal'];
 
 export type LeaderboardEntry = components['schemas']['LeaderboardEntry'];
+
+export type Event = components['schemas']['Event'];
