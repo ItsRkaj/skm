@@ -1,4 +1,4 @@
-import { Marshal, LeaderboardEntry } from '@/modules/apiTypes';
+import { Marshal, LeaderboardEntry, Quote } from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
 import { User } from '@supabase/supabase-js';
@@ -30,6 +30,21 @@ export async function getLeaderboard(): Promise<
       return response.data;
     } else {
       console.error('Failed to fetch leaderboard: ', response.response.status);
+      return undefined;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return undefined;
+  }
+}
+
+export async function getQuotes(): Promise<Quote[] | undefined> {
+  try {
+    const response = await client.GET('/api/quotes');
+    if (response.response.ok) {
+      return response.data;
+    } else {
+      console.error('Failed to fetch quotes', response.response.status);
       return undefined;
     }
   } catch (e) {

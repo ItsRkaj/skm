@@ -114,6 +114,43 @@
         ]
       }
     },
+    "/api/quotes": {
+      "get": {
+        "summary": "Retrieve quots",
+        "description": "Retrieves a list of all quots",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Quote"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/login": {
       "post": {
         "summary": "User Login",
@@ -573,6 +610,30 @@
           }
         },
         "type": "object"
+      },
+      "Quote": {
+        "title": "Quote model",
+        "description": "Quote object representing an Quote with details",
+        "type": "object",
+        "properties": {
+          "quotetext": {
+            "type": "string",
+            "description": "Description of the quote"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the Quote"
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of of the quote"
+          }                         
+        },
+        "required": [
+          "id",
+          "author",
+          "quotetext"
+        ]
       },
       "LeaderboardEntry": {
         "title": "Leaderboard entry",
