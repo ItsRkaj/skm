@@ -681,6 +681,7 @@
           "organizer",
           "publisher",
           "start_time",
+          "end_time",
           "title"
         ]
       },

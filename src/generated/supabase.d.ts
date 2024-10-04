@@ -68,7 +68,7 @@ export type Database = {
       events: {
         Row: {
           description: string | null
-          end_time: string | null
+          end_time: string
           id: number
           invitation_type: Database["public"]["Enums"]["invitation_category"]
           location: string
@@ -82,7 +82,7 @@ export type Database = {
         }
         Insert: {
           description?: string | null
-          end_time?: string | null
+          end_time: string
           id?: number
           invitation_type: Database["public"]["Enums"]["invitation_category"]
           location: string
@@ -96,7 +96,7 @@ export type Database = {
         }
         Update: {
           description?: string | null
-          end_time?: string | null
+          end_time?: string
           id?: number
           invitation_type?: Database["public"]["Enums"]["invitation_category"]
           location?: string
@@ -149,6 +149,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      quotes: {
+        Row: {
+          author: string | null
+          id: number
+          quotetext: string | null
+        }
+        Insert: {
+          author?: string | null
+          id?: number
+          quotetext?: string | null
+        }
+        Update: {
+          author?: string | null
+          id?: number
+          quotetext?: string | null
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
