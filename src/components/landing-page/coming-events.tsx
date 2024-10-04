@@ -1,4 +1,5 @@
 import { getEvents } from '@/modules/apiClient';
+import { Event } from '@/modules/apiTypes';
 
 function formatDate(date: Date) {
   return {
@@ -8,7 +9,7 @@ function formatDate(date: Date) {
   };
 }
 
-function EventCard({ event }: { event: any }) {
+function EventCard({ event }: { event: Event }) {
   const { month, day, time } = formatDate(new Date(event.start_time));
 
   return (

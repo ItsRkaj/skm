@@ -53,6 +53,23 @@ export async function getEvents(): Promise<Event[] | undefined> {
   }
 }
 
+export async function getEvent(id: string): Promise<Event | undefined> {
+  try {
+    const response = await client.GET('/api/events/{id}', {
+      params: { path: { id } },
+    });
+    if (response.response.ok) {
+      return response.data;
+    } else {
+      console.error('Failed to fetch events', response.response.status);
+      return undefined;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return undefined;
+  }
+}
+
 export async function logInUser(formData: {
   email: string;
   password: string;
