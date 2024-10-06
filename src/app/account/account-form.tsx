@@ -9,14 +9,15 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { 
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle} from '@/components/ui/alert-dialog';
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { useUser } from '@/context/UserContext';
 
 export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
@@ -124,7 +125,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
   const saveProfile = async () => {
     try {
       setLoading(true);
-  
+
       // Data to be sent to the database
       const updateData = {
         id: user?.id as string,
@@ -137,9 +138,9 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
         birthday,
         updated_at: new Date().toISOString(),
       };
-  
+
       const { error } = await supabase.from('users').upsert(updateData);
-  
+
       if (error) {
         console.error('Error saving profile:', error);
         setDialogMessage(`Error: ${error.message}`);
@@ -147,8 +148,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
         setDialogMessage('Profile updated successfully!');
         setIsEditing(false);
       }
-    } 
-    catch (error) {
+    } catch (error) {
       console.error('Error saving profile:', error);
       setDialogMessage(
         'An unexpected error occurred while updating the profile.',
@@ -186,7 +186,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
               url={avatar_url}
               size={80}
               onUpload={setAvatar_url}
-              isEditing={isEditing} 
+              isEditing={isEditing}
             />
           </div>
           <form className="space-y-4">
@@ -259,7 +259,6 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
             </div>
 
             <div className="flex justify-between items-center">
-
               <Button
                 type="button"
                 onClick={() => setIsEditing(!isEditing)}
@@ -278,7 +277,6 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
                 </Button>
               )}
               <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
-             
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>

@@ -91,25 +91,25 @@ export default function Avatar({
         />
       )}
       {isEditing && (
-      <div style={{ width: size }}>
-        <label
-          className="button primary block text-center whitespace-nowrap"
-          htmlFor="single">
-          {uploading ? 'Laddar Upp ...' : 'Ladda Upp'}
-        </label>
-        <input
-          style={{
-            visibility: 'hidden',
-            position: 'absolute',
-          }}
-          type="file"
-          id="single"
-          accept="image/*"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
-      </div>
-       )}
+        <div style={{ width: size }}>
+          <label
+            className="button primary block text-center whitespace-nowrap"
+            htmlFor="single">
+            {uploading ? 'Laddar Upp ...' : 'Ladda Upp'}
+          </label>
+          <input
+            style={{
+              visibility: 'hidden',
+              position: 'absolute',
+            }}
+            type="file"
+            id="single"
+            accept="image/*"
+            onChange={uploadAvatar}
+            disabled={uploading}
+          />
+        </div>
+      )}
     </div>
   );
 }
