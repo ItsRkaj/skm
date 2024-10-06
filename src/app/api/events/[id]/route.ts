@@ -11,7 +11,8 @@ export async function GET(
     const { data, error } = await supabase
       .from('events')
       .select('*')
-      .eq('id', params.id);
+      .eq('id', params.id)
+      .limit(1);
 
     if (error) {
       console.error('Error:', error);
@@ -19,6 +20,10 @@ export async function GET(
         { error: error.message },
         { status: error.code ? parseInt(error.code) : 500 },
       );
+    }
+
+    if (data.length === 0) {
+      return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
     return NextResponse.json(data, { status: 200 });

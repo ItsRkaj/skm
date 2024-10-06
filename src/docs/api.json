@@ -96,7 +96,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Event"
+                  "type": "array",
+                  "maxItems": 1,
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
                 }
               }
             }
@@ -678,7 +682,6 @@
           },
           "end_time": {
             "type": "string",
-            "nullable": true,
             "format": "date-time",
             "description": "End time of the event"
           },
@@ -701,7 +704,6 @@
           },
           "price": {
             "type": "number",
-            "nullable": true,
             "description": "Price of the event"
           },
           "publisher": {
@@ -737,6 +739,7 @@
           "publisher",
           "start_time",
           "end_time",
+          "price",
           "title"
         ]
       },

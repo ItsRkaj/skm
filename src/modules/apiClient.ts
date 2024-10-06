@@ -58,10 +58,18 @@ export async function getEvent(id: string): Promise<Event | undefined> {
     const response = await client.GET('/api/events/{id}', {
       params: { path: { id } },
     });
-    if (response.response.ok) {
-      return response.data;
+
+    if (
+      response.response.ok &&
+      Array.isArray(response.data) &&
+      response.data.length > 0
+    ) {
+      return response.data[0];
     } else {
-      console.error('Failed to fetch events', response.response.status);
+      console.error(
+        'Failed to fetch event or event not found',
+        response.response.status,
+      );
       return undefined;
     }
   } catch (e) {

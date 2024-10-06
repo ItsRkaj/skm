@@ -104,7 +104,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            'application/json': components['schemas']['Event'];
+            'application/json': components['schemas']['Event'][];
           };
         };
         /** @description Event not found */
@@ -480,7 +480,7 @@ export interface components {
        * Format: date-time
        * @description End time of the event
        */
-      end_time: string | null;
+      end_time: string;
       /** @description Unique identifier for the event */
       id: number;
       /**
@@ -493,7 +493,7 @@ export interface components {
       /** @description Organizer of the event */
       organizer: string;
       /** @description Price of the event */
-      price?: number | null;
+      price: number;
       /** @description Publisher of the event */
       publisher: string;
       /**
