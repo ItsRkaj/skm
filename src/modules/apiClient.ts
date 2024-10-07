@@ -1,8 +1,12 @@
-import { Marshal, LeaderboardEntry, Quote, QuoteInsert} from '@/modules/apiTypes';
+import {
+  Marshal,
+  LeaderboardEntry,
+  Quote,
+  QuoteInsert,
+} from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
 import { User } from '@supabase/supabase-js';
-
 
 const client = createClient<paths>({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL
@@ -87,11 +91,9 @@ export async function signOutUser(): Promise<{ message: string } | undefined> {
   }
 }
 
-export async function addQuote(newQuote: QuoteInsert){
+export async function addQuote(newQuote: QuoteInsert) {
   try {
-  
-    const response = await client.POST('/api/quotes',{ body: newQuote }  );
-    
+    const response = await client.POST('/api/quotes', { body: newQuote });
 
     if (response.response.status === 200) {
       return { message: 'Quote added successfully' };
@@ -133,5 +135,3 @@ export async function getUser(): Promise<User | undefined> {
     console.log(e);
   }
 }
-
-

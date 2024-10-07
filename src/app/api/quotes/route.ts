@@ -20,20 +20,22 @@ export async function GET() {
       { status: 500 },
     );
   }
-
 }
 
-
-
-export async function POST(request: Request){
-  
+export async function POST(request: Request) {
   try {
-    
-    const { quotetext,author } = await request.json();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { quotetext, author } = await request.json();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const supabase = createClient();
-   
-    const {data, error } = await supabase.from('quotes').insert([{ quotetext,author }]);
-    
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { data, error } = await supabase
+
+      .from('quotes')
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      .insert([{ quotetext, author }]);
+
     if (error) {
       console.error('Error:', error);
       return NextResponse.json(
