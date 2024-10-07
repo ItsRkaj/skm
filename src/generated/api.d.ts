@@ -92,8 +92,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Retrieve quots
-         * @description Retrieves a list of all quots
+         * Retrieve quotes
+         * @description Retrieves a list of all quotes.
          */
         get: {
             parameters: {
@@ -120,7 +120,7 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            /** @example An unexpected error occurred */
+                            /** @example An unexpected error occurred. */
                             error?: string;
                         };
                     };
@@ -128,7 +128,51 @@ export interface paths {
             };
         };
         put?: never;
-        post?: never;
+        /**
+         * Add a new quote to the quotes
+         * @description Make a new quote.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @description the quote itself. */
+                        quotetext: string;
+                        /** @description The author of the quote. */
+                        author: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Quote created successfully. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Quote"];
+                    };
+                };
+                /** @description Internal Server Error. */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example Internal server error */
+                            error?: string;
+                        };
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;

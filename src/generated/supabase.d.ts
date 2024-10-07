@@ -67,12 +67,12 @@ export type Database = {
       events: {
         Row: {
           description: string | null
-          end_time: string | null
+          end_time: string
           id: number
           invitation_type: Database["public"]["Enums"]["invitation_category"]
           location: string
           organizer: string
-          price: number | null
+          price: number
           publisher: string
           registration_deadline: string | null
           registration_link: string | null
@@ -81,12 +81,12 @@ export type Database = {
         }
         Insert: {
           description?: string | null
-          end_time?: string | null
+          end_time: string
           id?: number
           invitation_type: Database["public"]["Enums"]["invitation_category"]
           location: string
           organizer: string
-          price?: number | null
+          price: number
           publisher: string
           registration_deadline?: string | null
           registration_link?: string | null
@@ -95,12 +95,12 @@ export type Database = {
         }
         Update: {
           description?: string | null
-          end_time?: string | null
+          end_time?: string
           id?: number
           invitation_type?: Database["public"]["Enums"]["invitation_category"]
           location?: string
           organizer?: string
-          price?: number | null
+          price?: number
           publisher?: string
           registration_deadline?: string | null
           registration_link?: string | null
