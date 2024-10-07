@@ -1,51 +1,19 @@
 'use client';
+
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/quotes/quoteUI';
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { getQuotes, addQuote } from '@/modules/apiClient';
 import type { Quote, QuoteInsert } from '@/modules/apiTypes';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-
-// export default function Quotes() {
-//   const [quotes, setQuotes] = useState<Quote[] | undefined>(undefined);
-
-//   const fetchQuotes = async () => {
-//     const quoteList: Quote[] | undefined = await getQuotes();
-//     setQuotes( quoteList);
-//   };
-
-//   useEffect(() => {
-//     void fetchQuotes();
-//   }, []);
-
-//   return (
-//     <div className='flex flex-col gap-10 p-5'>
-//       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-//         Quotes
-//       </h1>
-//       <div className="space-y-5">
-//         {quotes?(
-//           quotes.map((quote) => (
-//             <Card className="mb-4">
-//                   <CardHeader>
-//                        <CardTitle>{quote.quotetext}</CardTitle>
-//                        <CardDescription>{quote.author}</CardDescription>
-//                      </CardHeader>
-//                    </Card>
-//           ))
-//         ) : (
-//           <p>No quotes found</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
 
 export default function QuoteForm() {
   const [quotetext, setQuoteText] = useState('');
@@ -77,60 +45,69 @@ export default function QuoteForm() {
   };
 
   return (
-    <div className="flex flex-col items-right justify-center min-h-screen">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-        Quotes
-      </h1>
-      <div className="space-y-5">
-        {quotes ? (
-          quotes.map((quote) => (
-            <Card className="mb-4" key={quote.quotetext}>
-              <CardHeader>
-                <CardTitle>{quote.quotetext}</CardTitle>
-                <CardDescription>{quote.author}</CardDescription>
-              </CardHeader>
-            </Card>
-          ))
-        ) : (
-          <p>No quotes found</p>
-        )}
+    <div className="flex flex-col items-center gap-5 p-5">
+      <h1 className="flex flex-col items-center w-full">List of quotes</h1>
+
+      <div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Author</TableHead>
+              <TableHead>Quote</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {quotes ? (
+              quotes.map((quote) => (
+                <TableRow key={quote.id}>
+                  <TableCell>{quote.author}</TableCell>
+                  <TableCell>{quote.quotetext}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow></TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
 
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-        Add a Quote
-      </h1>
-      {/*eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
-      <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-md">
-        <div>
-          <Label htmlFor="quoteText">Quote</Label>
-          <Input
-            type="text"
-            id="quoteText"
-            value={quotetext}
-            onChange={(e) => setQuoteText(e.target.value)}
-            required
-            className="w-full"
-            placeholder="Write a quote..."
-          />
-        </div>
+      <h1 className="flex flex-col items-center w-full">Add a quote</h1>
+      <div className="w-full gap-10">
+        {/*eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <Label htmlFor="quoteText">Quote</Label>
+            <Input
+              type="text"
+              id="quoteText"
+              value={quotetext}
+              onChange={(e) => setQuoteText(e.target.value)}
+              required
+              className="w-full"
+              placeholder="Quote text"
+            />
+          </div>
 
-        <div>
-          <Label htmlFor="author">Author</Label>
-          <Input
-            type="text"
-            id="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            required
-            className="w-full"
-            placeholder="Write the the author's name"
-          />
-        </div>
+          <div>
+            <Label htmlFor="author">Author</Label>
+            <Input
+              type="text"
+              id="author"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              required
+              className="w-full"
+              placeholder="Author's name"
+            />
+          </div>
 
-        <Button type="submit" className="w-full bg-blue-600 text-white">
-          Add Quote
-        </Button>
-      </form>
+          <Button
+            type="submit"
+            className="w-full bg-gray-500 hover:bg-gray-400">
+            Add Quote
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }
