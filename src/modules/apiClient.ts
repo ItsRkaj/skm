@@ -1,4 +1,9 @@
-import { Marshal, LeaderboardEntry, Event } from '@/modules/apiTypes';
+import {
+  Marshal,
+  LeaderboardEntry,
+  Event,
+  EventWithAttendees,
+} from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
 import { User } from '@supabase/supabase-js';
@@ -53,7 +58,9 @@ export async function getEvents(): Promise<Event[] | undefined> {
   }
 }
 
-export async function getEvent(id: string): Promise<Event | undefined> {
+export async function getEvent(
+  id: string,
+): Promise<EventWithAttendees | undefined> {
   try {
     const response = await client.GET('/api/events/{id}', {
       params: { path: { id } },
@@ -75,6 +82,58 @@ export async function getEvent(id: string): Promise<Event | undefined> {
   } catch (e) {
     console.error('Error: ', e);
     return undefined;
+  }
+}
+
+export async function addAttendee(
+  event_id: string,
+  user_id: string,
+): Promise<boolean> {
+  try {
+    const response = await client.POST('/api/events/{id}', {
+      params: {
+        path: { id: event_id },
+      },
+      body: {
+        user_id: user_id,
+      },
+    });
+
+    if (!response.response.ok) {
+      console.error('Failed to add attendee', response.response.status);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error adding attendee:', error);
+    return false;
+  }
+}
+
+export async function removeAttendee(
+  event_id: string,
+  user_id: string,
+): Promise<boolean> {
+  try {
+    const response = await client.DELETE('/api/events/{id}', {
+      params: {
+        path: { id: event_id },
+      },
+      body: {
+        user_id: user_id,
+      },
+    });
+
+    if (!response.response.ok) {
+      console.error('Failed to remove attendee', response.response.status);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error removing attendee:', error);
+    return false;
   }
 }
 

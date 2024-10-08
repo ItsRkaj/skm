@@ -77,8 +77,8 @@
     },
     "/api/events/{id}": {
       "get": {
-        "summary": "Retrieve a single event",
-        "description": "Retrieves a single event by its ID",
+        "summary": "Retrieve a single event and its attendees",
+        "description": "Retrieves a single event by its ID along with its attendees",
         "parameters": [
           {
             "in": "path",
@@ -92,14 +92,27 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Successful response containing the event and its attendees",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "maxItems": 1,
-                  "items": {
-                    "$ref": "#/components/schemas/Event"
+                  "type": "object",
+                  "properties": {
+                    "event": {
+                      "$ref": "#/components/schemas/Event"
+                    },
+                    "attendees": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "user_id": { "type": "string" },
+                          "first_name": { "type": "string" },
+                          "last_name": { "type": "string" },
+                          "nickname": { "type": "string" }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -107,6 +120,158 @@
           },
           "404": {
             "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a user to the event",
+        "description": "Adds a user as an attendee to the event with the given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the event to add the user to"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "The ID of the user to add to the event"
+                  }
+                },
+                "required": ["user_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully added to the event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User added to event"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User is already attending the event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove a user from the event",
+        "description": "Removes a user as an attendee from the event with the given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the event to remove the user from"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "The ID of the user to remove from the event"
+                  }
+                },
+                "required": ["user_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully removed from the event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User removed from event"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User is not attending the event",
             "content": {
               "application/json": {
                 "schema": {
