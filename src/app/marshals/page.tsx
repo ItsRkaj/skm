@@ -1,6 +1,5 @@
 'use client';
 
-
 import {
   Table,
   TableBody,
@@ -35,7 +34,7 @@ export default function Marshals() {
         <Table>
           <TableHeader>
             <TableRow>
-            <TableHead>Avatar</TableHead>
+              <TableHead>Avatar</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Adress</TableHead>
               <TableHead>Phone</TableHead>
@@ -46,10 +45,13 @@ export default function Marshals() {
             {marshals ? (
               marshals.map((marshal) => (
                 <TableRow key={marshal.id}>
-                  <TableCell>  <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>{marshal.name}</AvatarFallback>
-              </Avatar></TableCell>
+                  <TableCell>
+                    {' '}
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>{marshal.name}</AvatarFallback>
+                    </Avatar>
+                  </TableCell>
                   <TableCell>{marshal.name}</TableCell>
                   <TableCell>{marshal.location}</TableCell>
                   <TableCell>{marshal.phone}</TableCell>
@@ -62,25 +64,6 @@ export default function Marshals() {
           </TableBody>
         </Table>
       </div>
-      {/* <ul>
-        {marshals?.map((marshal: Marshal) => (
-          <li key={marshal.name}>
-            <div className="flex items-center mb-2">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>{marshal.name}</AvatarFallback>
-              </Avatar>
-
-              <div className="ml-2">
-                <h2>Name: {marshal.name}</h2>
-                <p>Adress: {marshal.location}</p>
-                <p>Phone: {marshal.phone}</p>
-                <p>Email: {marshal.email}</p>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul> */}
     </div>
   );
 }
