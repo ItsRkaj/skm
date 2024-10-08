@@ -46,7 +46,6 @@ export default function Marshals() {
               marshals.map((marshal) => (
                 <TableRow key={marshal.id}>
                   <TableCell>
-                    {' '}
                     <Avatar>
                       <AvatarImage src="https://github.com/shadcn.png" />
                       <AvatarFallback>{marshal.name}</AvatarFallback>
