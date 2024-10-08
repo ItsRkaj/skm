@@ -12,12 +12,15 @@ const client = createClient<paths>({
 export async function getMarshals(): Promise<Marshal[] | undefined> {
   try {
     const response = await client.GET('/api/marshals');
-    if (response.response.status === 200) {
+    if (response.response.ok) {
       return response.data;
+    } else {
+      console.error('Failed to fetch marshals', response.response.status);
+      return undefined;
     }
-    return undefined;
   } catch (e) {
-    console.log(e);
+    console.error('Error: ', e);
+    return undefined;
   }
 }
 

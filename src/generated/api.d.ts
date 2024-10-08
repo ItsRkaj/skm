@@ -354,6 +354,8 @@ export interface components {
        * @description Email of the marshal
        */
       email?: string;
+      /** @description UID of the person */
+      id?: string;
     };
     /**
      * Leaderboard entry

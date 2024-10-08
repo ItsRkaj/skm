@@ -570,6 +570,10 @@
             "description": "Email of the marshal",
             "type": "string",
             "format": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "UID of the person"
           }
         },
         "type": "object"
