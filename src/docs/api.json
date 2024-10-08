@@ -114,6 +114,43 @@
         ]
       }
     },
+    "/api/news": {
+      "get": {
+        "summary": "Retrieve news",
+        "description": "Retrieves a list of all news.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/News"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/login": {
       "post": {
         "summary": "User Login",
@@ -573,6 +610,34 @@
           }
         },
         "type": "object"
+      },
+      "News": {
+        "title": "news model",
+        "description": "news object representing an news  with details",
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Description of the news"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the news"
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of of the news, admin"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of of the news"
+          },
+          "date": {
+            "type": "string",
+            "description": "date of of the news"
+          }
+        },
+        "required": ["id", "author", "text", "date", "title"]
       },
       "LeaderboardEntry": {
         "title": "Leaderboard entry",
