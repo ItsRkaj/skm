@@ -1,5 +1,6 @@
 import AccountForm from './account-form';
 import { createClient } from '@/utils/supabase/server';
+import Sidebar from '@/components/sidebar';
 
 export default async function Account() {
   const supabase = createClient();
@@ -8,5 +9,10 @@ export default async function Account() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return <AccountForm user={user} />;
+  return (
+    <div className="relative min-h-screen">
+      <Sidebar />
+      <AccountForm user={user} />
+    </div>
+  );
 }
