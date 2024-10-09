@@ -33,7 +33,7 @@ export interface paths {
     };
     /**
      * Retrieve leaderboard
-     * @description Returns all users and their scores. Requires authentication.
+     * @description Returns all users and their scores.
      */
     get: {
       parameters: {
@@ -72,6 +72,119 @@ export interface paths {
           };
           content: {
             'application/json': components['schemas']['Error'];
+          };
+        };
+      };
+    };
+    /**
+     * Update personal score
+     * @description Allows a user to update their personal score on the leaderboard.
+     */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: {
+        content: {
+          'application/json': {
+            /** @example 1a1abcd1-a1a1-12a1-12a1-12a12ab1a123 */
+            id?: string;
+            /** @example 8 */
+            sewn_patches?: number;
+            /** @example 2 */
+            not_sewn_patches?: number;
+            /** @example 3 */
+            medals?: number;
+            /** @example 6 */
+            pins?: number;
+          };
+        };
+      };
+      responses: {
+        /** @description Personal score updated successfully */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Score updated successfully */
+              message?: string;
+            };
+          };
+        };
+        /** @description Invalid request data */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Internal server error. */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Internal server error */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/news': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Retrieve news
+     * @description Retrieves a list of all news.
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Successful response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['News'][];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred. */
+              error?: string;
+            };
           };
         };
       };
@@ -354,6 +467,22 @@ export interface components {
        * @description Email of the marshal
        */
       email?: string;
+    };
+    /**
+     * news model
+     * @description news object representing an news  with details
+     */
+    News: {
+      /** @description Description of the news */
+      text: string;
+      /** @description Unique identifier for the news */
+      id: number;
+      /** @description Author of of the news, admin */
+      author: string;
+      /** @description Title of of the news */
+      title: string;
+      /** @description date of of the news */
+      date: string;
     };
     /**
      * Leaderboard entry
