@@ -146,6 +146,57 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/news': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Retrieve news
+     * @description Retrieves a list of all news.
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Successful response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['News'][];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred. */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/login': {
     parameters: {
       query?: never;
@@ -416,6 +467,22 @@ export interface components {
        * @description Email of the marshal
        */
       email?: string;
+    };
+    /**
+     * news model
+     * @description news object representing an news  with details
+     */
+    News: {
+      /** @description Description of the news */
+      text: string;
+      /** @description Unique identifier for the news */
+      id: number;
+      /** @description Author of of the news, admin */
+      author: string;
+      /** @description Title of of the news */
+      title: string;
+      /** @description date of of the news */
+      date: string;
     };
     /**
      * Leaderboard entry

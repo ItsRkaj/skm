@@ -1,4 +1,4 @@
-import { Marshal, LeaderboardEntry } from '@/modules/apiTypes';
+import { Marshal, LeaderboardEntry, News } from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
 import { User } from '@supabase/supabase-js';
@@ -128,5 +128,20 @@ export async function getUser(): Promise<User | undefined> {
     return undefined;
   } catch (e) {
     console.log(e);
+  }
+}
+
+export async function getNews(): Promise<News[] | undefined> {
+  try {
+    const response = await client.GET('/api/news');
+    if (response.response.ok) {
+      return response.data;
+    } else {
+      console.error('Failed to fetch news', response.response.status);
+      return undefined;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return undefined;
   }
 }
