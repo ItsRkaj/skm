@@ -149,6 +149,30 @@ export type Database = {
           },
         ];
       };
+      news: {
+        Row: {
+          author: string | null;
+          date: string | null;
+          id: number;
+          text: string | null;
+          title: string;
+        };
+        Insert: {
+          author?: string | null;
+          date?: string | null;
+          id?: number;
+          text?: string | null;
+          title: string;
+        };
+        Update: {
+          author?: string | null;
+          date?: string | null;
+          id?: number;
+          text?: string | null;
+          title?: string;
+        };
+        Relationships: [];
+      };
       quotes: {
         Row: {
           author: string | null;

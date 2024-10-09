@@ -1,47 +1,29 @@
+'use client';
 import { AvatarIcon, CalendarIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getNews } from '@/modules/apiClient';
+import type { News } from '@/modules/apiTypes';
+import { useEffect, useState } from 'react';
 
-export default function News() {
-  const newsData = [
-    {
-      id: 1,
-      title: 'Here is some title',
-      text: 'Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text.',
-      author: 'Admin1',
-      date: 'Sep 20, 2024',
-    },
-    {
-      id: 2,
-      title: 'Here is some title',
-      text: 'Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text.',
-      author: 'Admin2',
-      date: 'Sep 20, 2024',
-    },
-    {
-      id: 3,
-      title: 'Here is some title',
-      text: 'Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text.',
-      author: 'Admin3',
-      date: 'Sep 20, 2024',
-    },
-    {
-      id: 4,
-      title: 'Here is some title',
-      text: 'Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text. Here is some text, and more text.',
-      author: 'Admin3',
-      date: 'Sep 20, 2024',
-    },
-  ];
+export default function Allnews() {
+  const [allnews, setallnews] = useState<News[] | undefined>(undefined);
+
+  const fetchNews = async () => {
+    const newsList: News[] | undefined = await getNews();
+    setallnews(newsList);
+  };
+
+  useEffect(() => {
+    void fetchNews();
+  }, []);
 
   return (
     <div className="w-full py-8 container mx-auto">
       <h2 className="text-2xl font-serif mb-6">NYHETER</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {newsData.slice(0, 3).map(
-          (
-            news, // Limit to first 3 items
-          ) => (
+        {allnews ? (
+          allnews.map((news) => (
             <Link key={news.id} href={`/news/${news.id}`} passHref>
               <div className="news-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow">
                 <Image
@@ -70,7 +52,9 @@ export default function News() {
                 </div>
               </div>
             </Link>
-          ),
+          ))
+        ) : (
+          <></>
         )}
       </div>
     </div>

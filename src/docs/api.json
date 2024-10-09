@@ -41,7 +41,7 @@
     "/api/leaderboard": {
       "get": {
         "summary": "Retrieve leaderboard",
-        "description": "Returns all users and their scores. Requires authentication.",
+        "description": "Returns all users and their scores.",
         "responses": {
           "200": {
             "description": "Array of leaderboard entries",
@@ -56,6 +56,7 @@
                 "example": [
                   {
                     "person": {
+                      "id": "1a1abcd1-a1a1-12a1-12a1-12a12ab1a123",
                       "avatar": "https://example.com/avatar1.jpg",
                       "name": "John Doe",
                       "nickname": "Johnny"
@@ -112,6 +113,127 @@
             "BearerAuth": []
           }
         ]
+      },
+      "put": {
+        "summary": "Update personal score",
+        "description": "Allows a user to update their personal score on the leaderboard.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "1a1abcd1-a1a1-12a1-12a1-12a12ab1a123"
+                  },
+                  "sewn_patches": {
+                    "type": "integer",
+                    "example": 8
+                  },
+                  "not_sewn_patches": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "medals": {
+                    "type": "integer",
+                    "example": 3
+                  },
+                  "pins": {
+                    "type": "integer",
+                    "example": 6
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Personal score updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Score updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/news": {
+      "get": {
+        "summary": "Retrieve news",
+        "description": "Retrieves a list of all news.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/News"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/quotes": {
@@ -683,6 +805,34 @@
           }
         },
         "required": ["id", "author", "quotetext"]
+      },
+      "News": {
+        "title": "news model",
+        "description": "news object representing an news  with details",
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Description of the news"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the news"
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of of the news, admin"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of of the news"
+          },
+          "date": {
+            "type": "string",
+            "description": "date of of the news"
+          }
+        },
+        "required": ["id", "author", "text", "date", "title"]
       },
       "LeaderboardEntry": {
         "title": "Leaderboard entry",

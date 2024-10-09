@@ -5,6 +5,8 @@ export type MarshalsRequest =
 
 export type Marshal = components['schemas']['Marshal'];
 
+export type News = components['schemas']['News'];
+
 export type LeaderboardEntry = components['schemas']['LeaderboardEntry'];
 
 export type Quote = components['schemas']['Quote'];

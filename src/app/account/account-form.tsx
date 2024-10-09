@@ -5,6 +5,20 @@ import { type User } from '@supabase/supabase-js';
 import Avatar from './avatar';
 import { signOutUser } from '@/modules/apiClient';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { useUser } from '@/context/UserContext';
 
 export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
   const supabase = createClient();
@@ -12,8 +26,15 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
   const [loading, setLoading] = useState(true);
   const [fullname, setFullname] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-  const [website, setWebsite] = useState<string | null>(null);
+  //const [website, setWebsite] = useState<string | null>(null);
   const [avatar_url, setAvatar_url] = useState<string | null>(null);
+  const [motto, setMotto] = useState<string | null>(null);
+  const [phone_number, setPhone_number] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [allergies, setAllergies] = useState<string | null>(null);
+  const [birthday, setBirthday] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const { signOut } = useUser();
 
   const getProfile = useCallback(async () => {
     try {
@@ -22,7 +43,9 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
       if (user) {
         const { data, error } = await supabase
           .from('users')
-          .select(`first_name, nickname, avatar_url`)
+          .select(
+            `first_name, last_name, nickname, avatar_url, motto, phone_number, email, allergies, birthday`,
+          )
           .eq('id', user?.id)
           .single();
 
@@ -31,12 +54,19 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
         }
 
         if (data) {
+          const fullName = `${data.first_name} ${data.last_name}`.trim();
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          setFullname(data.first_name);
+          setFullname(fullName);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setUsername(data.nickname);
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setAvatar_url(data.avatar_url);
+
+          setMotto(data.motto);
+          setPhone_number(data.phone_number);
+          setEmail(data.email);
+          setAllergies(data.allergies);
+          setBirthday(data.birthday);
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } else {
@@ -49,119 +79,232 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
     }
   }, [user, supabase]);
 
-  async function handleSignOut() {
-    const result = await signOutUser();
-
-    if (result && result.message === 'Sign out successful') {
-      console.log(result.message);
-      void router.push('/');
-    } else {
-      console.log('Sign out failed');
-    }
-  }
-
   useEffect(() => {
-    void getProfile();
-  }, [user, getProfile]);
+    const fetchProfile = async () => {
+      await getProfile();
+    };
 
-  async function updateProfile({
-    username,
-    website,
-    avatar_url,
-  }: {
-    username: string | null;
-    fullname: string | null;
-    website: string | null;
-    avatar_url: string | null;
-  }) {
+    void fetchProfile();
+  }, [getProfile]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+
+    switch (id) {
+      case 'username':
+        setUsername(value);
+        break;
+      case 'email':
+        setEmail(value);
+        break;
+      case 'motto':
+        setMotto(value);
+        break;
+      case 'phone_number':
+        setPhone_number(value);
+        break;
+      case 'allergies':
+        setAllergies(value);
+        break;
+      case 'birthday':
+        setBirthday(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState<string>('');
+  const handleSaveProfile = async () => {
+    await saveProfile();
+    setShowDialog(true);
+    setIsEditing(false);
+  };
+
+  const saveProfile = async () => {
     try {
       setLoading(true);
 
-      const { error } = await supabase.from('users').upsert({
+      // Data to be sent to the database
+      const updateData = {
         id: user?.id as string,
-        full_name: fullname,
-        username,
-        website,
+        nickname: username,
+        email,
         avatar_url,
+        motto,
+        phone_number,
+        allergies,
+        birthday,
         updated_at: new Date().toISOString(),
-      });
+      };
+
+      const { error } = await supabase.from('users').upsert(updateData);
+
       if (error) {
-        console.log(error);
+        console.error('Error saving profile:', error);
+        setDialogMessage(`Error: ${error.message}`);
+      } else {
+        setDialogMessage('Profile updated successfully!');
+        setIsEditing(false);
       }
-      alert('Profile updated!');
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      alert('Error updating the data!');
+      console.error('Error saving profile:', error);
+      setDialogMessage(
+        'An unexpected error occurred while updating the profile.',
+      );
     } finally {
       setLoading(false);
+      setShowDialog(true); // Show the dialog after the try-catch block completes
+    }
+  };
+
+  async function handleSignOut() {
+    try {
+      const result = await signOutUser();
+
+      if (result && result.message === 'Sign out successful') {
+        await signOut();
+        void router.push('/');
+      } else {
+        console.log('Sign out failed');
+      }
+    } catch (error) {
+      console.error('Sign out error:', error);
     }
   }
-
   return (
-    <div className="form-widget">
-      <Avatar
-        uid={user?.id ?? null}
-        url={avatar_url}
-        size={150}
-        onUpload={(url) => {
-          setAvatar_url(url);
-          void updateProfile({ fullname, username, website, avatar_url: url });
-        }}
-      />
-      <div>
-        <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={user?.email} disabled />
-      </div>
-      <div>
-        <label htmlFor="fullName">Full Name</label>
-        <input
-          id="fullName"
-          type="text"
-          value={fullname ?? ''}
-          onChange={(e) => setFullname(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          type="text"
-          value={username ?? ''}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="website">Website</label>
-        <input
-          id="website"
-          type="url"
-          value={website ?? ''}
-          onChange={(e) => setWebsite(e.target.value)}
-        />
-      </div>
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <Card className="w-full max-w-md mx-auto mt-6 shadow-lg">
+        <CardHeader className="text-center">
+          <h2 className="text-2xl font-semibold mb-4"> {fullname} </h2>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-center mb-6">
+            <Avatar
+              uid={user?.id ?? null}
+              url={avatar_url}
+              size={80}
+              onUpload={setAvatar_url}
+              isEditing={isEditing}
+            />
+          </div>
+          <form className="space-y-4">
+            <div>
+              <Label className="text-lg font-medium">Kallas för</Label>
+              <Input
+                id="username"
+                type="text"
+                value={username || ''}
+                onChange={handleInputChange}
+                disabled={!isEditing || loading}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-lg font-medium">Motto</Label>
+              <Input
+                id="motto"
+                type="text"
+                value={motto || ''}
+                onChange={handleInputChange}
+                disabled={!isEditing || loading}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-lg font-medium">Telefonnummer</Label>
+              <Input
+                id="phone_number"
+                type="text"
+                value={phone_number || ''}
+                onChange={handleInputChange}
+                disabled={!isEditing || loading}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-lg font-medium">Email</Label>
+              <Input
+                id="email"
+                type="text"
+                value={email || ''}
+                onChange={handleInputChange}
+                disabled={!isEditing || loading}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <Label className="text-lg font-medium">Allergier</Label>
+              <Input
+                id="allergies"
+                type="text"
+                value={allergies || ''}
+                onChange={handleInputChange}
+                disabled={!isEditing || loading}
+                className="mt-1"
+              />
+            </div>
 
-      <div>
-        <button
-          className="button primary block"
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onClick={() =>
-            updateProfile({ fullname, username, website, avatar_url })
-          }
-          disabled={loading}>
-          {loading ? 'Loading ...' : 'Update'}
-        </button>
-      </div>
+            <div>
+              <Label className="text-lg font-medium">Födelsedatum</Label>
+              <Input
+                id="birthday"
+                type="text"
+                value={birthday || ''}
+                onChange={handleInputChange}
+                disabled={!isEditing || loading}
+                className="mt-1"
+              />
+            </div>
 
-      <div>
-        <button
-          className="button block"
-          type="button"
-          onClick={() => {
-            void handleSignOut();
-          }}>
-          Sign out
-        </button>
-      </div>
+            <div className="flex justify-between items-center">
+              <Button
+                type="button"
+                onClick={() => setIsEditing(!isEditing)}
+                className="mr-auto">
+                {isEditing ? 'Avbryt' : 'Ändra'}
+              </Button>
+
+              {isEditing && (
+                <Button
+                  type="button"
+                  className="ml-auto"
+                  onClick={() => {
+                    void handleSaveProfile();
+                  }}>
+                  Spara ändringar
+                </Button>
+              )}
+              <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      {dialogMessage.startsWith('Error')
+                        ? 'Error'
+                        : 'Profile Updated'}
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {dialogMessage}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogAction onClick={() => setShowDialog(false)}>
+                      OK
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+            <Button
+              type="button"
+              className="w-full mt-4"
+              onClick={() => void handleSignOut()}>
+              Logga ut
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
