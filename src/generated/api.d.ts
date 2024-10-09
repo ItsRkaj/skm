@@ -574,9 +574,10 @@ export interface components {
       id: number;
       /** @description Author of of the quote */
       author: string;
-    /* * news model
-     * @description news object representing an news  with details
-     */};
+      /* * news model
+       * @description news object representing an news  with details
+       */
+    };
     News: {
       /** @description Description of the news */
       text: string;

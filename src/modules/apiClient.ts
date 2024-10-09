@@ -56,7 +56,8 @@ export async function getQuotes(): Promise<Quote[] | undefined> {
   } catch (e) {
     console.error('Error: ', e);
     return undefined;
-  }}
+  }
+}
 export async function putLeaderboard(
   id: string,
   sewnPatches: number,
