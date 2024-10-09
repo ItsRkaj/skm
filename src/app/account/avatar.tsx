@@ -8,11 +8,13 @@ export default function Avatar({
   url,
   size,
   onUpload,
+  isEditing,
 }: Readonly<{
   uid: string | null;
   url: string | null;
   size: number;
   onUpload: (url: string) => void;
+  isEditing: boolean;
 }>) {
   const supabase = createClient();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(url);
@@ -72,14 +74,14 @@ export default function Avatar({
   };
 
   return (
-    <div>
+    <div className="flex flex-col justify-center item-center ">
       {avatarUrl ? (
         <Image
           width={size}
           height={size}
           src={avatarUrl}
           alt="Avatar"
-          className="avatar image"
+          className="avatar image rounded-full"
           style={{ height: size, width: size }}
         />
       ) : (
@@ -88,22 +90,26 @@ export default function Avatar({
           style={{ height: size, width: size }}
         />
       )}
-      <div style={{ width: size }}>
-        <label className="button primary block" htmlFor="single">
-          {uploading ? 'Uploading ...' : 'Upload'}
-        </label>
-        <input
-          style={{
-            visibility: 'hidden',
-            position: 'absolute',
-          }}
-          type="file"
-          id="single"
-          accept="image/*"
-          onChange={uploadAvatar}
-          disabled={uploading}
-        />
-      </div>
+      {isEditing && (
+        <div style={{ width: size }}>
+          <label
+            className="button primary block text-center whitespace-nowrap"
+            htmlFor="single">
+            {uploading ? 'Laddar Upp ...' : 'Ladda Upp'}
+          </label>
+          <input
+            style={{
+              visibility: 'hidden',
+              position: 'absolute',
+            }}
+            type="file"
+            id="single"
+            accept="image/*"
+            onChange={uploadAvatar}
+            disabled={uploading}
+          />
+        </div>
+      )}
     </div>
   );
 }
