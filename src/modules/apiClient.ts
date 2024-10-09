@@ -38,6 +38,36 @@ export async function getLeaderboard(): Promise<
   }
 }
 
+export async function putLeaderboard(
+  id: string,
+  sewnPatches: number,
+  notSewnPatches: number,
+  medals: number,
+  pins: number,
+): Promise<boolean> {
+  try {
+    const response = await client.PUT(`/api/leaderboard`, {
+      body: {
+        id,
+        sewn_patches: sewnPatches,
+        not_sewn_patches: notSewnPatches,
+        medals,
+        pins,
+      },
+    });
+
+    if (response.response.ok) {
+      return true;
+    } else {
+      console.error('Failed to update leaderboard: ', response.response.status);
+      return false;
+    }
+  } catch (e) {
+    console.error('Error updating leaderboard: ', e);
+    return false;
+  }
+}
+
 export async function logInUser(formData: {
   email: string;
   password: string;
