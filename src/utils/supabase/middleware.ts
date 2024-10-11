@@ -31,8 +31,32 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  // refreshing the auth token
-  await supabase.auth.getUser();
+  // Fetch the user from Supabase session
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // List of public routes (those that don't require authentication)
+  const publicPaths = [
+    '/marshals',
+    '/about',
+    '/contact',
+    '/about',
+    '/login',
+    '/',
+  ];
+
+  // Check if the request is for a protected route
+  const isPublicRoute = publicPaths.some(
+    (path) => request.nextUrl.pathname === path,
+  );
+
+  // If user is not logged in and the route is not public, redirect to login
+  if (!user && !isPublicRoute) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/login';
+    return NextResponse.redirect(url);
+  }
 
   return supabaseResponse;
 }

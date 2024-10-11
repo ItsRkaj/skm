@@ -8,6 +8,7 @@ import { User } from '@supabase/supabase-js';
 interface UserContextType {
   isLoggedIn: boolean;
   user: User | undefined;
+  loading: boolean; // Add loading state
   login: (credentials: { email: string; password: string }) => Promise<void>;
   signOut: () => Promise<void>;
 }
@@ -17,20 +18,27 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
     async function fetchUser() {
+      setLoading(true);
       const user = await getUser();
-      setIsLoggedIn(user !== undefined && user !== null);
-      setUser(user);
+
+      if (user) {
+        setIsLoggedIn(true);
+        setUser(user);
+      } else {
+        setIsLoggedIn(false);
+        setUser(undefined);
+      }
+
+      setLoading(false);
     }
-    if (isLoggedIn) {
-      void fetchUser();
-    } else {
-      setUser(undefined);
-    }
-  }, [isLoggedIn]);
+
+    fetchUser();
+  }, []);
 
   const login = async ({
     email,
@@ -42,8 +50,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       const result = await logInUser({ email, password });
       if (result?.message === 'Login successful') {
+        console.log('YUU');
         setIsLoggedIn(true);
-        void router.push('/account');
+        router.push('/account');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -53,10 +62,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const signOut = async () => {
     await signOutUser();
     setIsLoggedIn(false);
+    setUser(undefined);
   };
 
   return (
-    <UserContext.Provider value={{ isLoggedIn, user, login, signOut }}>
+    <UserContext.Provider value={{ isLoggedIn, user, loading, login, signOut }}>
       {children}
     </UserContext.Provider>
   );
