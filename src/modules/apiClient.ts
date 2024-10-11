@@ -63,15 +63,13 @@ export async function getEvent(
 ): Promise<EventWithAttendees | undefined> {
   try {
     const response = await client.GET('/api/events/{id}', {
-      params: { path: { id } },
+      params: {
+        path: { id },
+      },
     });
 
-    if (
-      response.response.ok &&
-      Array.isArray(response.data) &&
-      response.data.length > 0
-    ) {
-      return response.data[0];
+    if (response.response.ok) {
+      return response.data;
     } else {
       console.error(
         'Failed to fetch event or event not found',

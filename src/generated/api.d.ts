@@ -105,11 +105,11 @@ export interface paths {
                     };
                     content: {
                         "application/json": {
-                            event?: components["schemas"]["Event"];
+                            event: components["schemas"]["Event"];
                             attendees?: {
-                                user_id?: string;
-                                first_name?: string;
-                                last_name?: string;
+                                user_id: string;
+                                first_name: string;
+                                last_name: string;
                                 nickname?: string;
                             }[];
                         };

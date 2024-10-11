@@ -18,5 +18,5 @@ export type Attendee = {
 
 export type EventWithAttendees = {
   event: Event;
-  attendees: Attendee[];
+  attendees?: Attendee[];
 };

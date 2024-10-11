@@ -23,6 +23,7 @@ export async function GET(
     }
 
     if (eventData === null) {
+      console.error('No event found with ID:', params.id);
       return NextResponse.json({ error: 'Event not found' }, { status: 404 });
     }
 
@@ -41,10 +42,26 @@ export async function GET(
       );
     }
 
+    const transformedAttendees = attendeesData.map(
+      (attendee: {
+        user_id: string;
+        users: {
+          first_name: string | null;
+          last_name: string | null;
+          nickname: string | null;
+        };
+      }) => ({
+        user_id: attendee.user_id,
+        first_name: attendee.users.first_name ?? '',
+        last_name: attendee.users.last_name ?? '',
+        nickname: attendee.users.nickname || undefined,
+      }),
+    );
+
     return NextResponse.json(
       {
         event: eventData,
-        attendees: attendeesData,
+        attendees: transformedAttendees,
       },
       { status: 200 },
     );
