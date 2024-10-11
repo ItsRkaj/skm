@@ -36,6 +36,7 @@ export function Navbar() {
     { key: 1, href: '/marshals', label: 'Marskalkar' },
     { key: 2, href: '/about', label: 'Om oss' },
     { key: 3, href: '/contact', label: 'Kontakta oss' },
+    { key: 4, href: '/quotes', label: 'quotes' },
   ];
 
   return (

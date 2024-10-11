@@ -1,4 +1,10 @@
-import { Marshal, LeaderboardEntry, News } from '@/modules/apiTypes';
+import {
+  Marshal,
+  LeaderboardEntry,
+  Quote,
+  QuoteInsert,
+  News,
+} from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
 import { User } from '@supabase/supabase-js';
@@ -38,6 +44,20 @@ export async function getLeaderboard(): Promise<
   }
 }
 
+export async function getQuotes(): Promise<Quote[] | undefined> {
+  try {
+    const response = await client.GET('/api/quotes');
+    if (response.response.ok) {
+      return response.data;
+    } else {
+      console.error('Failed to fetch quotes', response.response.status);
+      return undefined;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return undefined;
+  }
+}
 export async function putLeaderboard(
   id: string,
   sewnPatches: number,
@@ -98,6 +118,21 @@ export async function signOutUser(): Promise<{ message: string } | undefined> {
     }
   } catch (error) {
     console.error('Error during sign out:', error);
+  }
+}
+
+export async function addQuote(newQuote: QuoteInsert) {
+  try {
+    const response = await client.POST('/api/quotes', { body: newQuote });
+
+    if (response.response.status === 200) {
+      return { message: 'Quote added successfully' };
+    } else {
+      console.error('Unexpected response status:', response.response.status);
+      return { message: 'Failed to add quote' };
+    }
+  } catch (error) {
+    console.error('Error adding quote:', error);
   }
 }
 

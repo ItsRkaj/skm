@@ -197,6 +197,101 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/quotes': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Retrieve quotes
+     * @description Retrieves a list of all quotes.
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Successful response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Quote'][];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred. */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    /**
+     * Add a new quote to the quotes
+     * @description Make a new quote.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description the quote itself. */
+            quotetext: string;
+            /** @description The author of the quote. */
+            author: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Quote created successfully. */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Quote'];
+          };
+        };
+        /** @description Internal Server Error. */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Internal server error */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/login': {
     parameters: {
       query?: never;
@@ -469,9 +564,20 @@ export interface components {
       email?: string;
     };
     /**
-     * news model
-     * @description news object representing an news  with details
+     * Quote model
+     * @description Quote object representing an Quote with details
      */
+    Quote: {
+      /** @description Description of the quote */
+      quotetext: string;
+      /** @description Unique identifier for the Quote */
+      id: number;
+      /** @description Author of of the quote */
+      author: string;
+      /* * news model
+       * @description news object representing an news  with details
+       */
+    };
     News: {
       /** @description Description of the news */
       text: string;

@@ -236,6 +236,96 @@
         }
       }
     },
+    "/api/quotes": {
+      "get": {
+        "summary": "Retrieve quotes",
+        "description": "Retrieves a list of all quotes.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Quote"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new quote to the quotes",
+        "description": "Make a new quote.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quotetext": {
+                    "type": "string",
+                    "description": "the quote itself."
+                  },
+                  "author": {
+                    "type": "string",
+                    "description": "The author of the quote."
+                  }
+                },
+                "required": ["quotetext", "author"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Quote created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quote"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/login": {
       "post": {
         "summary": "User Login",
@@ -695,6 +785,26 @@
           }
         },
         "type": "object"
+      },
+      "Quote": {
+        "title": "Quote model",
+        "description": "Quote object representing an Quote with details",
+        "type": "object",
+        "properties": {
+          "quotetext": {
+            "type": "string",
+            "description": "Description of the quote"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the Quote"
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of of the quote"
+          }
+        },
+        "required": ["id", "author", "quotetext"]
       },
       "News": {
         "title": "news model",
