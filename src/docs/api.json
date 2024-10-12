@@ -234,6 +234,67 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Add a new news ",
+        "description": "Make a new news and stor it in the database.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "the title of the news"
+                  },
+                  "author": {
+                    "type": "string",
+                    "description": "The author of the news."
+                  },
+                  "text": {
+                    "type": "string",
+                    "description": "The text of the news."
+                  },
+                  "date": {
+                    "type": "string",
+                    "description": "The author of the news."
+                  }
+                },
+                "required": ["text", "author", "title", "date"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Quote created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quote"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/quotes": {
