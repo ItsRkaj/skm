@@ -3,10 +3,14 @@ import {
   LeaderboardEntry,
   Event,
   EventWithAttendees,
+  Quote,
+  QuoteInsert,
+  News,
+  UserProfile,
+  NewsInsert,
 } from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
-import { User } from '@supabase/supabase-js';
 
 const client = createClient<paths>({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL
@@ -22,7 +26,7 @@ export async function getMarshals(): Promise<Marshal[] | undefined> {
     }
     return undefined;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }
 
@@ -50,6 +54,21 @@ export async function getEvents(): Promise<Event[] | undefined> {
       return response.data;
     } else {
       console.error('Failed to fetch events', response.response.status);
+      return undefined;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return undefined;
+  }
+}
+
+export async function getQuotes(): Promise<Quote[] | undefined> {
+  try {
+    const response = await client.GET('/api/quotes');
+    if (response.response.ok) {
+      return response.data;
+    } else {
+      console.error('Failed to fetch quotes', response.response.status);
       return undefined;
     }
   } catch (e) {
@@ -153,6 +172,36 @@ export async function removeAttendee(
   }
 }
 
+export async function putLeaderboard(
+  id: string,
+  sewnPatches: number,
+  notSewnPatches: number,
+  medals: number,
+  pins: number,
+): Promise<boolean> {
+  try {
+    const response = await client.PUT(`/api/leaderboard`, {
+      body: {
+        id,
+        sewn_patches: sewnPatches,
+        not_sewn_patches: notSewnPatches,
+        medals,
+        pins,
+      },
+    });
+
+    if (response.response.ok) {
+      return true;
+    } else {
+      console.error('Failed to update leaderboard: ', response.response.status);
+      return false;
+    }
+  } catch (e) {
+    console.error('Error updating leaderboard: ', e);
+    return false;
+  }
+}
+
 export async function logInUser(formData: {
   email: string;
   password: string;
@@ -167,7 +216,7 @@ export async function logInUser(formData: {
       return { message: 'Login failed' };
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -186,6 +235,36 @@ export async function signOutUser(): Promise<{ message: string } | undefined> {
   }
 }
 
+export async function addQuote(newQuote: QuoteInsert) {
+  try {
+    const response = await client.POST('/api/quotes', { body: newQuote });
+
+    if (response.response.status === 200) {
+      return { message: 'Quote added successfully' };
+    } else {
+      console.error('Unexpected response status:', response.response.status);
+      return { message: 'Failed to add quote' };
+    }
+  } catch (error) {
+    console.error('Error adding quote:', error);
+  }
+}
+
+export async function addNews(newNews: NewsInsert) {
+  try {
+    const response = await client.POST('/api/news', { body: newNews });
+
+    if (response.response.status === 200) {
+      return { message: 'News added successfully' };
+    } else {
+      console.error('Unexpected response status:', response.response.status);
+      return { message: 'Failed to add news' };
+    }
+  } catch (error) {
+    console.error('Error adding news:', error);
+  }
+}
+
 export async function signUpUser(formData: {
   email: string;
   password: string;
@@ -200,18 +279,33 @@ export async function signUpUser(formData: {
       return { message: 'Sign up failed' };
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
-export async function getUser(): Promise<User | undefined> {
+export async function getUser(): Promise<UserProfile | undefined> {
   try {
     const response = await client.GET('/api/user');
     if (response.response.status === 200) {
-      return response.data as User;
+      return response.data;
     }
     return undefined;
   } catch (e) {
-    console.log(e);
+    console.error(e);
+  }
+}
+
+export async function getNews(): Promise<News[] | undefined> {
+  try {
+    const response = await client.GET('/api/news');
+    if (response.response.ok) {
+      return response.data;
+    } else {
+      console.error('Failed to fetch news', response.response.status);
+      return undefined;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return undefined;
   }
 }
