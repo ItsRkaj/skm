@@ -25,7 +25,12 @@ export default function NewsForm() {
     };
 
     try {
-      await addNews(newNews);
+      const message = await addNews(newNews);
+      alert(message?.message);
+      setText('');
+      setAuthor('');
+      setDate('');
+      setTitle('');
     } catch (error) {
       console.error('message', error);
     }
@@ -84,7 +89,7 @@ export default function NewsForm() {
               onChange={(e) => setDate(e.target.value)}
               required
               className="w-full"
-              placeholder="date"
+              placeholder="date in format: dd-mm-yy"
             />
           </div>
 
