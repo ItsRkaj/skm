@@ -22,11 +22,10 @@ export async function GET() {
   }
 }
 
-
 export async function POST(request: Request) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const {title,text ,author, date} = await request.json();
+    const { title, text, author, date } = await request.json();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const supabase = createClient();
 
@@ -35,7 +34,7 @@ export async function POST(request: Request) {
 
       .from('news')
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      .insert([{ title,text ,author, date }]);
+      .insert([{ title, text, author, date }]);
 
     if (error) {
       console.error('Error:', error);

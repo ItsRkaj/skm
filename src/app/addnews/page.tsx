@@ -1,8 +1,8 @@
 'use client';
 
-import {addNews} from '@/modules/apiClient';
-import type {NewsInsert } from '@/modules/apiTypes';
-import {useState } from 'react';
+import { addNews } from '@/modules/apiClient';
+import type { NewsInsert } from '@/modules/apiTypes';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,8 +13,6 @@ export default function NewsForm() {
   const [author, setAuthor] = useState('');
   const [date, setDate] = useState('');
   const [title, setTitle] = useState('');
- 
-  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,7 +86,7 @@ export default function NewsForm() {
               className="w-full"
               placeholder="date"
             />
-          </div> 
+          </div>
 
           <Button
             type="submit"

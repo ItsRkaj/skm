@@ -139,7 +139,7 @@ export async function addQuote(newQuote: QuoteInsert) {
 
 export async function addNews(newNews: NewsInsert) {
   try {
-    const response = await client.POST('/api/news', { body: newNews});
+    const response = await client.POST('/api/news', { body: newNews });
 
     if (response.response.status === 200) {
       return { message: 'News added successfully' };
