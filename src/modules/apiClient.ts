@@ -4,10 +4,10 @@ import {
   Quote,
   QuoteInsert,
   News,
+  UserProfile,
 } from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
-import { User } from '@supabase/supabase-js';
 
 const client = createClient<paths>({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL
@@ -23,7 +23,7 @@ export async function getMarshals(): Promise<Marshal[] | undefined> {
     }
     return undefined;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }
 
@@ -102,7 +102,7 @@ export async function logInUser(formData: {
       return { message: 'Login failed' };
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -150,19 +150,19 @@ export async function signUpUser(formData: {
       return { message: 'Sign up failed' };
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
-export async function getUser(): Promise<User | undefined> {
+export async function getUser(): Promise<UserProfile | undefined> {
   try {
     const response = await client.GET('/api/user');
     if (response.response.status === 200) {
-      return response.data as User;
+      return response.data;
     }
     return undefined;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 }
 
