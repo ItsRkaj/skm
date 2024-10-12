@@ -259,6 +259,7 @@
                   },
                   "date": {
                     "type": "string",
+                    "format": "date",
                     "description": "The author of the news."
                   }
                 },

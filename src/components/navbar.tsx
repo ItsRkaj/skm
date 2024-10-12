@@ -37,6 +37,7 @@ export function Navbar() {
     { key: 2, href: '/about', label: 'Om oss' },
     { key: 3, href: '/contact', label: 'Kontakta oss' },
     { key: 4, href: '/quotes', label: 'quotes' },
+    { key: 5, href: '/addnews', label: 'addnews' },
   ];
 
   return (

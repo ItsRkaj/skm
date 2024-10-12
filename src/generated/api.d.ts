@@ -210,7 +210,10 @@ export interface paths {
                         author: string;
                         /** @description The text of the news. */
                         text: string;
-                        /** @description The author of the news. */
+                        /**
+                         * Format: date
+                         * @description The author of the news.
+                         */
                         date: string;
                     };
                 };
