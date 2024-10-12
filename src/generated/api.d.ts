@@ -190,7 +190,58 @@ export interface paths {
       };
     };
     put?: never;
-    post?: never;
+    /**
+     * Add a new news
+     * @description Make a new news and stor it in the database.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description the title of the news */
+            title: string;
+            /** @description The author of the news. */
+            author: string;
+            /** @description The text of the news. */
+            text: string;
+            /**
+             * Format: date
+             * @description The author of the news.
+             */
+            date: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Quote created successfully. */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Quote'];
+          };
+        };
+        /** @description Internal Server Error. */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Internal server error */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
     delete?: never;
     options?: never;
     head?: never;
@@ -574,10 +625,11 @@ export interface components {
       id: number;
       /** @description Author of of the quote */
       author: string;
-      /* * news model
-       * @description news object representing an news  with details
-       */
     };
+    /**
+     * news model
+     * @description news object representing an news  with details
+     */
     News: {
       /** @description Description of the news */
       text: string;
