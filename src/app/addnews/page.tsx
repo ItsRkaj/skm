@@ -42,8 +42,8 @@ export default function NewsForm() {
       <div className="w-full gap-10">
         {/*eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
         <form onSubmit={handleSubmit}>
-          <div>
-            <Label htmlFor="Titte">Title</Label>
+          <div className="flex flex-col gap-1 p-5">
+            <Label className="p-1" htmlFor="Titte">Title</Label>
             <Input
               type="text"
               id="title"
@@ -55,8 +55,8 @@ export default function NewsForm() {
             />
           </div>
 
-          <div>
-            <Label htmlFor="Author">Author</Label>
+          <div className="flex flex-col gap-1 p-5">
+            <Label className="p-1" htmlFor="Author">Author</Label>
             <Input
               type="text"
               id="author"
@@ -68,8 +68,8 @@ export default function NewsForm() {
             />
           </div>
 
-          <div>
-            <Label htmlFor="Text">Text</Label>
+          <div className="flex flex-col gap-1 p-5">
+            <Label className="p-1" htmlFor="Text">Text</Label>
             <Textarea
               id="text"
               value={text}
@@ -80,8 +80,8 @@ export default function NewsForm() {
             />
           </div>
 
-          <div>
-            <Label htmlFor="date">Date</Label>
+          <div className="flex flex-col gap-1 p-5">
+            <Label className="p-1" htmlFor="date">Date</Label>
             <Input
               type="text"
               id="date"
@@ -89,15 +89,18 @@ export default function NewsForm() {
               onChange={(e) => setDate(e.target.value)}
               required
               className="w-full"
-              placeholder="date in format: dd-mm-yy"
+              placeholder="date in format: dd-mm-yyyy"
             />
           </div>
-
+ 
+         <div className="flex flex-col gap-1 p-5">
+         <Label className="p-1" htmlFor="date">Add the news</Label>
           <Button
             type="submit"
             className="w-full bg-gray-500 hover:bg-gray-400">
-            Add News
+            Submitt
           </Button>
+          </div>
         </form>
       </div>
     </div>
