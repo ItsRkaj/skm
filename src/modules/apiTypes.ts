@@ -21,4 +21,3 @@ export type NewsInsert = {
   author: string;
   date: string;
 };
-
