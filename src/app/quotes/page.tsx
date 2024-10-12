@@ -38,7 +38,11 @@ export default function QuoteForm() {
     };
 
     try {
-      await addQuote(newQuote);
+      const message = await addQuote(newQuote);
+      alert(message?.message);
+      setQuoteText('');
+      setAuthor('');
+      window.location.reload();
     } catch (error) {
       console.error('message', error);
     }
@@ -48,7 +52,7 @@ export default function QuoteForm() {
     <div className="flex flex-col items-center gap-5 p-5">
       <h1 className="flex flex-col items-center w-full">List of quotes</h1>
 
-      <div>
+      <div className="w-full">
         <Table>
           <TableHeader>
             <TableRow>
@@ -72,11 +76,13 @@ export default function QuoteForm() {
       </div>
 
       <h1 className="flex flex-col items-center w-full">Add a quote</h1>
-      <div className="w-full gap-10">
+      <div className="w-full">
         {/*eslint-disable-next-line @typescript-eslint/no-misused-promises*/}
         <form onSubmit={handleSubmit}>
-          <div>
-            <Label htmlFor="quoteText">Quote</Label>
+          <div className="flex flex-col gap-1 p-5">
+            <Label className="p-1" htmlFor="quoteText">
+              Quote
+            </Label>
             <Input
               type="text"
               id="quoteText"
@@ -88,8 +94,10 @@ export default function QuoteForm() {
             />
           </div>
 
-          <div>
-            <Label htmlFor="author">Author</Label>
+          <div className="flex flex-col gap-1 p-5">
+            <Label className="p-1" htmlFor="author">
+              Author
+            </Label>
             <Input
               type="text"
               id="author"
@@ -101,11 +109,16 @@ export default function QuoteForm() {
             />
           </div>
 
-          <Button
-            type="submit"
-            className="w-full bg-gray-500 hover:bg-gray-400">
-            Add Quote
-          </Button>
+          <div className="flex flex-col gap-1 p-5">
+            <Label className="p-1" htmlFor="add_quote">
+              Add quote
+            </Label>
+            <Button
+              type="submit"
+              className="w-full bg-gray-500 hover:bg-gray-400">
+              Submitt
+            </Button>
+          </div>
         </form>
       </div>
     </div>

@@ -14,3 +14,11 @@ export type Quote = components['schemas']['Quote'];
 export type QuoteInsert = { quotetext: string; author: string };
 
 export type UserProfile = components['schemas']['UserProfile'];
+
+export type NewsInsert = {
+  title: string;
+  text: string;
+  author: string;
+  date: string;
+};
+

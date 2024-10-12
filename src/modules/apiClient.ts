@@ -5,6 +5,7 @@ import {
   QuoteInsert,
   News,
   UserProfile,
+  NewsInsert,
 } from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
@@ -133,6 +134,21 @@ export async function addQuote(newQuote: QuoteInsert) {
     }
   } catch (error) {
     console.error('Error adding quote:', error);
+  }
+}
+
+export async function addNews(newNews: NewsInsert) {
+  try {
+    const response = await client.POST('/api/news', { body: newNews });
+
+    if (response.response.status === 200) {
+      return { message: 'News added successfully' };
+    } else {
+      console.error('Unexpected response status:', response.response.status);
+      return { message: 'Failed to add news' };
+    }
+  } catch (error) {
+    console.error('Error adding news:', error);
   }
 }
 

@@ -149,6 +149,30 @@ export type Database = {
           },
         ];
       };
+      marshals: {
+        Row: {
+          email: string | null;
+          id: number;
+          location: string | null;
+          name: string;
+          phone: string | null;
+        };
+        Insert: {
+          email?: string | null;
+          id?: number;
+          location?: string | null;
+          name: string;
+          phone?: string | null;
+        };
+        Update: {
+          email?: string | null;
+          id?: number;
+          location?: string | null;
+          name?: string;
+          phone?: string | null;
+        };
+        Relationships: [];
+      };
       news: {
         Row: {
           author: string | null;
