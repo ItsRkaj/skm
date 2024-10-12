@@ -83,6 +83,24 @@ export async function getEvent(
   }
 }
 
+export async function removeEvent(id: string): Promise<boolean> {
+  try {
+    const response = await client.DELETE('/api/events', {
+      body: { id },
+    });
+
+    if (response.response.ok) {
+      return true;
+    } else {
+      console.error('Failed to delete event', response.response.status);
+      return false;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return false;
+  }
+}
+
 export async function addAttendee(
   event_id: string,
   user_id: string,

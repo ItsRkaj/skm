@@ -19,3 +19,11 @@ export function formatTime(date: Date): string {
     minute: '2-digit',
   });
 }
+
+export function formatDate(date: Date) {
+  return {
+    month: date.toLocaleString('sv-SE', { month: 'short' }).toUpperCase(),
+    day: date.getDate(),
+    time: date.toLocaleString('sv-SE', { hour: '2-digit', minute: '2-digit' }),
+  };
+}

@@ -1,13 +1,6 @@
 import { getEvents } from '@/modules/apiClient';
 import { Event } from '@/modules/apiTypes';
-
-function formatDate(date: Date) {
-  return {
-    month: date.toLocaleString('sv-SE', { month: 'short' }).toUpperCase(),
-    day: date.getDate(),
-    time: date.toLocaleString('sv-SE', { hour: '2-digit', minute: '2-digit' }),
-  };
-}
+import { formatDate } from '@/utils/dateFormatters';
 
 function EventCard({ event }: { event: Event }) {
   const { month, day, time } = formatDate(new Date(event.start_time));

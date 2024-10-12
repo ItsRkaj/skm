@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@/app/globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/toaster';
 import { Navbar } from '@/components/navbar';
 import { UserProvider } from '@/context/UserContext';
 
@@ -30,6 +31,7 @@ export default function RootLayout({
             <main className="px-4 py-4 md:px-6 md:py-6">{children}</main>
           </ThemeProvider>
         </UserProvider>
+        <Toaster />
       </body>
     </html>
   );

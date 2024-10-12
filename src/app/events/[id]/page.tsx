@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import EventInformation from '@/components/events-page/EventInformation';
 import { revalidatePath } from 'next/cache';
-import { addAttendee, removeAttendee } from '@/modules/apiClient';
 
 // Revalidate the cache every 5 minutes
 export const revalidate = 0;

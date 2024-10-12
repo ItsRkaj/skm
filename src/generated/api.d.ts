@@ -69,7 +69,68 @@ export interface paths {
         };
         put?: never;
         post?: never;
-        delete?: never;
+        /**
+         * Delete an event
+         * @description Deletes an event by its ID
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            /** @description ID of the event to delete */
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /**
+                         * @description The ID of the event to delete
+                         * @example 12345
+                         */
+                        id: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Event deleted successfully */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example Event deleted successfully */
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Bad Request - missing or invalid event ID */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example Event ID is required */
+                            error?: string;
+                        };
+                    };
+                };
+                /** @description Internal Server Error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** @example An unexpected error occurred */
+                            error?: string;
+                        };
+                    };
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
