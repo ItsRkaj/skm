@@ -97,6 +97,7 @@ const PersonalBanner: React.FC<PersonalBannerProps> = ({
   const handleSave = async () => {
     setLoading(true);
     try {
+      /* eslint-disable-next-line */
       await putLeaderboard(user.id!, sewnPatches, notSewnPatches, medals, pins);
       setOriginalValues({
         sewn_patches: sewnPatches,
