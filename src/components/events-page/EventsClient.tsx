@@ -49,17 +49,19 @@ function EventCard({ event, removeEvent }: EventCardProps) {
           <Button
             variant="destructive"
             size="icon"
-            onClick={async (e) => {
+            onClick={(e) => {
               e.preventDefault();
-              if (await removeEvent(String(event.id))) {
-                toast({
-                  description: 'Evenemang borttaget.',
-                });
-              } else {
-                toast({
-                  description: 'Något gick fel.',
-                });
-              }
+              (async () => {
+                if (await removeEvent(String(event.id))) {
+                  toast({
+                    description: 'Evenemang borttaget.',
+                  });
+                } else {
+                  toast({
+                    description: 'Något gick fel.',
+                  });
+                }
+              })();
             }}>
             <TrashIcon className="h-4 w-4" />
           </Button>

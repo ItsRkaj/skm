@@ -16,11 +16,6 @@ interface EventDataProps {
   id: string;
 }
 
-const EventDetail: React.FC<{ label: string; value: string }> = ({
-  label,
-  value,
-}) => <p className="italic">{`${label}: ${value}`}</p>;
-
 const EventData: React.FC<EventDataProps> = async ({ id }) => {
   const { getEvent } = await import('@/modules/apiClient');
   const event = await getEvent(id);

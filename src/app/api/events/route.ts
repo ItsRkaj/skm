@@ -28,11 +28,15 @@ export async function GET() {
   }
 }
 
+interface RequestBody {
+  user_id: string;
+}
+
 export async function DELETE(request: Request) {
   try {
     const supabase = createClient();
 
-    const { id } = await request.json();
+    const { id } = (await request.json()) as RequestBody;
 
     if (!id) {
       return NextResponse.json(

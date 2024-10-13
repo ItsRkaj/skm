@@ -28,7 +28,7 @@ interface EventInformationProps {
   registration_deadline: Date | null;
   attendees: Attendee[];
   event_id: string;
-  updateEvent: () => void;
+  updateEvent: () => Promise<void>;
 }
 
 const EventInformation: React.FC<EventInformationProps> = ({
@@ -49,9 +49,13 @@ const EventInformation: React.FC<EventInformationProps> = ({
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
 
+  if (!user) {
+    throw new Error('User is not defined');
+  }
+
   const [registered, setRegistered] = useState(() => {
     return (
-      attendees.findIndex((attendee) => attendee.user_id === user!.id) !== -1
+      attendees.findIndex((attendee) => attendee.user_id === user.id) !== -1
     );
   });
 
@@ -60,13 +64,13 @@ const EventInformation: React.FC<EventInformationProps> = ({
     let success = false;
 
     if (registered) {
-      success = await removeAttendee(event_id, user!.id!);
+      success = await removeAttendee(event_id, user.id as string);
     } else {
-      success = await addAttendee(event_id, user!.id!);
+      success = await addAttendee(event_id, user.id as string);
     }
 
     if (success) {
-      updateEvent();
+      await updateEvent();
       setRegistered((registered) => !registered);
     } else {
       console.error('Failed to update attendee status');
@@ -121,9 +125,12 @@ const EventInformation: React.FC<EventInformationProps> = ({
           <p>{attendees.length} personer deltar</p>
           <RocketIcon />
         </div>
+        {/* eslint-disable-next-line */})
         <Button
           className="w-64 h-16 text-xl font-semibold"
-          onClick={handleRegister}
+          onClick={() => {
+            void handleRegister();
+          }}
           disabled={loading}
           variant={registered ? 'destructive' : 'default'}>
           {loading ? (

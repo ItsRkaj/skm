@@ -74,13 +74,17 @@ export async function GET(
   }
 }
 
+interface RequestBody {
+  user_id: string;
+}
+
 export async function POST(
   request: Request,
   { params }: { params: { id: string } },
 ) {
   try {
     const supabase = createClient();
-    const { user_id } = await request.json();
+    const { user_id } = (await request.json()) as RequestBody;
 
     const { data: existingAttendee, error: existingError } = await supabase
       .from('event_attendees')
@@ -135,7 +139,7 @@ export async function DELETE(
 ) {
   try {
     const supabase = createClient();
-    const { user_id } = await request.json();
+    const { user_id } = (await request.json()) as RequestBody;
 
     const { data: attendee, error: attendeeError } = await supabase
       .from('event_attendees')
