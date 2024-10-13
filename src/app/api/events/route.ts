@@ -29,7 +29,7 @@ export async function GET() {
 }
 
 interface RequestBody {
-  user_id: string;
+  id: string;
 }
 
 export async function DELETE(request: Request) {
