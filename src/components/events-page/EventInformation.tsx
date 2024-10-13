@@ -60,9 +60,9 @@ const EventInformation: React.FC<EventInformationProps> = ({
     let success = false;
 
     if (registered) {
-      success = await removeAttendee(event_id, user!.id);
+      success = await removeAttendee(event_id, user!.id!);
     } else {
-      success = await addAttendee(event_id, user!.id);
+      success = await addAttendee(event_id, user!.id!);
     }
 
     if (success) {

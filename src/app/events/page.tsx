@@ -1,8 +1,7 @@
-import EventCard from '@/components/events-page/EventCard';
+import EventsClient from '@/components/events-page/EventsClient';
 import { removeEvent } from '@/modules/apiClient';
 import { getEvents } from '@/modules/apiClient';
 import { revalidatePath } from 'next/cache';
-import Link from 'next/link';
 
 const deleteEvent = async (eventId: string) => {
   'use server';
@@ -22,16 +21,5 @@ export default async function Events() {
     return <p>Hittade inga evenemang :(</p>;
   }
 
-  return (
-    <div className="container mx-auto py-8 flex flex-col gap-8">
-      <h2 className="text-2xl font-serif mb-6">KOMMANDE EVENEMANG</h2>
-      {events?.map((event) => {
-        return (
-          <Link key={event.id} href={`/events/${event.id}`}>
-            <EventCard event={event} removeEvent={deleteEvent} />
-          </Link>
-        );
-      })}
-    </div>
-  );
+  return <EventsClient events={events} deleteEvent={deleteEvent} />;
 }
