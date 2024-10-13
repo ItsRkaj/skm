@@ -35,17 +35,6 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
   const [birthday, setBirthday] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const { signOut } = useUser();
-  interface UserProfile {
-    first_name: string;
-    last_name: string;
-    nickname: string | null;
-    avatar_url: string | null;
-    motto: string | null;
-    phone_number: string | null;
-    email: string | null;
-    allergies: string | null;
-    birthday: string | null;
-  }
 
   const getProfile = useCallback(async () => {
     try {
@@ -53,7 +42,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
 
       if (user) {
         const { data, error } = await supabase
-          .from<'users', { Row: UserProfile }>('users')
+          .from('users')
           .select(
             `first_name, last_name, nickname, avatar_url, motto, phone_number, email, allergies, birthday`,
           )

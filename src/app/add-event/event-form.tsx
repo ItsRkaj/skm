@@ -12,9 +12,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
+interface EventFormData {
+  title: string;
+  description: string;
+  location: string;
+  organizer: string;
+  start_time: string;
+  end_time: string;
+  price: string;
+  registration_deadline: string;
+  registration_link: string;
+  invitation_type: 'Everyone' | 'Aktiva' | 'Gamlingar';
+}
 export default function EventForm() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<EventFormData>({
     title: '',
     description: '',
     location: '',
@@ -24,7 +35,7 @@ export default function EventForm() {
     price: '',
     registration_deadline: '',
     registration_link: '',
-    invitation_type: '',
+    invitation_type: 'Everyone',
   });
   const router = useRouter();
   const supabase = createClient();
@@ -56,7 +67,7 @@ export default function EventForm() {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
-  const handleSelectChange = (value: string) => {
+  const handleSelectChange = (value: 'Everyone' | 'Aktiva' | 'Gamlingar') => {
     setFormData((prevState) => ({ ...prevState, invitation_type: value }));
   };
 
@@ -67,13 +78,13 @@ export default function EventForm() {
       console.error('User is not logged in, cannot insert event');
       return;
     }
+    const formDataToSubmit = {
+      ...formData,
+      price: parseInt(formData.price),
+      publisher: userId,
+    };
 
-    const { error } = await supabase.from('events').insert([
-      {
-        ...formData,
-        publisher: userId, // Insert the logged-in user's id as publisher
-      },
-    ]);
+    const { error } = await supabase.from('events').insert(formDataToSubmit);
 
     if (error) {
       console.error('Error inserting event:', error, error.details);

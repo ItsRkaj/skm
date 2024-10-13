@@ -12,6 +12,8 @@ interface EventData {
   price: number;
   registration_deadline: string; // If you're using ISO string for dates, otherwise Date
   registration_link: string;
+  invitation_type: 'Everyone' | 'Aktiva' | 'Gamlingar';
+  publisher: string;
 }
 
 export async function POST(request: Request) {
@@ -27,6 +29,8 @@ export async function POST(request: Request) {
       price,
       registration_deadline,
       registration_link,
+      invitation_type,
+      publisher,
     } = (await request.json()) as EventData; // Type assertion to EventData
 
     const supabase = createClient();
@@ -43,6 +47,8 @@ export async function POST(request: Request) {
         price,
         registration_deadline,
         registration_link,
+        invitation_type,
+        publisher,
       },
     ]);
 
