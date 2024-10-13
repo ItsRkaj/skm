@@ -4,19 +4,39 @@ import { createClient } from '@/utils/supabase/server';
 export async function GET() {
   try {
     const supabase = createClient();
+
     const {
       data: { user },
-      error,
+      error: authError,
     } = await supabase.auth.getUser();
 
-    if (error) {
+    if (authError || !user) {
       return NextResponse.json(
-        { message: 'Error user not found' },
+        { message: 'Error: User not found' },
         { status: 404 },
       );
     }
 
-    return NextResponse.json(user, { status: 200 });
+    const { data: profile, error: profileError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+
+    if (profileError || !profile) {
+      return NextResponse.json(
+        { message: 'Error: User profile not found' },
+        { status: 404 },
+      );
+    }
+
+    return NextResponse.json(
+      {
+        ...user,
+        profile,
+      },
+      { status: 200 },
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(

@@ -599,177 +599,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "12345-abcde"
-                    },
-                    "app_metadata": {
-                      "type": "object",
-                      "properties": {
-                        "provider": {
-                          "type": "string",
-                          "example": "email"
-                        },
-                        "providers": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          },
-                          "example": ["email"]
-                        }
-                      }
-                    },
-                    "user_metadata": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "example": "John Doe"
-                        },
-                        "role": {
-                          "type": "string",
-                          "example": "user"
-                        }
-                      }
-                    },
-                    "aud": {
-                      "type": "string",
-                      "example": "authenticated"
-                    },
-                    "confirmation_sent_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "recovery_sent_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "email_change_sent_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "new_email": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "new_user@example.com"
-                    },
-                    "new_phone": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "+1234567890"
-                    },
-                    "invited_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "action_link": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "https://supabase.io/verify_email"
-                    },
-                    "email": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "user@example.com"
-                    },
-                    "phone": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "+1234567890"
-                    },
-                    "created_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "confirmed_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "email_confirmed_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "phone_confirmed_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "last_sign_in_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "role": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "user"
-                    },
-                    "updated_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "identities": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "example": "identity-12345"
-                          },
-                          "provider": {
-                            "type": "string",
-                            "example": "email"
-                          },
-                          "created_at": {
-                            "type": "string",
-                            "format": "date-time",
-                            "example": "2023-09-01T12:34:56.789Z"
-                          }
-                        }
-                      }
-                    },
-                    "is_anonymous": {
-                      "type": "boolean",
-                      "nullable": true,
-                      "example": false
-                    },
-                    "factors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "example": "factor-12345"
-                          },
-                          "status": {
-                            "type": "string",
-                            "example": "verified"
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserProfile"
                 }
               }
             }
@@ -962,6 +792,258 @@
           "medals",
           "pins"
         ]
+      },
+      "UserProfile": {
+        "title": "UserProfile model",
+        "description": "Combined user and profile data",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the user",
+            "example": "12345-abcde"
+          },
+          "app_metadata": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "type": "string",
+                "example": "email"
+              },
+              "providers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": ["email"]
+              }
+            }
+          },
+          "user_metadata": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "John Doe"
+              },
+              "role": {
+                "type": "string",
+                "example": "user"
+              }
+            }
+          },
+          "aud": {
+            "type": "string",
+            "example": "authenticated"
+          },
+          "confirmation_sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "recovery_sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "email_change_sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "new_email": {
+            "type": "string",
+            "nullable": true,
+            "example": "new_user@example.com"
+          },
+          "new_phone": {
+            "type": "string",
+            "nullable": true,
+            "example": "+1234567890"
+          },
+          "invited_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "action_link": {
+            "type": "string",
+            "nullable": true,
+            "example": "https://supabase.io/verify_email"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "example": "user@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "example": "+1234567890"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "confirmed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "email_confirmed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "phone_confirmed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "last_sign_in_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "role": {
+            "type": "string",
+            "nullable": true,
+            "example": "user"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "identities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "identity-12345"
+                },
+                "provider": {
+                  "type": "string",
+                  "example": "email"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2023-09-01T12:34:56.789Z"
+                }
+              }
+            }
+          },
+          "is_anonymous": {
+            "type": "boolean",
+            "nullable": true,
+            "example": false
+          },
+          "factors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "factor-12345"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "verified"
+                }
+              }
+            }
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          }
+        }
+      },
+      "Profile": {
+        "title": "Profile model",
+        "description": "Profile object representing additional information about the user",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "profile-12345"
+          },
+          "allergies": {
+            "type": "string",
+            "nullable": true,
+            "example": "Peanuts"
+          },
+          "avatar_url": {
+            "type": "string",
+            "nullable": true,
+            "example": "https://example.com/avatar.png"
+          },
+          "birthday": {
+            "type": "string",
+            "nullable": true,
+            "example": "1990-01-01"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "example": "profile@example.com"
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true,
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true,
+            "example": "Doe"
+          },
+          "nickname": {
+            "type": "string",
+            "nullable": true,
+            "example": "Johnny"
+          },
+          "motto": {
+            "type": "string",
+            "nullable": true,
+            "example": "Live and let live"
+          },
+          "phone_number": {
+            "type": "string",
+            "nullable": true,
+            "example": "+1234567890"
+          },
+          "role": {
+            "type": "integer",
+            "nullable": true,
+            "example": 3
+          },
+          "title": {
+            "type": "integer",
+            "nullable": true,
+            "example": 1
+          },
+          "updated_at": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time",
+            "example": "2023-09-01T12:34:56.789Z"
+          }
+        },
+        "required": ["id"]
       },
       "Error": {
         "type": "object",

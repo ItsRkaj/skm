@@ -696,6 +696,150 @@ export interface components {
        */
       pins: number;
     };
+    /**
+     * UserProfile model
+     * @description Combined user and profile data
+     */
+    UserProfile: {
+      /**
+       * @description Unique identifier for the user
+       * @example 12345-abcde
+       */
+      id?: string;
+      app_metadata?: {
+        /** @example email */
+        provider?: string;
+        /** @example [
+         *       "email"
+         *     ] */
+        providers?: string[];
+      };
+      user_metadata?: {
+        /** @example John Doe */
+        name?: string;
+        /** @example user */
+        role?: string;
+      };
+      /** @example authenticated */
+      aud?: string;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      confirmation_sent_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      recovery_sent_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      email_change_sent_at?: string | null;
+      /** @example new_user@example.com */
+      new_email?: string | null;
+      /** @example +1234567890 */
+      new_phone?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      invited_at?: string | null;
+      /** @example https://supabase.io/verify_email */
+      action_link?: string | null;
+      /** @example user@example.com */
+      email?: string | null;
+      /** @example +1234567890 */
+      phone?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      created_at?: string;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      confirmed_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      email_confirmed_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      phone_confirmed_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      last_sign_in_at?: string | null;
+      /** @example user */
+      role?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      updated_at?: string | null;
+      identities?: {
+        /** @example identity-12345 */
+        id?: string;
+        /** @example email */
+        provider?: string;
+        /**
+         * Format: date-time
+         * @example 2023-09-01T12:34:56.789Z
+         */
+        created_at?: string;
+      }[];
+      /** @example false */
+      is_anonymous?: boolean | null;
+      factors?: {
+        /** @example factor-12345 */
+        id?: string;
+        /** @example verified */
+        status?: string;
+      }[];
+      profile?: components['schemas']['Profile'];
+    };
+    /**
+     * Profile model
+     * @description Profile object representing additional information about the user
+     */
+    Profile: {
+      /** @example profile-12345 */
+      id: string;
+      /** @example Peanuts */
+      allergies?: string | null;
+      /** @example https://example.com/avatar.png */
+      avatar_url?: string | null;
+      /** @example 1990-01-01 */
+      birthday?: string | null;
+      /** @example profile@example.com */
+      email?: string | null;
+      /** @example John */
+      first_name?: string | null;
+      /** @example Doe */
+      last_name?: string | null;
+      /** @example Johnny */
+      nickname?: string | null;
+      /** @example Live and let live */
+      motto?: string | null;
+      /** @example +1234567890 */
+      phone_number?: string | null;
+      /** @example 3 */
+      role?: number | null;
+      /** @example 1 */
+      title?: number | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      updated_at?: string | null;
+    };
     Error: {
       code: number;
       message: string;
@@ -753,107 +897,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': {
-            /** @example 12345-abcde */
-            id?: string;
-            app_metadata?: {
-              /** @example email */
-              provider?: string;
-              /** @example [
-               *       "email"
-               *     ] */
-              providers?: string[];
-            };
-            user_metadata?: {
-              /** @example John Doe */
-              name?: string;
-              /** @example user */
-              role?: string;
-            };
-            /** @example authenticated */
-            aud?: string;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            confirmation_sent_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            recovery_sent_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            email_change_sent_at?: string | null;
-            /** @example new_user@example.com */
-            new_email?: string | null;
-            /** @example +1234567890 */
-            new_phone?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            invited_at?: string | null;
-            /** @example https://supabase.io/verify_email */
-            action_link?: string | null;
-            /** @example user@example.com */
-            email?: string | null;
-            /** @example +1234567890 */
-            phone?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            created_at?: string;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            confirmed_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            email_confirmed_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            phone_confirmed_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            last_sign_in_at?: string | null;
-            /** @example user */
-            role?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            updated_at?: string | null;
-            identities?: {
-              /** @example identity-12345 */
-              id?: string;
-              /** @example email */
-              provider?: string;
-              /**
-               * Format: date-time
-               * @example 2023-09-01T12:34:56.789Z
-               */
-              created_at?: string;
-            }[];
-            /** @example false */
-            is_anonymous?: boolean | null;
-            factors?: {
-              /** @example factor-12345 */
-              id?: string;
-              /** @example verified */
-              status?: string;
-            }[];
-          };
+          'application/json': components['schemas']['UserProfile'];
         };
       };
       /** @description User not found. */
