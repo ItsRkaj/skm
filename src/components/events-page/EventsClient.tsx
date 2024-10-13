@@ -51,7 +51,7 @@ function EventCard({ event, removeEvent }: EventCardProps) {
             size="icon"
             onClick={(e) => {
               e.preventDefault();
-              (async () => {
+              void (async () => {
                 if (await removeEvent(String(event.id))) {
                   toast({
                     description: 'Evenemang borttaget.',
