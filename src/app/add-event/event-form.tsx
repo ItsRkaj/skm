@@ -62,7 +62,6 @@ export default function EventForm() {
 
     getUser().catch((error) => console.error('Error in getUser:', error));
   }, [supabase]);
-  console.log('userId (publisher):', userId);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
