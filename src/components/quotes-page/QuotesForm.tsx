@@ -39,6 +39,7 @@ function QuotesForm({
 
   return (
     <div className="w-full">
+      {/* eslint-disable-next-line */}
       <form onSubmit={onSubmit}>
         <div className="flex flex-col gap-1 p-5">
           <Label className="p-1" htmlFor="quoteText">

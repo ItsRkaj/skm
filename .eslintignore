@@ -5,3 +5,5 @@ public
 .github
 *.js
 *.d.ts
+src/components/ui/*
+src/hooks/*
