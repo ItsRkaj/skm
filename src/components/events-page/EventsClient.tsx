@@ -51,8 +51,10 @@ function EventCard({ event, removeEvent }: EventCardProps) {
             size="icon"
             onClick={(e) => {
               e.preventDefault();
-              void (async () => {
-                if (await removeEvent(String(event.id))) {
+
+              const handleRemoveEvent = async () => {
+                const success = await removeEvent(String(event.id));
+                if (success) {
                   toast({
                     description: 'Evenemang borttaget.',
                   });
@@ -61,7 +63,9 @@ function EventCard({ event, removeEvent }: EventCardProps) {
                     description: 'Något gick fel.',
                   });
                 }
-              })();
+              };
+
+              void handleRemoveEvent();
             }}>
             <TrashIcon className="h-4 w-4" />
           </Button>
