@@ -24,6 +24,303 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/events': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Retrieve events
+     * @description Retrieves a list of all events
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Successful response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Event'][];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    /**
+     * Delete an event
+     * @description Deletes an event by its ID
+     */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      /** @description ID of the event to delete */
+      requestBody: {
+        content: {
+          'application/json': {
+            /**
+             * @description The ID of the event to delete
+             * @example 12345
+             */
+            id: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Event deleted successfully */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Event deleted successfully */
+              message?: string;
+            };
+          };
+        };
+        /** @description Bad Request - missing or invalid event ID */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Event ID is required */
+              error?: string;
+            };
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/events/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Retrieve a single event and its attendees
+     * @description Retrieves a single event by its ID along with its attendees
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description The ID of the event to retrieve */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Successful response containing the event and its attendees */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              event: components['schemas']['Event'];
+              attendees?: {
+                user_id: string;
+                first_name: string;
+                last_name: string;
+                nickname?: string;
+              }[];
+            };
+          };
+        };
+        /** @description Event not found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    /**
+     * Add a user to the event
+     * @description Adds a user as an attendee to the event with the given ID
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description The ID of the event to add the user to */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description The ID of the user to add to the event */
+            user_id: string;
+          };
+        };
+      };
+      responses: {
+        /** @description User successfully added to the event */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example User added to event */
+              message?: string;
+            };
+          };
+        };
+        /** @description User is already attending the event */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    /**
+     * Remove a user from the event
+     * @description Removes a user as an attendee from the event with the given ID
+     */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description The ID of the event to remove the user from */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description The ID of the user to remove from the event */
+            user_id: string;
+          };
+        };
+      };
+      responses: {
+        /** @description User successfully removed from the event */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example User removed from event */
+              message?: string;
+            };
+          };
+        };
+        /** @description User is not attending the event */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/leaderboard': {
     parameters: {
       query?: never;
@@ -613,6 +910,48 @@ export interface components {
        * @description Email of the marshal
        */
       email?: string;
+    };
+    /**
+     * Event model
+     * @description Event object representing an event with details
+     */
+    Event: {
+      /** @description Description of the event */
+      description?: string | null;
+      /**
+       * Format: date-time
+       * @description End time of the event
+       */
+      end_time: string;
+      /** @description Unique identifier for the event */
+      id: number;
+      /**
+       * @description Invitation type for the event
+       * @enum {string}
+       */
+      invitation_type: 'Everyone' | 'Gamlingar' | 'Aktiva';
+      /** @description Location of the event */
+      location: string;
+      /** @description Organizer of the event */
+      organizer: string;
+      /** @description Price of the event */
+      price: number;
+      /** @description Publisher of the event */
+      publisher: string;
+      /**
+       * Format: date-time
+       * @description Registration deadline for the event
+       */
+      registration_deadline?: string | null;
+      /** @description Registration link for the event */
+      registration_link?: string | null;
+      /**
+       * Format: date-time
+       * @description Start time of the event
+       */
+      start_time: string;
+      /** @description Title of the event */
+      title: string;
     };
     /**
      * Quote model

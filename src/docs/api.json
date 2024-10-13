@@ -38,6 +38,342 @@
         }
       }
     },
+    "/api/events": {
+      "get": {
+        "summary": "Retrieve events",
+        "description": "Retrieves a list of all events",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an event",
+        "description": "Deletes an event by its ID",
+        "requestBody": {
+          "description": "ID of the event to delete",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The ID of the event to delete",
+                    "example": "12345"
+                  }
+                },
+                "required": ["id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Event deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - missing or invalid event ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Event ID is required"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events/{id}": {
+      "get": {
+        "summary": "Retrieve a single event and its attendees",
+        "description": "Retrieves a single event by its ID along with its attendees",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the event to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response containing the event and its attendees",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "event": {
+                      "$ref": "#/components/schemas/Event"
+                    },
+                    "attendees": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "user_id": { "type": "string" },
+                          "first_name": { "type": "string" },
+                          "last_name": { "type": "string" },
+                          "nickname": { "type": "string" }
+                        },
+                        "required": ["user_id", "first_name", "last_name"]
+                      }
+                    }
+                  },
+                  "required": ["event"]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a user to the event",
+        "description": "Adds a user as an attendee to the event with the given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the event to add the user to"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "The ID of the user to add to the event"
+                  }
+                },
+                "required": ["user_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully added to the event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User added to event"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User is already attending the event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove a user from the event",
+        "description": "Removes a user as an attendee from the event with the given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The ID of the event to remove the user from"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "description": "The ID of the user to remove from the event"
+                  }
+                },
+                "required": ["user_id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully removed from the event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User removed from event"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User is not attending the event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/leaderboard": {
       "get": {
         "summary": "Retrieve leaderboard",
@@ -677,6 +1013,79 @@
           }
         },
         "type": "object"
+      },
+      "Event": {
+        "title": "Event model",
+        "description": "Event object representing an event with details",
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "nullable": true,
+            "description": "Description of the event"
+          },
+          "end_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "End time of the event"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the event"
+          },
+          "invitation_type": {
+            "type": "string",
+            "enum": ["Everyone", "Gamlingar", "Aktiva"],
+            "description": "Invitation type for the event"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location of the event"
+          },
+          "organizer": {
+            "type": "string",
+            "description": "Organizer of the event"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price of the event"
+          },
+          "publisher": {
+            "type": "string",
+            "description": "Publisher of the event"
+          },
+          "registration_deadline": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time",
+            "description": "Registration deadline for the event"
+          },
+          "registration_link": {
+            "type": "string",
+            "nullable": true,
+            "description": "Registration link for the event"
+          },
+          "start_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Start time of the event"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the event"
+          }
+        },
+        "required": [
+          "id",
+          "invitation_type",
+          "location",
+          "organizer",
+          "publisher",
+          "start_time",
+          "end_time",
+          "price",
+          "title"
+        ]
       },
       "Quote": {
         "title": "Quote model",

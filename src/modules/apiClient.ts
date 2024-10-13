@@ -1,6 +1,8 @@
 import {
   Marshal,
   LeaderboardEntry,
+  Event,
+  EventWithAttendees,
   Quote,
   QuoteInsert,
   News,
@@ -45,6 +47,21 @@ export async function getLeaderboard(): Promise<
   }
 }
 
+export async function getEvents(): Promise<Event[] | undefined> {
+  try {
+    const response = await client.GET('/api/events');
+    if (response.response.ok) {
+      return response.data;
+    } else {
+      console.error('Failed to fetch events', response.response.status);
+      return undefined;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return undefined;
+  }
+}
+
 export async function getQuotes(): Promise<Quote[] | undefined> {
   try {
     const response = await client.GET('/api/quotes');
@@ -59,6 +76,102 @@ export async function getQuotes(): Promise<Quote[] | undefined> {
     return undefined;
   }
 }
+
+export async function getEvent(
+  id: string,
+): Promise<EventWithAttendees | undefined> {
+  try {
+    const response = await client.GET('/api/events/{id}', {
+      params: {
+        path: { id },
+      },
+    });
+
+    if (response.response.ok) {
+      return response.data;
+    } else {
+      console.error(
+        'Failed to fetch event or event not found',
+        response.response.status,
+      );
+      return undefined;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return undefined;
+  }
+}
+
+export async function removeEvent(id: string): Promise<boolean> {
+  try {
+    const response = await client.DELETE('/api/events', {
+      body: { id },
+    });
+
+    if (response.response.ok) {
+      return true;
+    } else {
+      console.error('Failed to delete event', response.response.status);
+      return false;
+    }
+  } catch (e) {
+    console.error('Error: ', e);
+    return false;
+  }
+}
+
+export async function addAttendee(
+  event_id: string,
+  user_id: string,
+): Promise<boolean> {
+  try {
+    const response = await client.POST('/api/events/{id}', {
+      params: {
+        path: { id: event_id },
+      },
+      body: {
+        user_id: user_id,
+      },
+    });
+
+    if (!response.response.ok) {
+      console.error('Failed to add attendee', response.response.status);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error adding attendee:', error);
+    return false;
+  }
+}
+
+export async function removeAttendee(
+  event_id: string,
+  user_id: string,
+): Promise<boolean> {
+  try {
+    const response = await client.DELETE('/api/events/{id}', {
+      params: {
+        path: { id: event_id },
+      },
+      body: {
+        user_id: user_id,
+      },
+    });
+
+    if (!response.response.ok) {
+      console.error('Failed to remove attendee', response.response.status);
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error removing attendee:', error);
+    return false;
+  }
+}
+
 export async function putLeaderboard(
   id: string,
   sewnPatches: number,
