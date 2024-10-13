@@ -5,8 +5,6 @@ import { useState } from 'react';
 import {
   ColumnDef,
   flexRender,
-  ColumnFiltersState,
-  getFilteredRowModel,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -15,7 +13,6 @@ import {
 } from '@tanstack/react-table';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 import {
   Table,
@@ -44,8 +41,6 @@ export function DataTable<TData, TValue>({
     { id: 'total_patches', desc: true },
   ]);
 
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
   const table = useReactTable({
     data,
     columns,
@@ -54,27 +49,14 @@ export function DataTable<TData, TValue>({
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
     state: {
       pagination,
       sorting,
-      columnFilters,
     },
   });
 
   return (
     <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Sök namn..."
-          value={(table.getColumn('person')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('person')?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
