@@ -79,7 +79,7 @@ export default function Avatar({
   ) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      await uploadAvatar(file!);
+      await uploadAvatar(file as File);
     }
   };
 
@@ -98,7 +98,7 @@ export default function Avatar({
 
     if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
       const file = event.dataTransfer.files[0];
-      await uploadAvatar(file!);
+      await uploadAvatar(file as File);
     }
   };
 
@@ -107,7 +107,7 @@ export default function Avatar({
       className={`flex flex-col justify-center items-center ${dragging ? 'border-dashed border-2 border-blue-500' : ''}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      onDrop={handleDrop}>
+      onDrop={(e) => void handleDrop(e)}>
       {avatarUrl ? (
         <Image
           width={size}
@@ -140,7 +140,7 @@ export default function Avatar({
             type="file"
             id="single"
             accept="image/*"
-            onChange={handleFileInput}
+            onChange={(e) => void handleFileInput(e)}
             disabled={uploading}
           />
         </div>

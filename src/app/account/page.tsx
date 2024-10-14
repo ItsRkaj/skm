@@ -1,5 +1,5 @@
 import AccountForm from './account-form';
 
-export default async function Account() {
+export default function Account() {
   return <AccountForm />;
 }

@@ -41,7 +41,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
 
-    fetchUser();
+    void fetchUser();
   }, []);
 
   const login = async ({
@@ -92,6 +92,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       signOut,
       isLoading,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [isLoggedIn, user, isLoading],
   );
 
