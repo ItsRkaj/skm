@@ -125,7 +125,7 @@ const EventInformation: React.FC<EventInformationProps> = ({
           <p>{attendees.length} personer deltar</p>
           <RocketIcon />
         </div>
-        {/* eslint-disable-next-line */})
+        {/* eslint-disable-next-line */}
         <Button
           className="w-64 h-16 text-xl font-semibold"
           onClick={() => {
