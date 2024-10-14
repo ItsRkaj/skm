@@ -17,7 +17,55 @@ export interface paths {
      */
     get: operations['getMarshals'];
     put?: never;
-    post?: never;
+    /**
+     * Add a new marshal
+     * @description add a new marshal and stor it in the database.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description marshal name */
+            name: string;
+            /** @description The phone number  */
+            phone: string;
+            /** @description The marshals email */
+            email: string;
+            /** @description marshals location */
+            location: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Marshal created successfully. */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Quote'];
+          };
+        };
+        /** @description Internal Server Error. */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Internal server error */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
     delete?: never;
     options?: never;
     head?: never;
@@ -910,6 +958,8 @@ export interface components {
        * @description Email of the marshal
        */
       email?: string;
+      /** @description UID of the person */
+      id?: string;
     };
     /**
      * Event model

@@ -1,31 +1,55 @@
-import { Marshal } from '@/modules/apiTypes';
+import { NextResponse } from 'next/server';
+import { createClient } from '@/utils/supabase/server';
 
-export function GET() {
-  const marshals: Marshal[] = [
-    {
-      name: 'John Doe',
-      location: 'Birmingham, UK',
-      phone: '+44 123 456 7890',
-      email: 'john.doe@gmail.com',
-    },
-    {
-      name: 'Mary Jane',
-      location: 'London, UK',
-      phone: '+44 123 456 1337',
-      email: 'mary.jane@gmail.com',
-    },
-    {
-      name: 'Edward Snowden',
-      location: 'Tottenham, UK',
-      phone: '+44 123 456 1337',
-      email: 'mary.jane@gmail.com',
-    },
-  ];
+export async function GET() {
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase.from('marshals').select('*');
+    if (error) {
+      console.error('Error:', error);
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.code ? parseInt(error.code) : 500 },
+      );
+    }
+    return NextResponse.json(data, { status: 200 });
+  } catch (e) {
+    console.error('Unexpected error:', e);
+    return NextResponse.json(
+      { error: 'Unexpected error occurred' },
+      { status: 500 },
+    );
+  }
+}
 
-  return new Response(JSON.stringify(marshals), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+export async function POST(request: Request) {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { name, phone, email, location } = await request.json();
+    console.log(name);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const supabase = createClient();
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { data, error } = await supabase
+
+      .from('marshals')
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      .insert([{ name, phone, email, location }]);
+
+    if (error) {
+      console.error('Error:', error);
+      return NextResponse.json(
+        { error: error.message },
+        { status: error.code ? parseInt(error.code) : 500 },
+      );
+    }
+    return NextResponse.json(data, { status: 200 });
+  } catch (e) {
+    console.error('Unexpected error:', e);
+    return NextResponse.json(
+      { error: 'Unexpected error occurred' },
+      { status: 500 },
+    );
+  }
 }
