@@ -55,20 +55,15 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
 
         if (data) {
           const fullName = `${data.first_name} ${data.last_name}`.trim();
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setFullname(fullName);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setUsername(data.nickname);
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           setAvatar_url(data.avatar_url);
-
           setMotto(data.motto);
           setPhone_number(data.phone_number);
           setEmail(data.email);
           setAllergies(data.allergies);
           setBirthday(data.birthday);
         }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } else {
         console.error('User ID is undefined');
       }
