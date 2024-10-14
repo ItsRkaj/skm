@@ -115,7 +115,7 @@ const PersonalBanner: React.FC<PersonalBannerProps> = ({
   };
 
   return (
-    <Card className="flex flex-row items-center justify-between overflow-auto">
+    <Card className="flex flex-row items-center justify-between overflow-auto mb-12">
       <CardHeader className="flex flex-row items-center gap-4">
         <Avatar>
           {!isAvatarLoaded && (

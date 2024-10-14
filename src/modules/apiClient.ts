@@ -224,18 +224,19 @@ export async function logInUser(formData: {
   }
 }
 
-export async function signOutUser(): Promise<{ message: string } | undefined> {
+export async function signOutUser(): Promise<boolean> {
   try {
     const response = await client.POST('/api/signout');
 
     if (response.response.status === 200) {
-      return { message: 'Sign out successful' };
+      return true;
     } else {
       console.error('Unexpected response status:', response.response.status);
-      return { message: 'Sign out failed' };
+      return false;
     }
   } catch (error) {
     console.error('Error during sign out:', error);
+    return false;
   }
 }
 

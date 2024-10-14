@@ -1,10 +1,7 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
-import { type User } from '@supabase/supabase-js';
 import Avatar from './avatar';
-import { signOutUser } from '@/modules/apiClient';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -19,14 +16,12 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { useUser } from '@/context/UserContext';
+import { Loader2 } from 'lucide-react';
 
-export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
+export default function AccountForm() {
   const supabase = createClient();
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
   const [fullname, setFullname] = useState<string | null>(null);
   const [username, setUsername] = useState<string | null>(null);
-  //const [website, setWebsite] = useState<string | null>(null);
   const [avatar_url, setAvatar_url] = useState<string | null>(null);
   const [motto, setMotto] = useState<string | null>(null);
   const [phone_number, setPhone_number] = useState<string | null>(null);
@@ -34,53 +29,24 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
   const [allergies, setAllergies] = useState<string | null>(null);
   const [birthday, setBirthday] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const { signOut } = useUser();
-
-  const getProfile = useCallback(async () => {
-    try {
-      setLoading(true);
-
-      if (user) {
-        const { data, error } = await supabase
-          .from('users')
-          .select(
-            `first_name, last_name, nickname, avatar_url, motto, phone_number, email, allergies, birthday`,
-          )
-          .eq('id', user?.id)
-          .single();
-
-        if (error) {
-          console.log(error);
-        }
-
-        if (data) {
-          const fullName = `${data.first_name} ${data.last_name}`.trim();
-          setFullname(fullName);
-          setUsername(data.nickname);
-          setAvatar_url(data.avatar_url);
-          setMotto(data.motto);
-          setPhone_number(data.phone_number);
-          setEmail(data.email);
-          setAllergies(data.allergies);
-          setBirthday(data.birthday);
-        }
-      } else {
-        console.error('User ID is undefined');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [user, supabase]);
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState<string>('');
+  const { user, isLoading, signOut } = useUser();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      await getProfile();
-    };
-
-    void fetchProfile();
-  }, [getProfile]);
+    if (user) {
+      const fullName =
+        `${user.profile?.first_name} ${user.profile?.last_name}`.trim();
+      setFullname(fullName);
+      setUsername(user.profile?.nickname ?? '');
+      setAvatar_url(user.profile?.avatar_url ?? null);
+      setMotto(user.profile?.motto ?? '');
+      setPhone_number(user.profile?.phone_number ?? '');
+      setEmail(user.profile?.email ?? '');
+      setAllergies(user.profile?.allergies ?? '');
+      setBirthday(user.profile?.birthday ?? null);
+    }
+  }, [user]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -102,15 +68,13 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
         setAllergies(value);
         break;
       case 'birthday':
-        setBirthday(value);
+        setBirthday(value === '' ? null : value);
         break;
       default:
         break;
     }
   };
 
-  const [showDialog, setShowDialog] = useState(false);
-  const [dialogMessage, setDialogMessage] = useState<string>('');
   const handleSaveProfile = async () => {
     await saveProfile();
     setShowDialog(true);
@@ -119,9 +83,6 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
 
   const saveProfile = async () => {
     try {
-      setLoading(true);
-
-      // Data to be sent to the database
       const updateData = {
         id: user?.id as string,
         nickname: username,
@@ -149,25 +110,18 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
         'An unexpected error occurred while updating the profile.',
       );
     } finally {
-      setLoading(false);
-      setShowDialog(true); // Show the dialog after the try-catch block completes
+      setShowDialog(true);
     }
   };
 
-  async function handleSignOut() {
-    try {
-      const result = await signOutUser();
-
-      if (result && result.message === 'Sign out successful') {
-        await signOut();
-        void router.push('/');
-      } else {
-        console.log('Sign out failed');
-      }
-    } catch (error) {
-      console.error('Sign out error:', error);
-    }
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center">
+        <Loader2 className="mr-2 h-8 w-8 animate-spin" />
+      </div>
+    );
   }
+
   return (
     <div className="flex items-center justify-center min-h-screen p-4">
       <Card className="w-full max-w-md mx-auto mt-6 shadow-lg">
@@ -192,7 +146,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
                 type="text"
                 value={username || ''}
                 onChange={handleInputChange}
-                disabled={!isEditing || loading}
+                disabled={!isEditing || isLoading}
                 className="mt-1"
               />
             </div>
@@ -203,7 +157,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
                 type="text"
                 value={motto || ''}
                 onChange={handleInputChange}
-                disabled={!isEditing || loading}
+                disabled={!isEditing || isLoading}
                 className="mt-1"
               />
             </div>
@@ -214,7 +168,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
                 type="text"
                 value={phone_number || ''}
                 onChange={handleInputChange}
-                disabled={!isEditing || loading}
+                disabled={!isEditing || isLoading}
                 className="mt-1"
               />
             </div>
@@ -225,7 +179,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
                 type="text"
                 value={email || ''}
                 onChange={handleInputChange}
-                disabled={!isEditing || loading}
+                disabled={!isEditing || isLoading}
                 className="mt-1"
               />
             </div>
@@ -236,7 +190,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
                 type="text"
                 value={allergies || ''}
                 onChange={handleInputChange}
-                disabled={!isEditing || loading}
+                disabled={!isEditing || isLoading}
                 className="mt-1"
               />
             </div>
@@ -245,10 +199,10 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
               <Label className="text-lg font-medium">Födelsedatum</Label>
               <Input
                 id="birthday"
-                type="text"
+                type="date"
                 value={birthday || ''}
                 onChange={handleInputChange}
-                disabled={!isEditing || loading}
+                disabled={!isEditing || isLoading}
                 className="mt-1"
               />
             </div>
@@ -294,7 +248,7 @@ export default function AccountForm({ user }: Readonly<{ user: User | null }>) {
             <Button
               type="button"
               className="w-full mt-4"
-              onClick={() => void handleSignOut()}>
+              onClick={() => void signOut()}>
               Logga ut
             </Button>
           </form>

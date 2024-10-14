@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
+import { Loader2 } from 'lucide-react';
 
 export default function Avatar({
   uid,
@@ -19,21 +20,24 @@ export default function Avatar({
   const supabase = createClient();
   const [avatarUrl, setAvatarUrl] = useState<string | null>(url);
   const [uploading, setUploading] = useState(false);
+  const [dragging, setDragging] = useState(false);
 
   useEffect(() => {
     async function downloadImage(path: string) {
       try {
+        setUploading(true);
         const { data, error } = await supabase.storage
           .from('avatars')
           .download(path);
         if (error) {
           throw error;
         }
-
         const url = URL.createObjectURL(data);
         setAvatarUrl(url);
       } catch (error) {
         console.log('Error downloading image: ', error);
+      } finally {
+        setUploading(false);
       }
     }
 
@@ -42,24 +46,20 @@ export default function Avatar({
     }
   }, [url, supabase]);
 
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  const uploadAvatar: React.ChangeEventHandler<HTMLInputElement> = async (
-    event,
-  ) => {
+  const uploadAvatar = async (file: File) => {
     try {
       setUploading(true);
 
-      if (!event.target.files || event.target.files.length === 0) {
+      if (!file) {
         throw new Error('You must select an image to upload.');
       }
 
-      const file = event.target.files[0];
-      const fileExt = file?.name.split('.').pop();
+      const fileExt = file.name.split('.').pop();
       const filePath = `${uid}-${Math.random()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
-        .upload(filePath, file ?? '');
+        .upload(filePath, file);
 
       if (uploadError) {
         throw uploadError;
@@ -67,14 +67,47 @@ export default function Avatar({
 
       onUpload(filePath);
     } catch (error) {
-      alert('Error uploading avatar!' + (error as Error).message);
+      alert('Error uploading avatar! ' + (error as Error).message);
     } finally {
       setUploading(false);
+      setDragging(false);
+    }
+  };
+
+  const handleFileInput = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      await uploadAvatar(file as File);
+    }
+  };
+
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+    setDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setDragging(false);
+  };
+
+  const handleDrop = async (event: React.DragEvent) => {
+    event.preventDefault();
+    setDragging(false);
+
+    if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+      const file = event.dataTransfer.files[0];
+      await uploadAvatar(file as File);
     }
   };
 
   return (
-    <div className="flex flex-col justify-center item-center ">
+    <div
+      className={`flex flex-col justify-center items-center ${dragging ? 'border-dashed border-2 border-blue-500' : ''}`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={(e) => void handleDrop(e)}>
       {avatarUrl ? (
         <Image
           width={size}
@@ -91,11 +124,13 @@ export default function Avatar({
         />
       )}
       {isEditing && (
-        <div style={{ width: size }}>
-          <label
-            className="button primary block text-center whitespace-nowrap"
-            htmlFor="single">
-            {uploading ? 'Laddar Upp ...' : 'Ladda Upp'}
+        <div className="pt-2">
+          <label className="button primary block text-center" htmlFor="single">
+            {uploading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              'Dra eller klicka för att ladda upp bild'
+            )}
           </label>
           <input
             style={{
@@ -105,7 +140,7 @@ export default function Avatar({
             type="file"
             id="single"
             accept="image/*"
-            onChange={uploadAvatar}
+            onChange={(e) => void handleFileInput(e)}
             disabled={uploading}
           />
         </div>
