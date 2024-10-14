@@ -1,10 +1,15 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
-export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const supabase = createClient();
-    const { data, error } = await supabase.from('news').select('*');
+
+    const { data, error } = await supabase
+      .from('events')
+      .select('*')
+      .order('start_time', { ascending: true });
+
     if (error) {
       console.error('Error:', error);
       return NextResponse.json(
@@ -12,6 +17,7 @@ export async function GET() {
         { status: error.code ? parseInt(error.code) : 500 },
       );
     }
+
     return NextResponse.json(data, { status: 200 });
   } catch (e) {
     console.error('Unexpected error:', e);
@@ -22,28 +28,37 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+interface RequestBody {
+  id: string;
+}
+
+export async function DELETE(request: Request) {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { title, text, author, date } = await request.json();
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const supabase = createClient();
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { data, error } = await supabase
+    const { id } = (await request.json()) as RequestBody;
 
-      .from('news')
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      .insert([{ title, text, author, date }]);
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Event ID is required' },
+        { status: 400 },
+      );
+    }
+
+    const { error } = await supabase.from('events').delete().eq('id', id);
 
     if (error) {
-      console.error('Error:', error);
+      console.error('Error deleting event:', error);
       return NextResponse.json(
         { error: error.message },
         { status: error.code ? parseInt(error.code) : 500 },
       );
     }
-    return NextResponse.json(data, { status: 200 });
+
+    return NextResponse.json(
+      { message: 'Event deleted successfully' },
+      { status: 200 },
+    );
   } catch (e) {
     console.error('Unexpected error:', e);
     return NextResponse.json(
