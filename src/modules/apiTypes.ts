@@ -42,3 +42,9 @@ export type marshalsInsert = {
   email: string;
   location: string;
 };
+
+export type avatarUrl = {
+  signedUrl: string;
+};
+
+export type avatarUrlPath = avatarUrl & { path: string };

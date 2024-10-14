@@ -99,6 +99,85 @@
         }
       }
     },
+    "/api/avatars": {
+      "get": {
+        "tags": ["Avatars"],
+        "summary": "Get avatars or a specific avatar by path",
+        "description": "Returns either a specific avatar by providing the path as a query parameter or all available avatars if no path is provided.",
+        "operationId": "getAvatars",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "query",
+            "description": "Path of the specific avatar in the storage",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "signedUrl": {
+                          "type": "string",
+                          "description": "Signed URL for the requested avatar"
+                        }
+                      },
+                      "required": ["signedUrl"]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "description": "Path of the image"
+                          },
+                          "signedUrl": {
+                            "type": "string",
+                            "description": "Signed URL for the image"
+                          }
+                        },
+                        "required": ["signedUrl", "path"]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request, invalid or missing parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/events": {
       "get": {
         "summary": "Retrieve events",
