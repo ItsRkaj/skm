@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/api/marshals": {
+  '/api/marshals': {
     parameters: {
       query?: never;
       header?: never;
@@ -15,7 +15,7 @@ export interface paths {
      * Get a list of marshals
      * @description Returns a a list of marshals
      */
-        get: operations["getMarshals"];
+    get: operations['getMarshals'];
     put?: never;
     post?: never;
     delete?: never;
@@ -24,7 +24,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-    "/api/leaderboard": {
+  '/api/leaderboard': {
     parameters: {
       query?: never;
       header?: never;
@@ -50,7 +50,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": components["schemas"]["LeaderboardEntry"][];
+            'application/json': components['schemas']['LeaderboardEntry'][];
           };
         };
         /** @description Internal server error. */
@@ -59,7 +59,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Internal server error */
               error?: string;
             };
@@ -71,7 +71,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": components["schemas"]["Error"];
+            'application/json': components['schemas']['Error'];
           };
         };
       };
@@ -89,7 +89,7 @@ export interface paths {
       };
       requestBody?: {
         content: {
-                    "application/json": {
+          'application/json': {
             /** @example 1a1abcd1-a1a1-12a1-12a1-12a12ab1a123 */
             id?: string;
             /** @example 8 */
@@ -110,7 +110,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Score updated successfully */
               message?: string;
             };
@@ -122,7 +122,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": components["schemas"]["Error"];
+            'application/json': components['schemas']['Error'];
           };
         };
         /** @description Internal server error. */
@@ -131,7 +131,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Internal server error */
               error?: string;
             };
@@ -146,7 +146,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-    "/api/news": {
+  '/api/news': {
     parameters: {
       query?: never;
       header?: never;
@@ -172,7 +172,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": components["schemas"]["News"][];
+            'application/json': components['schemas']['News'][];
           };
         };
         /** @description Internal Server Error */
@@ -181,7 +181,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example An unexpected error occurred. */
               error?: string;
             };
@@ -197,7 +197,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-    "/api/login": {
+  '/api/login': {
     parameters: {
       query?: never;
       header?: never;
@@ -219,7 +219,7 @@ export interface paths {
       };
       requestBody: {
         content: {
-                    "application/json": {
+          'application/json': {
             /**
              * Format: email
              * @description The user's email address.
@@ -237,7 +237,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Login successful */
               message?: string;
             };
@@ -249,7 +249,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Invalid request data */
               message?: string;
             };
@@ -261,7 +261,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Authentication failed */
               message?: string;
             };
@@ -273,7 +273,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example An unexpected error occurred */
               message?: string;
             };
@@ -287,7 +287,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-    "/api/signout": {
+  '/api/signout': {
     parameters: {
       query?: never;
       header?: never;
@@ -322,7 +322,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Internal server error */
               message?: string;
             };
@@ -336,7 +336,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-    "/api/signup": {
+  '/api/signup': {
     parameters: {
       query?: never;
       header?: never;
@@ -358,7 +358,7 @@ export interface paths {
       };
       requestBody: {
         content: {
-                    "application/json": {
+          'application/json': {
             /**
              * Format: email
              * @description The user's email address.
@@ -376,7 +376,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Sign up successful */
               message?: string;
             };
@@ -388,7 +388,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Sign up failed */
               message?: string;
             };
@@ -400,7 +400,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-                        "application/json": {
+            'application/json': {
               /** @example Internal server error */
               message?: string;
             };
@@ -414,7 +414,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-    "/api/user": {
+  '/api/user': {
     parameters: {
       query?: never;
       header?: never;
@@ -425,7 +425,7 @@ export interface paths {
      * Get the authenticated user
      * @description Retrieves the authenticated user's information using Supabase.
      */
-        get: operations["getUser"];
+    get: operations['getUser'];
     put?: never;
     post?: never;
     delete?: never;
@@ -566,7 +566,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-                    "application/json": components["schemas"]["Marshal"][];
+          'application/json': components['schemas']['Marshal'][];
         };
       };
       /** @description error */
@@ -575,7 +575,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-                    "application/json": components["schemas"]["Error"];
+          'application/json': components['schemas']['Error'];
         };
       };
     };
@@ -595,7 +595,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-                    "application/json": {
+          'application/json': {
             /** @example 12345-abcde */
             id?: string;
             app_metadata?: {
@@ -704,7 +704,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-                    "application/json": {
+          'application/json': {
             /** @example User not found */
             message?: string;
           };
@@ -716,7 +716,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-                    "application/json": {
+          'application/json': {
             /** @example Internal server error */
             message?: string;
           };
