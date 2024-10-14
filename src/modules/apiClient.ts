@@ -6,7 +6,7 @@ import {
   News,
   UserProfile,
   NewsInsert,
-  marshalsInsert
+  marshalsInsert,
 } from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
@@ -158,7 +158,6 @@ export async function addNews(newNews: NewsInsert) {
 
 export async function addMarshal(newmarshal: marshalsInsert) {
   try {
-  
     const response = await client.POST('/api/marshals', { body: newmarshal });
     if (response.response.status === 200) {
       return { message: 'marshal added successfully' };

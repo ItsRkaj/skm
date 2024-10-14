@@ -4,12 +4,17 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Phone } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 function MarshalForm({
   addMarshal,
 }: {
-  addMarshal: (name:string, phone:string, email:string, location:string) => Promise<boolean>;
+  addMarshal: (
+    name: string,
+    phone: string,
+    email: string,
+    location: string,
+  ) => Promise<boolean>;
 }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,23 +28,19 @@ function MarshalForm({
     setLoading(true);
     e.preventDefault();
 
-    const success = await addMarshal(name,
-      phone,
-      email,
-      location);
+    const success = await addMarshal(name, phone, email, location);
 
     if (success) {
-     setEmail("")
-     setLocation("")
-     setName("")
-     setPhone("")
+      setEmail('');
+      setLocation('');
+      setName('');
+      setPhone('');
       toast({
         description: 'Marshal tillagt!',
       });
       setLoading(false);
     } else {
       toast({
-        
         description: 'Något gick fel.',
       });
       setLoading(false);
