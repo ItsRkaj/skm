@@ -72,6 +72,303 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/events': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Retrieve events
+     * @description Retrieves a list of all events
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Successful response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Event'][];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    post?: never;
+    /**
+     * Delete an event
+     * @description Deletes an event by its ID
+     */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      /** @description ID of the event to delete */
+      requestBody: {
+        content: {
+          'application/json': {
+            /**
+             * @description The ID of the event to delete
+             * @example 12345
+             */
+            id: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Event deleted successfully */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Event deleted successfully */
+              message?: string;
+            };
+          };
+        };
+        /** @description Bad Request - missing or invalid event ID */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Event ID is required */
+              error?: string;
+            };
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/events/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Retrieve a single event and its attendees
+     * @description Retrieves a single event by its ID along with its attendees
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description The ID of the event to retrieve */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Successful response containing the event and its attendees */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              event: components['schemas']['Event'];
+              attendees?: {
+                user_id: string;
+                first_name: string;
+                last_name: string;
+                nickname?: string;
+              }[];
+            };
+          };
+        };
+        /** @description Event not found */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    /**
+     * Add a user to the event
+     * @description Adds a user as an attendee to the event with the given ID
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description The ID of the event to add the user to */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description The ID of the user to add to the event */
+            user_id: string;
+          };
+        };
+      };
+      responses: {
+        /** @description User successfully added to the event */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example User added to event */
+              message?: string;
+            };
+          };
+        };
+        /** @description User is already attending the event */
+        400: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    /**
+     * Remove a user from the event
+     * @description Removes a user as an attendee from the event with the given ID
+     */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          /** @description The ID of the event to remove the user from */
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description The ID of the user to remove from the event */
+            user_id: string;
+          };
+        };
+      };
+      responses: {
+        /** @description User successfully removed from the event */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example User removed from event */
+              message?: string;
+            };
+          };
+        };
+        /** @description User is not attending the event */
+        404: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Error'];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/leaderboard': {
     parameters: {
       query?: never;
@@ -238,7 +535,153 @@ export interface paths {
       };
     };
     put?: never;
-    post?: never;
+    /**
+     * Add a new news
+     * @description Make a new news and stor it in the database.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description the title of the news */
+            title: string;
+            /** @description The author of the news. */
+            author: string;
+            /** @description The text of the news. */
+            text: string;
+            /**
+             * Format: date
+             * @description The author of the news.
+             */
+            date: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Quote created successfully. */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Quote'];
+          };
+        };
+        /** @description Internal Server Error. */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Internal server error */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/quotes': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Retrieve quotes
+     * @description Retrieves a list of all quotes.
+     */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Successful response */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Quote'][];
+          };
+        };
+        /** @description Internal Server Error */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example An unexpected error occurred. */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
+    put?: never;
+    /**
+     * Add a new quote to the quotes
+     * @description Make a new quote.
+     */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody: {
+        content: {
+          'application/json': {
+            /** @description the quote itself. */
+            quotetext: string;
+            /** @description The author of the quote. */
+            author: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Quote created successfully. */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': components['schemas']['Quote'];
+          };
+        };
+        /** @description Internal Server Error. */
+        500: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            'application/json': {
+              /** @example Internal server error */
+              error?: string;
+            };
+          };
+        };
+      };
+    };
     delete?: never;
     options?: never;
     head?: never;
@@ -519,6 +962,60 @@ export interface components {
       id?: string;
     };
     /**
+     * Event model
+     * @description Event object representing an event with details
+     */
+    Event: {
+      /** @description Description of the event */
+      description?: string | null;
+      /**
+       * Format: date-time
+       * @description End time of the event
+       */
+      end_time: string;
+      /** @description Unique identifier for the event */
+      id: number;
+      /**
+       * @description Invitation type for the event
+       * @enum {string}
+       */
+      invitation_type: 'Everyone' | 'Gamlingar' | 'Aktiva';
+      /** @description Location of the event */
+      location: string;
+      /** @description Organizer of the event */
+      organizer: string;
+      /** @description Price of the event */
+      price: number;
+      /** @description Publisher of the event */
+      publisher: string;
+      /**
+       * Format: date-time
+       * @description Registration deadline for the event
+       */
+      registration_deadline?: string | null;
+      /** @description Registration link for the event */
+      registration_link?: string | null;
+      /**
+       * Format: date-time
+       * @description Start time of the event
+       */
+      start_time: string;
+      /** @description Title of the event */
+      title: string;
+    };
+    /**
+     * Quote model
+     * @description Quote object representing an Quote with details
+     */
+    Quote: {
+      /** @description Description of the quote */
+      quotetext: string;
+      /** @description Unique identifier for the Quote */
+      id: number;
+      /** @description Author of of the quote */
+      author: string;
+    };
+    /**
      * news model
      * @description news object representing an news  with details
      */
@@ -588,6 +1085,150 @@ export interface components {
        */
       pins: number;
     };
+    /**
+     * UserProfile model
+     * @description Combined user and profile data
+     */
+    UserProfile: {
+      /**
+       * @description Unique identifier for the user
+       * @example 12345-abcde
+       */
+      id?: string;
+      app_metadata?: {
+        /** @example email */
+        provider?: string;
+        /** @example [
+         *       "email"
+         *     ] */
+        providers?: string[];
+      };
+      user_metadata?: {
+        /** @example John Doe */
+        name?: string;
+        /** @example user */
+        role?: string;
+      };
+      /** @example authenticated */
+      aud?: string;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      confirmation_sent_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      recovery_sent_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      email_change_sent_at?: string | null;
+      /** @example new_user@example.com */
+      new_email?: string | null;
+      /** @example +1234567890 */
+      new_phone?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      invited_at?: string | null;
+      /** @example https://supabase.io/verify_email */
+      action_link?: string | null;
+      /** @example user@example.com */
+      email?: string | null;
+      /** @example +1234567890 */
+      phone?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      created_at?: string;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      confirmed_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      email_confirmed_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      phone_confirmed_at?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      last_sign_in_at?: string | null;
+      /** @example user */
+      role?: string | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      updated_at?: string | null;
+      identities?: {
+        /** @example identity-12345 */
+        id?: string;
+        /** @example email */
+        provider?: string;
+        /**
+         * Format: date-time
+         * @example 2023-09-01T12:34:56.789Z
+         */
+        created_at?: string;
+      }[];
+      /** @example false */
+      is_anonymous?: boolean | null;
+      factors?: {
+        /** @example factor-12345 */
+        id?: string;
+        /** @example verified */
+        status?: string;
+      }[];
+      profile?: components['schemas']['Profile'];
+    };
+    /**
+     * Profile model
+     * @description Profile object representing additional information about the user
+     */
+    Profile: {
+      /** @example profile-12345 */
+      id: string;
+      /** @example Peanuts */
+      allergies?: string | null;
+      /** @example https://example.com/avatar.png */
+      avatar_url?: string | null;
+      /** @example 1990-01-01 */
+      birthday?: string | null;
+      /** @example profile@example.com */
+      email?: string | null;
+      /** @example John */
+      first_name?: string | null;
+      /** @example Doe */
+      last_name?: string | null;
+      /** @example Johnny */
+      nickname?: string | null;
+      /** @example Live and let live */
+      motto?: string | null;
+      /** @example +1234567890 */
+      phone_number?: string | null;
+      /** @example 3 */
+      role?: number | null;
+      /** @example 1 */
+      title?: number | null;
+      /**
+       * Format: date-time
+       * @example 2023-09-01T12:34:56.789Z
+       */
+      updated_at?: string | null;
+    };
     Error: {
       code: number;
       message: string;
@@ -645,107 +1286,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': {
-            /** @example 12345-abcde */
-            id?: string;
-            app_metadata?: {
-              /** @example email */
-              provider?: string;
-              /** @example [
-               *       "email"
-               *     ] */
-              providers?: string[];
-            };
-            user_metadata?: {
-              /** @example John Doe */
-              name?: string;
-              /** @example user */
-              role?: string;
-            };
-            /** @example authenticated */
-            aud?: string;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            confirmation_sent_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            recovery_sent_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            email_change_sent_at?: string | null;
-            /** @example new_user@example.com */
-            new_email?: string | null;
-            /** @example +1234567890 */
-            new_phone?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            invited_at?: string | null;
-            /** @example https://supabase.io/verify_email */
-            action_link?: string | null;
-            /** @example user@example.com */
-            email?: string | null;
-            /** @example +1234567890 */
-            phone?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            created_at?: string;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            confirmed_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            email_confirmed_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            phone_confirmed_at?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            last_sign_in_at?: string | null;
-            /** @example user */
-            role?: string | null;
-            /**
-             * Format: date-time
-             * @example 2023-09-01T12:34:56.789Z
-             */
-            updated_at?: string | null;
-            identities?: {
-              /** @example identity-12345 */
-              id?: string;
-              /** @example email */
-              provider?: string;
-              /**
-               * Format: date-time
-               * @example 2023-09-01T12:34:56.789Z
-               */
-              created_at?: string;
-            }[];
-            /** @example false */
-            is_anonymous?: boolean | null;
-            factors?: {
-              /** @example factor-12345 */
-              id?: string;
-              /** @example verified */
-              status?: string;
-            }[];
-          };
+          'application/json': components['schemas']['UserProfile'];
         };
       };
       /** @description User not found. */
