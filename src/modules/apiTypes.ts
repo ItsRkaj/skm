@@ -21,3 +21,10 @@ export type NewsInsert = {
   author: string;
   date: string;
 };
+
+export type marshalsInsert = {
+  name: string;
+  phone: string;
+  email: string;
+  location: string;
+};
