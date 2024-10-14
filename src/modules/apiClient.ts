@@ -8,6 +8,7 @@ import {
   News,
   UserProfile,
   NewsInsert,
+  marshalsInsert,
 } from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
@@ -21,12 +22,15 @@ const client = createClient<paths>({
 export async function getMarshals(): Promise<Marshal[] | undefined> {
   try {
     const response = await client.GET('/api/marshals');
-    if (response.response.status === 200) {
+    if (response.response.ok) {
       return response.data;
+    } else {
+      console.error('Failed to fetch marshals', response.response.status);
+      return undefined;
     }
-    return undefined;
   } catch (e) {
-    console.error(e);
+    console.error('Error: ', e);
+    return undefined;
   }
 }
 
@@ -259,6 +263,20 @@ export async function addNews(newNews: NewsInsert) {
     } else {
       console.error('Unexpected response status:', response.response.status);
       return { message: 'Failed to add news' };
+    }
+  } catch (error) {
+    console.error('Error adding news:', error);
+  }
+}
+
+export async function addMarshal(newmarshal: marshalsInsert) {
+  try {
+    const response = await client.POST('/api/marshals', { body: newmarshal });
+    if (response.response.status === 200) {
+      return { message: 'marshal added successfully' };
+    } else {
+      console.error('Unexpected response status:', response.response.status);
+      return { message: 'Failed to add marshals' };
     }
   } catch (error) {
     console.error('Error adding news:', error);
