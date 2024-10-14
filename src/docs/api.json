@@ -36,6 +36,67 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "Add a new marshal ",
+        "description": "add a new marshal and stor it in the database.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "marshal name"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The phone number "
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The marshals email"
+                  },
+                  "location": {
+                    "type": "string",
+                    "description": "marshals location"
+                  }
+                },
+                "required": ["name", "phone", "email", "location"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Marshal created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quote"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/events": {
@@ -1010,6 +1071,10 @@
             "description": "Email of the marshal",
             "type": "string",
             "format": "string"
+          },
+          "id": {
+            "type": "string",
+            "description": "UID of the person"
           }
         },
         "type": "object"
