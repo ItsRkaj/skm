@@ -41,7 +41,7 @@
     "/api/leaderboard": {
       "get": {
         "summary": "Retrieve leaderboard",
-        "description": "Returns all users and their scores. Requires authentication.",
+        "description": "Returns all users and their scores.",
         "responses": {
           "200": {
             "description": "Array of leaderboard entries",
@@ -56,6 +56,7 @@
                 "example": [
                   {
                     "person": {
+                      "id": "1a1abcd1-a1a1-12a1-12a1-12a12ab1a123",
                       "avatar": "https://example.com/avatar1.jpg",
                       "name": "John Doe",
                       "nickname": "Johnny"
@@ -112,6 +113,279 @@
             "BearerAuth": []
           }
         ]
+      },
+      "put": {
+        "summary": "Update personal score",
+        "description": "Allows a user to update their personal score on the leaderboard.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "1a1abcd1-a1a1-12a1-12a1-12a12ab1a123"
+                  },
+                  "sewn_patches": {
+                    "type": "integer",
+                    "example": 8
+                  },
+                  "not_sewn_patches": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "medals": {
+                    "type": "integer",
+                    "example": 3
+                  },
+                  "pins": {
+                    "type": "integer",
+                    "example": 6
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Personal score updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Score updated successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/news": {
+      "get": {
+        "summary": "Retrieve news",
+        "description": "Retrieves a list of all news.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/News"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new news ",
+        "description": "Make a new news and stor it in the database.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "the title of the news"
+                  },
+                  "author": {
+                    "type": "string",
+                    "description": "The author of the news."
+                  },
+                  "text": {
+                    "type": "string",
+                    "description": "The text of the news."
+                  },
+                  "date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The author of the news."
+                  }
+                },
+                "required": ["text", "author", "title", "date"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Quote created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quote"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/quotes": {
+      "get": {
+        "summary": "Retrieve quotes",
+        "description": "Retrieves a list of all quotes.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Quote"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "An unexpected error occurred."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new quote to the quotes",
+        "description": "Make a new quote.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quotetext": {
+                    "type": "string",
+                    "description": "the quote itself."
+                  },
+                  "author": {
+                    "type": "string",
+                    "description": "The author of the quote."
+                  }
+                },
+                "required": ["quotetext", "author"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Quote created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quote"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/login": {
@@ -325,177 +599,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "12345-abcde"
-                    },
-                    "app_metadata": {
-                      "type": "object",
-                      "properties": {
-                        "provider": {
-                          "type": "string",
-                          "example": "email"
-                        },
-                        "providers": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          },
-                          "example": ["email"]
-                        }
-                      }
-                    },
-                    "user_metadata": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "example": "John Doe"
-                        },
-                        "role": {
-                          "type": "string",
-                          "example": "user"
-                        }
-                      }
-                    },
-                    "aud": {
-                      "type": "string",
-                      "example": "authenticated"
-                    },
-                    "confirmation_sent_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "recovery_sent_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "email_change_sent_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "new_email": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "new_user@example.com"
-                    },
-                    "new_phone": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "+1234567890"
-                    },
-                    "invited_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "action_link": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "https://supabase.io/verify_email"
-                    },
-                    "email": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "user@example.com"
-                    },
-                    "phone": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "+1234567890"
-                    },
-                    "created_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "confirmed_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "email_confirmed_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "phone_confirmed_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "last_sign_in_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "role": {
-                      "type": "string",
-                      "nullable": true,
-                      "example": "user"
-                    },
-                    "updated_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true,
-                      "example": "2023-09-01T12:34:56.789Z"
-                    },
-                    "identities": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "example": "identity-12345"
-                          },
-                          "provider": {
-                            "type": "string",
-                            "example": "email"
-                          },
-                          "created_at": {
-                            "type": "string",
-                            "format": "date-time",
-                            "example": "2023-09-01T12:34:56.789Z"
-                          }
-                        }
-                      }
-                    },
-                    "is_anonymous": {
-                      "type": "boolean",
-                      "nullable": true,
-                      "example": false
-                    },
-                    "factors": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "example": "factor-12345"
-                          },
-                          "status": {
-                            "type": "string",
-                            "example": "verified"
-                          }
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/UserProfile"
                 }
               }
             }
@@ -578,6 +682,54 @@
         },
         "type": "object"
       },
+      "Quote": {
+        "title": "Quote model",
+        "description": "Quote object representing an Quote with details",
+        "type": "object",
+        "properties": {
+          "quotetext": {
+            "type": "string",
+            "description": "Description of the quote"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the Quote"
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of of the quote"
+          }
+        },
+        "required": ["id", "author", "quotetext"]
+      },
+      "News": {
+        "title": "news model",
+        "description": "news object representing an news  with details",
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Description of the news"
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the news"
+          },
+          "author": {
+            "type": "string",
+            "description": "Author of of the news, admin"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of of the news"
+          },
+          "date": {
+            "type": "string",
+            "description": "date of of the news"
+          }
+        },
+        "required": ["id", "author", "text", "date", "title"]
+      },
       "LeaderboardEntry": {
         "title": "Leaderboard entry",
         "description": "Data for a row in the leaderboard",
@@ -644,6 +796,258 @@
           "medals",
           "pins"
         ]
+      },
+      "UserProfile": {
+        "title": "UserProfile model",
+        "description": "Combined user and profile data",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the user",
+            "example": "12345-abcde"
+          },
+          "app_metadata": {
+            "type": "object",
+            "properties": {
+              "provider": {
+                "type": "string",
+                "example": "email"
+              },
+              "providers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": ["email"]
+              }
+            }
+          },
+          "user_metadata": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "John Doe"
+              },
+              "role": {
+                "type": "string",
+                "example": "user"
+              }
+            }
+          },
+          "aud": {
+            "type": "string",
+            "example": "authenticated"
+          },
+          "confirmation_sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "recovery_sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "email_change_sent_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "new_email": {
+            "type": "string",
+            "nullable": true,
+            "example": "new_user@example.com"
+          },
+          "new_phone": {
+            "type": "string",
+            "nullable": true,
+            "example": "+1234567890"
+          },
+          "invited_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "action_link": {
+            "type": "string",
+            "nullable": true,
+            "example": "https://supabase.io/verify_email"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "example": "user@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "example": "+1234567890"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "confirmed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "email_confirmed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "phone_confirmed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "last_sign_in_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "role": {
+            "type": "string",
+            "nullable": true,
+            "example": "user"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2023-09-01T12:34:56.789Z"
+          },
+          "identities": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "identity-12345"
+                },
+                "provider": {
+                  "type": "string",
+                  "example": "email"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2023-09-01T12:34:56.789Z"
+                }
+              }
+            }
+          },
+          "is_anonymous": {
+            "type": "boolean",
+            "nullable": true,
+            "example": false
+          },
+          "factors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "factor-12345"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "verified"
+                }
+              }
+            }
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          }
+        }
+      },
+      "Profile": {
+        "title": "Profile model",
+        "description": "Profile object representing additional information about the user",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "profile-12345"
+          },
+          "allergies": {
+            "type": "string",
+            "nullable": true,
+            "example": "Peanuts"
+          },
+          "avatar_url": {
+            "type": "string",
+            "nullable": true,
+            "example": "https://example.com/avatar.png"
+          },
+          "birthday": {
+            "type": "string",
+            "nullable": true,
+            "example": "1990-01-01"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true,
+            "example": "profile@example.com"
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true,
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true,
+            "example": "Doe"
+          },
+          "nickname": {
+            "type": "string",
+            "nullable": true,
+            "example": "Johnny"
+          },
+          "motto": {
+            "type": "string",
+            "nullable": true,
+            "example": "Live and let live"
+          },
+          "phone_number": {
+            "type": "string",
+            "nullable": true,
+            "example": "+1234567890"
+          },
+          "role": {
+            "type": "integer",
+            "nullable": true,
+            "example": 3
+          },
+          "title": {
+            "type": "integer",
+            "nullable": true,
+            "example": 1
+          },
+          "updated_at": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time",
+            "example": "2023-09-01T12:34:56.789Z"
+          }
+        },
+        "required": ["id"]
       },
       "Error": {
         "type": "object",

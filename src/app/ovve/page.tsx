@@ -1,21 +1,38 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { DataTable } from './data-table';
+import { revalidatePath } from 'next/cache';
+import PersonalBanner from '@/components/ovve-page/PersonalBanner';
 
 export const metadata: Metadata = {
   title: 'Ovve-lista | Systrarna KM',
   description: 'Systrarna KMs topplista',
 };
 
-// Revalidate the cache every 5 minutes
-export const revalidate = 60 * 5;
+// Don't cache the leaderboard
+export const revalidate = 0;
 
-// Compontent used for data fetching
+/* eslint-disable */
+const updateLeaderboard = async () => {
+  'use server';
+  revalidatePath('/leaderboard');
+};
+/* eslint-enable */
+
 async function LeaderboardData() {
   const { getLeaderboard } = await import('@/modules/apiClient');
   const { columns } = await import('./columns');
-  const data = await getLeaderboard();
-  return <DataTable columns={columns} data={data ?? []} />;
+  const leaderboard = await getLeaderboard();
+
+  return (
+    <>
+      <PersonalBanner
+        updateLeaderboard={updateLeaderboard}
+        leaderboard={leaderboard ?? []}
+      />
+      <DataTable columns={columns} data={leaderboard ?? []} />
+    </>
+  );
 }
 
 export default function Ovve() {

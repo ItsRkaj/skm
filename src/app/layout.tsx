@@ -4,6 +4,7 @@ import '@/app/globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
 import { UserProvider } from '@/context/UserContext';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
             <main className="px-4 py-4 md:px-6 md:py-6">{children}</main>
           </ThemeProvider>
         </UserProvider>
+        <Toaster />
       </body>
     </html>
   );
