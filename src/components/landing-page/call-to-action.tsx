@@ -1,9 +1,10 @@
-'use client'; // Needed for the button to handle clicks in Next.js with App Router
+'use client';
+
 import { Button } from '@/components/ui/button';
 
-const CallToAction: React.FC = () => {
+export default function CallToAction() {
   return (
-    <div className="bg-gradient-to-r from-[hsl(var(--primary-foreground))] to-[hsl(var(--primary))] py-12 lg:py-16 text-center">
+    <div className="container mx-auto rounded-md bg-gradient-to-r from-[hsl(var(--primary-foreground))] to-[hsl(var(--primary))] py-12 lg:py-16 text-center">
       <h2 className="text-3xl font-extrabold sm:text-4xl">
         Låter det intressant?
       </h2>
@@ -18,6 +19,4 @@ const CallToAction: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default CallToAction;
+}

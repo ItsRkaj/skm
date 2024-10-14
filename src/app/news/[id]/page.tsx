@@ -41,7 +41,7 @@ const NewsDetail = ({ params }: { params: { id: string } }) => {
             {/* just to avoid button style*/}
             <h1 className="text-3xl font-bold mb-4">{news.title}</h1>
             <Image
-              src={'/skmLogo.png'}
+              src={'/skm-logo.png'}
               alt={news.title}
               width={800}
               height={400}
@@ -73,8 +73,8 @@ const NewsDetail = ({ params }: { params: { id: string } }) => {
             Tillbaka
           </Button>
           <Image
-            src={'/skmLogo.png'}
-            alt={'skmlogo'}
+            src={'/skm-logo.png'}
+            alt={'Skm logo'}
             width={800}
             height={400}
             className="w-full h-80 object-cover rounded-lg mb-6"

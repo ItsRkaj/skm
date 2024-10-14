@@ -28,7 +28,7 @@ export default async function EventsSection() {
 
   return (
     <div className="container mx-auto events-section py-8">
-      <h2 className="text-2xl font-serif mb-6">KOMMANDE EVENEMANG</h2>
+      <h2 className="text-2xl mb-6">Våra kommande events!</h2>
       {events && events.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {events.slice(0, 6).map((event) => (
@@ -36,7 +36,7 @@ export default async function EventsSection() {
           ))}
         </div>
       ) : (
-        <p>Inga kommande events :(</p>
+        <p>Inga kommande events :</p>
       )}
     </div>
   );

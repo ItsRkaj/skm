@@ -5,10 +5,10 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-const FAQ: React.FC = () => {
+export default function FAQ() {
   return (
-    <div>
-      <h2 className="text-2xl font-serif mb-6">VANLIGA FRÅGOR & SVAR?</h2>
+    <div className="container mx-auto py-8">
+      <h2 className="text-2xl mb-6">Vanliga frågor och svar</h2>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger>Is it accessible?</AccordionTrigger>
@@ -33,5 +33,4 @@ const FAQ: React.FC = () => {
       </Accordion>
     </div>
   );
-};
-export default FAQ;
+}

@@ -20,14 +20,14 @@ export default function Allnews() {
 
   return (
     <div className="w-full py-8 container mx-auto">
-      <h2 className="text-2xl font-serif mb-6">NYHETER</h2>
+      <h2 className="text-2xl mb-6">Nyheter</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {allnews ? (
           allnews.map((news) => (
             <Link key={news.id} href={`/news/${news.id}`} passHref>
               <div className="news-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow">
                 <Image
-                  src={'/skmLogo.png'}
+                  src={'/skm-logo.png'}
                   alt={news.title}
                   width={600}
                   height={160}
