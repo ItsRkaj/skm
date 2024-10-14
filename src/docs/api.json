@@ -322,9 +322,15 @@
                           "user_id": { "type": "string" },
                           "first_name": { "type": "string" },
                           "last_name": { "type": "string" },
-                          "nickname": { "type": "string" }
+                          "nickname": { "type": "string" },
+                          "avatar_url": { "type": "string" }
                         },
-                        "required": ["user_id", "first_name", "last_name"]
+                        "required": [
+                          "user_id",
+                          "first_name",
+                          "last_name",
+                          "avatar_url"
+                        ]
                       }
                     }
                   },

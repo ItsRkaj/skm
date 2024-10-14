@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
-import Avatar from './avatar';
+import AvatarComponent from './AvatarComponent';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -130,7 +130,7 @@ export default function AccountForm() {
         </CardHeader>
         <CardContent>
           <div className="flex justify-center mb-6">
-            <Avatar
+            <AvatarComponent
               uid={user?.id ?? null}
               url={avatar_url}
               size={80}

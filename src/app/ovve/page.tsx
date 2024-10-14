@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { DataTable } from './data-table';
 import { revalidatePath } from 'next/cache';
 import PersonalBanner from '@/components/ovve-page/PersonalBanner';
+import { Loader2 } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Ovve-lista | Systrarna KM',
@@ -42,7 +43,12 @@ export default function Ovve() {
         Ovve-lista
       </h1>
       <div className="container mx-auto py-10">
-        <Suspense fallback={<p>Laddar Ovve-lista...</p>}>
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center">
+              <Loader2 className="mr-2 h-8 w-8 animate-spin" />
+            </div>
+          }>
           <LeaderboardData />
         </Suspense>
       </div>

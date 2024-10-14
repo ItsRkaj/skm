@@ -19,7 +19,6 @@ interface EventDataProps {
 const EventData: React.FC<EventDataProps> = async ({ id }) => {
   const { getEvent } = await import('@/modules/apiClient');
   const event = await getEvent(id);
-  console.log(event);
 
   if (!event) {
     return (

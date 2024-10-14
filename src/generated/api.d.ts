@@ -240,6 +240,7 @@ export interface paths {
                                 first_name: string;
                                 last_name: string;
                                 nickname?: string;
+                                avatar_url: string;
                             }[];
                         };
                     };

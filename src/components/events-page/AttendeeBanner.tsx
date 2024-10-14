@@ -7,19 +7,22 @@ import { Skeleton } from '../ui/skeleton';
 interface AttendeeBannerProps {
   name: string;
   nickname: string;
+  avatar: string;
 }
 
-const AttendeeBanner = ({ name, nickname }: AttendeeBannerProps) => {
+const AttendeeBanner = ({ name, nickname, avatar }: AttendeeBannerProps) => {
   const [isAvatarLoaded, setIsAvatarLoaded] = useState(false);
 
   return (
     <Card className="flex flex-row items-center overflow-auto gap-2 p-4">
       <Avatar>
-        {!isAvatarLoaded && (
-          <Skeleton className="w-[100px] h-[100px] rounded-full bg-white" />
-        )}
+        {!isAvatarLoaded ||
+          !avatar ||
+          (avatar === '' && (
+            <Skeleton className="w-[100px] h-[100px] rounded-full bg-white" />
+          ))}
         <AvatarImage
-          src="https://github.com/shadcn.png"
+          src={avatar}
           onLoad={() => setIsAvatarLoaded(true)}
           className={`${isAvatarLoaded ? 'block' : 'hidden'}`}
         />

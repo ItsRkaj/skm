@@ -44,7 +44,11 @@ const SortableHeader: React.FC<SortableHeaderProps> = ({
 };
 
 // Avatar component
-const AvatarComponent: React.FC = () => {
+interface AvatarComponentProps {
+  avatarUrl: string;
+}
+
+const AvatarComponent: React.FC<AvatarComponentProps> = ({ avatarUrl }) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   return (
@@ -53,7 +57,7 @@ const AvatarComponent: React.FC = () => {
         <Skeleton className="w-[100px] h-[100px] rounded-full bg-white" />
       )}
       <AvatarImage
-        src="https://github.com/shadcn.png"
+        src={avatarUrl}
         onLoad={() => setIsLoaded(true)}
         className={`${isLoaded ? 'block' : 'none'}`}
       />
@@ -91,7 +95,7 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
       return (
         // ADD PROFILE LINK HERE
         <Link href={'/'} className="flex flex-row gap-2">
-          <AvatarComponent />
+          <AvatarComponent avatarUrl={person.avatar} />
           <div className="flex flex-col">
             <span className="text-foreground">{person.name}</span>
             <span className="text-muted-foreground">{person.nickname}</span>

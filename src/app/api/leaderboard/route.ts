@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import fetchSignedAvatars from '@/utils/fetchSignedAvatars';
 export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const supabase = createClient();
@@ -17,45 +19,37 @@ export async function GET() {
       );
     }
 
+    const signedAvatars = await fetchSignedAvatars();
+
+    const avatarUrlMap = new Map<string, string>();
+
+    signedAvatars.forEach((file) => {
+      avatarUrlMap.set(file.path, file.signedUrl);
+    });
+
     const response = data.map((item) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { id, users, sewn_patches, not_sewn_patches, medals, pins } = item;
 
       return {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         total_patches: sewn_patches + not_sewn_patches,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         sewn_patches,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         not_sewn_patches,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         medals,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         pins,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         person: {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           id,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          name:
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            (users.first_name as string) +
-            ' ' +
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            users.last_name,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+          name: `${users.first_name} ${users.last_name}`,
           nickname: users?.nickname,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          avatar: users.avatar_url as string,
+          avatar: avatarUrlMap.get(users.avatar_url!) || null,
         },
       };
     });
 
-    return NextResponse.json(response, { status: 200 });
-  } catch (e) {
-    console.error('Unexpected error:', e);
+    return NextResponse.json(response);
+  } catch (error) {
+    console.error('Unexpected error:', error);
     return NextResponse.json(
-      { error: 'Unexpected error occurred' },
+      { error: 'Internal Server Error' },
       { status: 500 },
     );
   }

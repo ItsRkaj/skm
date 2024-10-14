@@ -122,7 +122,7 @@ const PersonalBanner: React.FC<PersonalBannerProps> = ({
             <Skeleton className="w-[100px] h-[100px] rounded-full bg-white" />
           )}
           <AvatarImage
-            src="https://github.com/shadcn.png"
+            src={personalData.person.avatar}
             onLoad={() => setIsAvatarLoaded(true)}
             className={`${isAvatarLoaded ? 'block' : 'hidden'}`}
           />
