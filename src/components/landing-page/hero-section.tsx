@@ -11,26 +11,25 @@ export default function HeroSection() {
           <div className="flex flex-col justify-center space-y-4 text-center lg:text-left lg:pl-6">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                Transform Your Digital Presence
+                Kom och festa hos Systrarna!
               </h1>
               <p className="max-w-[600px] text-zinc-600 md:text-xl dark:text-zinc-200 mx-auto lg:mx-0">
-                Elevate your online experience with our cutting-edge platform.
-                Designed for innovators and creators like you.
+                Systrana KM är ett klubbmästeri av sjuksköterskestudenter som
+                annordnar pubar och fester för studenter.
               </p>
             </div>
             <div className="space-y-2 text-left">
               <ul className="grid gap-2">
                 <li className="flex items-center">
-                  <Check className="mr-2 h-5 w-5" /> Intuitive drag-and-drop
-                  interface
+                  <Check className="mr-2 h-5 w-5" /> Alltid god stämning med bra
+                  musik
                 </li>
                 <li className="flex items-center">
-                  <Check className="mr-2 h-5 w-5" /> Advanced analytics and
-                  insights
+                  <Check className="mr-2 h-5 w-5" /> Riktigt härlig lokal
                 </li>
                 <li className="flex items-center">
-                  <Check className="mr-2 h-5 w-5" /> Seamless integration with
-                  popular tools
+                  <Check className="mr-2 h-5 w-5" /> Studentvänliga priser på
+                  dryck
                 </li>
               </ul>
             </div>
@@ -47,10 +46,11 @@ export default function HeroSection() {
           </div>
           <Image
             className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center lg:aspect-square"
-            src="/img.jpeg"
-            width={800}
-            height={300}
-            alt="A group of people having fun"
+            src="/hero.jpg"
+            priority={true}
+            width={1284}
+            height={1284}
+            alt="A Grottan neon sign with beer pong tables"
           />
         </div>
       </div>

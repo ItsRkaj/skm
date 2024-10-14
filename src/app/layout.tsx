@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
 import { UserProvider } from '@/context/UserContext';
 import { Toaster } from '@/components/ui/toaster';
+import Footer from '@/components/landing-page/footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -29,6 +30,7 @@ export default function RootLayout({
             disableTransitionOnChange>
             <Navbar />
             <main className="px-4 py-4 md:px-6 md:py-6">{children}</main>
+            <Footer />
           </ThemeProvider>
         </UserProvider>
         <Toaster />

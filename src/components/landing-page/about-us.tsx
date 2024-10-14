@@ -1,17 +1,15 @@
 import {
   CalendarIcon,
-  StarIcon,
   PersonIcon,
   RocketIcon,
-  MixIcon,
   MagicWandIcon,
 } from '@radix-ui/react-icons';
 
-const AboutUs: React.FC = () => {
+export default function AboutUsSection() {
   return (
-    <div id="about-us" className="py-12 w-full">
+    <div id="about-us" className="container mx-auto py-12">
       <div className="w-full px-2">
-        <h2 className="text-2xl font-serif mb-6">VARFÖR SKA BLI MEDLEM?</h2>
+        <h2 className="text-2xl mb-6">Varför ska just du bli medlem?</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <div className="text-center p-6 border rounded-lg shadow-lg">
             <CalendarIcon className="mb-4  text-[hsl(var(--primary))] h-10 w-10 mx-auto" />
@@ -21,17 +19,6 @@ const AboutUs: React.FC = () => {
             <p>
               Som medlem får du tillgång till Systrarna KMs interna evenemang
               och fester, inklusive roliga temakvällar.
-            </p>
-          </div>
-
-          <div className="text-center p-6 border rounded-lg shadow-lg">
-            <StarIcon className="mb-4  text-[hsl(var(--primary))] h-10 w-10 mx-auto" />
-            <h3 className="text-xl text-[hsl(var(--primary))] font-semibold mb-2">
-              Utveckla dina eventplaneringsförmågor
-            </h3>
-            <p>
-              Få praktisk erfarenhet av eventplanering och ledarskap genom att
-              organisera puben och temaevenemang.
             </p>
           </div>
 
@@ -58,17 +45,6 @@ const AboutUs: React.FC = () => {
           </div>
 
           <div className="text-center p-6 border rounded-lg shadow-lg">
-            <MixIcon className="mb-4  text-[hsl(var(--primary))] h-10 w-10 mx-auto" />
-            <h3 className="text-xl text-[hsl(var(--primary))] font-semibold mb-2">
-              Temaevenemang och roliga aktiviteter
-            </h3>
-            <p>
-              Delta i spännande temaevenemang, från karaokekvällar till
-              sportturneringar och mycket mer!
-            </p>
-          </div>
-
-          <div className="text-center p-6 border rounded-lg shadow-lg">
             <MagicWandIcon className="mb-4  text-[hsl(var(--primary))] h-10 w-10 mx-auto" />
             <h3 className="text-xl text-[hsl(var(--primary))] font-semibold mb-2">
               Chans att utveckla din kreativitet
@@ -82,5 +58,4 @@ const AboutUs: React.FC = () => {
       </div>
     </div>
   );
-};
-export default AboutUs;
+}
