@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { signUpUser } from '@/modules/apiClient';
-import { useRouter } from 'next/navigation';
 import { useUser } from '@/context/UserContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,13 +13,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [isSignUp] = useState(false);
   const { login } = useUser();
+  const { toast } = useToast();
 
   const handleLogin = async ({
     email,
@@ -31,11 +29,10 @@ export default function LoginPage() {
     password: string;
   }) => {
     try {
-      await login({ email, password });
-      return { message: 'Login successful' };
+      return await login({ email, password });
     } catch (error) {
       console.error('Login error:', error);
-      return { message: 'Login failed' };
+      return false;
     }
   };
 
@@ -44,17 +41,13 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const result = isSignUp
-        ? await signUpUser({ email, password })
-        : await handleLogin({ email, password });
-
-      if (
-        result?.message ===
-        (isSignUp ? 'Sign up successful' : 'Login successful')
-      ) {
-        void router.push(isSignUp ? '/' : '/account');
+      const success = await handleLogin({ email, password });
+      if (success) {
+        toast({
+          description: 'Du är inloggad!',
+        });
       } else {
-        setError(isSignUp ? 'Sign up failed' : 'Login failed');
+        setError('Något gick fel. Kontrollera dina uppgifter.');
       }
     } catch (error) {
       console.error('Auth error:', error);

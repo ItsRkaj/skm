@@ -101,14 +101,12 @@ export default function AccountForm() {
         console.error('Error saving profile:', error);
         setDialogMessage(`Error: ${error.message}`);
       } else {
-        setDialogMessage('Profile updated successfully!');
+        setDialogMessage('Din profil har uppdaterats.');
         setIsEditing(false);
       }
     } catch (error) {
       console.error('Error saving profile:', error);
-      setDialogMessage(
-        'An unexpected error occurred while updating the profile.',
-      );
+      setDialogMessage('Något gick fel när profilen skulle uppdateras.');
     } finally {
       setShowDialog(true);
     }
@@ -230,8 +228,8 @@ export default function AccountForm() {
                   <AlertDialogHeader>
                     <AlertDialogTitle>
                       {dialogMessage.startsWith('Error')
-                        ? 'Error'
-                        : 'Profile Updated'}
+                        ? 'Fel'
+                        : 'Profil uppdaterad'}
                     </AlertDialogTitle>
                     <AlertDialogDescription>
                       {dialogMessage}

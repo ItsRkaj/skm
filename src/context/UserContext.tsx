@@ -14,7 +14,7 @@ import { UserProfile } from '@/modules/apiTypes';
 interface UserContextType {
   isLoggedIn: boolean;
   user: UserProfile | undefined;
-  login: (credentials: { email: string; password: string }) => Promise<void>;
+  login: (credentials: { email: string; password: string }) => Promise<boolean>;
   signOut: () => Promise<void>;
   isLoading: boolean;
 }
@@ -50,17 +50,28 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }: {
     email: string;
     password: string;
-  }) => {
+  }): Promise<boolean> => {
     setIsLoading(true);
+
     try {
       const result = await logInUser({ email, password });
+
       if (result?.message === 'Login successful') {
         setIsLoggedIn(true);
-        setUser(await getUser());
+
+        const userData = await getUser();
+        setUser(userData);
+
         router.push('/account');
+
+        return true;
+      } else {
+        console.error('Login failed: Invalid credentials or other error.');
+        return false;
       }
     } catch (error) {
       console.error('Login error:', error);
+      return false;
     } finally {
       setIsLoading(false);
     }

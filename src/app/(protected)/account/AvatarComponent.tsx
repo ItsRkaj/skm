@@ -31,7 +31,9 @@ export default function AvatarComponent({
     const fetchAvatarUrl = async () => {
       if (url) {
         const avatar = (await getAvatars(url)) as avatarUrl;
-        setAvatar(avatar.signedUrl);
+        if (avatar) {
+          setAvatar(avatar.signedUrl);
+        }
       }
     };
 
