@@ -2,10 +2,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@/app/globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
-import { Navbar } from '@/components/navbar';
 import { UserProvider } from '@/context/UserContext';
 import { Toaster } from '@/components/ui/toaster';
-import Footer from '@/components/landing-page/footer';
+import LayoutHandler from '@/components/LayoutHandler';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,9 +27,7 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange>
-            <Navbar />
-            <main className="px-4 py-4 md:px-6 md:py-6">{children}</main>
-            <Footer />
+            <LayoutHandler>{children}</LayoutHandler>
           </ThemeProvider>
         </UserProvider>
         <Toaster />
