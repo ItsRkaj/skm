@@ -8,7 +8,6 @@ Welcome to the **SKM** web application, built using Next.js to provide a modern,
 
 <img width="896" alt="Skärmavbild 2024-10-15 kl  18 33 13" src="https://github.com/user-attachments/assets/1e2211c2-3857-4234-8e83-b7c20430dc1a">
 
-
 ## ✨ Key Features
 
 - **Next.js (v14.2)**: Delivers fast, scalable, and SEO-friendly applications.
