@@ -6,7 +6,6 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { TrashIcon } from '@radix-ui/react-icons';
 import { useToast } from '@/hooks/use-toast';
-import { useUser } from '@/context/UserContext';
 import Link from 'next/link';
 
 interface EventCardProps {
@@ -22,7 +21,6 @@ function EventCard({ event, removeEvent }: EventCardProps) {
   } = formatDate(new Date(event.start_time));
   const { time: endTime } = formatDate(new Date(event.end_time));
 
-  const { user } = useUser();
   const { toast } = useToast();
 
   return (
@@ -45,31 +43,29 @@ function EventCard({ event, removeEvent }: EventCardProps) {
         </div>
       </div>
       <div className="flex items-center justify-center pr-4 z-50">
-        {user?.profile?.role === 1 && (
-          <Button
-            variant="destructive"
-            size="icon"
-            onClick={(e) => {
-              e.preventDefault();
+        <Button
+          variant="destructive"
+          size="icon"
+          onClick={(e) => {
+            e.preventDefault();
 
-              const handleRemoveEvent = async () => {
-                const success = await removeEvent(String(event.id));
-                if (success) {
-                  toast({
-                    description: 'Evenemang borttaget.',
-                  });
-                } else {
-                  toast({
-                    description: 'Något gick fel.',
-                  });
-                }
-              };
+            const handleRemoveEvent = async () => {
+              const success = await removeEvent(String(event.id));
+              if (success) {
+                toast({
+                  description: 'Evenemang borttaget.',
+                });
+              } else {
+                toast({
+                  description: 'Något gick fel.',
+                });
+              }
+            };
 
-              void handleRemoveEvent();
-            }}>
-            <TrashIcon className="h-4 w-4" />
-          </Button>
-        )}
+            void handleRemoveEvent();
+          }}>
+          <TrashIcon className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
@@ -82,13 +78,13 @@ function EventsClient({
   events: Event[];
   deleteEvent: (eventId: string) => Promise<boolean>;
 }) {
-  const { user } = useUser();
-
   return (
     <div className="container mx-auto py-8 flex flex-col gap-8">
       <div className="flex justify-between">
         <h2 className="text-2xl font-serif mb-6">KOMMANDE EVENEMANG</h2>
-        {user?.profile?.role === 1 && <Button>Skapa event</Button>}
+        <Link href="/add-event">
+          <Button>Skapa event</Button>
+        </Link>
       </div>
       {events?.map((event) => {
         return (

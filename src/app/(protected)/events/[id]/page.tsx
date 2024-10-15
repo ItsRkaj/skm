@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import EventInformation from '@/components/events-page/EventInformation';
 import { revalidatePath } from 'next/cache';
+import { Loader2 } from 'lucide-react';
 
 // Revalidate the cache every 5 minutes
 export const revalidate = 0;
@@ -67,7 +68,12 @@ const EventData: React.FC<EventDataProps> = async ({ id }) => {
 export default function Event({ params }: { params: { id: string } }) {
   return (
     <>
-      <Suspense fallback={<p>Laddar...</p>}>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center">
+            <Loader2 className="mr-2 h-8 w-8 animate-spin" />
+          </div>
+        }>
         <EventData id={params.id} />
       </Suspense>
     </>

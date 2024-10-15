@@ -48,16 +48,15 @@ const EventInformation: React.FC<EventInformationProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
-
-  if (!user) {
-    throw new Error('User is not defined');
-  }
-
   const [registered, setRegistered] = useState(() => {
     return (
-      attendees.findIndex((attendee) => attendee.user_id === user.id) !== -1
+      attendees.findIndex((attendee) => attendee.user_id === user?.id) !== -1
     );
   });
+
+  if (!user) {
+    return null;
+  }
 
   const handleRegister = async () => {
     setLoading(true);
