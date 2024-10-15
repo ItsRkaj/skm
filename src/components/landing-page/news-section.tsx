@@ -29,8 +29,9 @@ export default function Allnews() {
                 <Image
                   src={'/skm-logo.png'}
                   alt={news.title}
-                  width={600}
-                  height={160}
+                  width={714}
+                  height={714}
+                  priority={false}
                   className="w-full h-40 object-cover"
                 />
                 <div className="p-4 bg-[hsl(var(--card))]">
