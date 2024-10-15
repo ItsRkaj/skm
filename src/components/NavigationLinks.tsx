@@ -34,8 +34,8 @@ const privateLinks: LinkItem[] = [
   ...publicLinks,
   { href: '/ovve', label: 'Ovve', icon: Shirt },
   { href: '/events', label: 'Evenemang', icon: PartyPopper },
-  { href: '/addnews', label: 'Skapa nyhet', icon: Newspaper },
-  { href: '/addmarshal', label: 'Skapa marskalk', icon: User },
+  { href: '/add-news', label: 'Skapa nyhet', icon: Newspaper },
+  { href: '/add-marshal', label: 'Skapa marskalk', icon: User },
   { href: '/quotes', label: 'Citat', icon: Quote },
 ];
 
