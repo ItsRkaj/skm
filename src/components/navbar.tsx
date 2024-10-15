@@ -1,6 +1,12 @@
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 import AuthMenu from './AuthMenu';
@@ -28,12 +34,13 @@ export function Navbar() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left">
+          <SheetTitle></SheetTitle>
+          <SheetDescription></SheetDescription>
           <nav className="grid gap-6 text-lg font-medium">
             <Link
               href="/"
               className="flex items-center gap-2 text-lg font-semibold">
               Systrarna KM
-              <span className="sr-only">Systrarna KM</span>
             </Link>
             <NavigationLinksMobile />
           </nav>

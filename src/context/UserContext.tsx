@@ -57,7 +57,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       if (result?.message === 'Login successful') {
         setIsLoggedIn(true);
         setUser(await getUser());
-        router.push('/account');
+        router.push('/account')
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -73,7 +73,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       if (success) {
         setIsLoggedIn(false);
         setUser(undefined);
-        router.replace('/');
+        router.replace('/')
       } else {
         console.error('Sign out failed');
       }
