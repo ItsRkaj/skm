@@ -53,6 +53,7 @@ export async function GET(req: Request) {
     const filteredSignedUrls = signedUrls.filter((url) => url !== null);
 
     return NextResponse.json(filteredSignedUrls, { status: 200 });
+    // eslint-disable-next-line
   } catch (error) {
     return NextResponse.json(
       { message: 'Internal Server Error' },

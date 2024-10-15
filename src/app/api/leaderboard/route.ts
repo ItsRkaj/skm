@@ -40,6 +40,7 @@ export async function GET() {
           id,
           name: `${users.first_name} ${users.last_name}`,
           nickname: users?.nickname,
+          // eslint-disable-next-line
           avatar: avatarUrlMap.get(users.avatar_url!) || null,
         },
       };

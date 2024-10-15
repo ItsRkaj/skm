@@ -50,6 +50,18 @@ export default function AvatarComponent({
         throw new Error('You must select an image to upload.');
       }
 
+      if (url && url !== 'nysystrarnakm.png') {
+        const { error: removeError } = await supabase.storage
+          .from('avatars')
+          .remove([url]);
+
+        if (removeError) {
+          throw new Error(
+            `Failed to remove existing avatar: ${removeError.message}`,
+          );
+        }
+      }
+
       const fileExt = file.name.split('.').pop();
       const filePath = `${uid}-${Math.random()}.${fileExt}`;
 
@@ -58,12 +70,12 @@ export default function AvatarComponent({
         .upload(filePath, file);
 
       if (uploadError) {
-        throw uploadError;
+        throw new Error(`Failed to upload avatar: ${uploadError.message}`);
       }
 
       onUpload(filePath);
     } catch (error) {
-      alert('Error uploading avatar! ' + (error as Error).message);
+      alert('Error uploading avatar: ' + (error as Error).message);
     } finally {
       setUploading(false);
       setDragging(false);
@@ -110,6 +122,7 @@ export default function AvatarComponent({
         {loading ||
           (fetching && <Skeleton className="rounded-full bg-white" />)}
         <AvatarImage
+          // eslint-disable-next-line
           src={avatar!}
           onLoad={() => setLoading(false)}
           className={`${!loading && !fetching ? 'block' : 'none'}`}

@@ -45,16 +45,6 @@ export async function GET(
       );
     }
 
-    const avatarPaths = attendeesData
-      .filter(
-        (attendee: { users: { avatar_url: string | null } }) =>
-          attendee.users.avatar_url !== null,
-      )
-      .map(
-        (attendee: { users: { avatar_url: string | null } }) =>
-          attendee.users.avatar_url!,
-      );
-
     const signedAvatars = await fetchSignedAvatars();
 
     const avatarUrlMap = new Map<string, string>();
@@ -77,6 +67,7 @@ export async function GET(
         last_name: attendee.users.last_name ?? '',
         nickname: attendee.users.nickname || undefined,
         avatar_url:
+          // eslint-disable-next-line
           avatarUrlMap.get(attendee.users.avatar_url!) ||
           attendee.users.avatar_url ||
           '',

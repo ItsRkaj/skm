@@ -124,7 +124,7 @@ export function ProfileMenu() {
       }
     };
 
-    fetchAvatarUrl();
+    void fetchAvatarUrl();
   }, [user]);
 
   async function handleSignOut() {
