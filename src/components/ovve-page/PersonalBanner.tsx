@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '../ui/button';
 import { useUser } from '@/context/UserContext';
 import { putLeaderboard } from '@/modules/apiClient';
+import { useToast } from '@/hooks/use-toast';
 
 interface InputFieldProps {
   label: string;
@@ -56,6 +57,7 @@ const PersonalBanner: React.FC<PersonalBannerProps> = ({
   updateLeaderboard,
 }) => {
   const { user } = useUser();
+  const { toast } = useToast();
 
   const personalData = leaderboard.find(
     (entry) => entry.person.id === user?.id,
@@ -97,8 +99,23 @@ const PersonalBanner: React.FC<PersonalBannerProps> = ({
   const handleSave = async () => {
     setLoading(true);
     try {
-      /* eslint-disable-next-line */
-      await putLeaderboard(user.id!, sewnPatches, notSewnPatches, medals, pins);
+      const success = await putLeaderboard(
+        /* eslint-disable-next-line */
+        user.id!,
+        sewnPatches,
+        notSewnPatches,
+        medals,
+        pins,
+      );
+      if (success) {
+        toast({
+          description: 'Poäng uppdaterad!',
+        });
+      } else {
+        toast({
+          description: 'Något gick fel.',
+        });
+      }
       setOriginalValues({
         sewn_patches: sewnPatches,
         not_sewn_patches: notSewnPatches,
@@ -122,7 +139,7 @@ const PersonalBanner: React.FC<PersonalBannerProps> = ({
             <Skeleton className="w-[100px] h-[100px] rounded-full bg-white" />
           )}
           <AvatarImage
-            src="https://github.com/shadcn.png"
+            src={personalData.person.avatar}
             onLoad={() => setIsAvatarLoaded(true)}
             className={`${isAvatarLoaded ? 'block' : 'hidden'}`}
           />

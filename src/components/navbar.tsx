@@ -18,8 +18,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useUser } from '@/context/UserContext';
+import { getAvatars } from '@/modules/apiClient';
+import { useEffect, useState } from 'react';
+import { avatarUrl } from '@/modules/apiTypes';
+import { Avatar, AvatarImage } from './ui/avatar';
+import { Skeleton } from './ui/skeleton';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -107,19 +112,43 @@ export function LoginButton() {
 }
 
 export function ProfileMenu() {
-  const router = useRouter();
-  const { signOut } = useUser();
+  const [avatar, setAvatar] = useState<string | undefined>(undefined);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const { signOut, user } = useUser();
+
+  useEffect(() => {
+    const fetchAvatarUrl = async () => {
+      if (user?.profile?.avatar_url) {
+        const avatar = (await getAvatars(user.profile.avatar_url)) as avatarUrl;
+        setAvatar(avatar.signedUrl);
+      }
+    };
+
+    void fetchAvatarUrl();
+  }, [user]);
 
   async function handleSignOut() {
     await signOut();
-    void router.push('/');
   }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="secondary" size="icon" className="rounded-full">
-          <CircleUser className="h-5 w-5" />
+          {avatar ? (
+            <Avatar>
+              {!isLoaded && (
+                <Skeleton className="w-[100px] h-[100px] rounded-full bg-white" />
+              )}
+              <AvatarImage
+                src={avatar}
+                onLoad={() => setIsLoaded(true)}
+                className={`${isLoaded ? 'block' : 'none'}`}
+              />
+            </Avatar>
+          ) : (
+            <CircleUser className="h-5 w-5" />
+          )}
           <span className="sr-only">Toggle user menu</span>
         </Button>
       </DropdownMenuTrigger>

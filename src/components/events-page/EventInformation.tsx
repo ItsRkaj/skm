@@ -157,6 +157,7 @@ const EventInformation: React.FC<EventInformationProps> = ({
                   key={attendee.first_name + attendee.last_name}
                   name={`${attendee.first_name} ${attendee.last_name}`}
                   nickname={attendee.nickname ?? ''}
+                  avatar={attendee.avatar_url ?? ''}
                 />
               ))
             : 'Inga deltagare'}

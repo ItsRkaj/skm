@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/utils/supabase/server';
+import fetchSignedAvatars from '@/utils/fetchSignedAvatars';
 
 export async function GET(
   request: Request,
@@ -29,7 +30,9 @@ export async function GET(
 
     const { data: attendeesData, error: attendeesError } = await supabase
       .from('event_attendees')
-      .select('user_id, users!inner (first_name, last_name, nickname)')
+      .select(
+        'user_id, users!inner (first_name, last_name, nickname, avatar_url)',
+      )
       .eq('event_id', params.id);
 
     if (attendeesError) {
@@ -42,6 +45,13 @@ export async function GET(
       );
     }
 
+    const signedAvatars = await fetchSignedAvatars();
+
+    const avatarUrlMap = new Map<string, string>();
+    signedAvatars.forEach((file) => {
+      avatarUrlMap.set(file.path, file.signedUrl);
+    });
+
     const transformedAttendees = attendeesData.map(
       (attendee: {
         user_id: string;
@@ -49,12 +59,18 @@ export async function GET(
           first_name: string | null;
           last_name: string | null;
           nickname: string | null;
+          avatar_url: string | null;
         };
       }) => ({
         user_id: attendee.user_id,
         first_name: attendee.users.first_name ?? '',
         last_name: attendee.users.last_name ?? '',
         nickname: attendee.users.nickname || undefined,
+        avatar_url:
+          // eslint-disable-next-line
+          avatarUrlMap.get(attendee.users.avatar_url!) ||
+          attendee.users.avatar_url ||
+          '',
       }),
     );
 

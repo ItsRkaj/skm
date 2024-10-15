@@ -16,6 +16,7 @@ export type Attendee = {
   first_name: string;
   last_name: string;
   nickname?: string;
+  avatar_url?: string;
 };
 
 export type EventWithAttendees = {
@@ -42,3 +43,9 @@ export type marshalsInsert = {
   email: string;
   location: string;
 };
+
+export type avatarUrl = {
+  signedUrl: string;
+};
+
+export type avatarUrlPath = avatarUrl & { path: string };

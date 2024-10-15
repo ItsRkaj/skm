@@ -72,6 +72,26 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/avatars': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get avatars or a specific avatar by path
+     * @description Returns either a specific avatar by providing the path as a query parameter or all available avatars if no path is provided.
+     */
+    get: operations['getAvatars'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/events': {
     parameters: {
       query?: never;
@@ -220,6 +240,7 @@ export interface paths {
                 first_name: string;
                 last_name: string;
                 nickname?: string;
+                avatar_url: string;
               }[];
             };
           };
@@ -1262,6 +1283,57 @@ export interface operations {
       };
       /** @description error */
       default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+    };
+  };
+  getAvatars: {
+    parameters: {
+      query?: {
+        /** @description Path of the specific avatar in the storage */
+        path?: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful operation */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json':
+            | {
+                /** @description Signed URL for the requested avatar */
+                signedUrl: string;
+              }
+            | {
+                /** @description Path of the image */
+                path: string;
+                /** @description Signed URL for the image */
+                signedUrl: string;
+              }[];
+        };
+      };
+      /** @description Bad Request, invalid or missing parameters */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['Error'];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
         headers: {
           [name: string]: unknown;
         };

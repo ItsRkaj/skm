@@ -9,6 +9,8 @@ import {
   UserProfile,
   NewsInsert,
   marshalsInsert,
+  avatarUrl,
+  avatarUrlPath,
 } from '@/modules/apiTypes';
 import createClient from 'openapi-fetch';
 import type { paths } from '@/generated/api';
@@ -237,6 +239,26 @@ export async function signOutUser(): Promise<boolean> {
   } catch (error) {
     console.error('Error during sign out:', error);
     return false;
+  }
+}
+
+export async function getAvatars(
+  path?: string,
+): Promise<avatarUrl | avatarUrlPath[] | undefined> {
+  try {
+    const response = await client.GET('/api/avatars', {
+      params: { query: { path: path } },
+    });
+
+    if (response.response.status === 200) {
+      return response.data;
+    } else {
+      console.error('Unexpected response status:', response.response.status);
+      return undefined;
+    }
+  } catch (error) {
+    console.error('Error fetching avatars:', error);
+    return undefined;
   }
 }
 
