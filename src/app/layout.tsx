@@ -5,7 +5,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/navbar';
 import { UserProvider } from '@/context/UserContext';
 import { Toaster } from '@/components/ui/toaster';
-import Footer from '@/components/landing-page/footer';
+import { createClient } from '@/utils/supabase/server';
+import { DashboardNavbar } from '@/components/dashboard-navbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -14,11 +15,16 @@ export const metadata: Metadata = {
   description: 'Välkommen till Systrarna KM',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   return (
     <html lang="sv" suppressHydrationWarning>
       <body className={inter.className}>
@@ -28,9 +34,14 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange>
-            <Navbar />
-            <main className="px-4 py-4 md:px-6 md:py-6">{children}</main>
-            <Footer />
+            {session ? (
+              <DashboardNavbar>{children}</DashboardNavbar>
+            ) : (
+              <>
+                <Navbar />
+                <main className="px-4 py-4 md:px-6 md:py-6">{children}</main>
+              </>
+            )}
           </ThemeProvider>
         </UserProvider>
         <Toaster />

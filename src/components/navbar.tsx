@@ -1,67 +1,24 @@
-'use client';
-
 import Link from 'next/link';
-import { CircleUser, Menu, Package2 } from 'lucide-react';
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import { Menu } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ModeToggle } from '@/components/mode-toggle';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
+import AuthMenu from './AuthMenu';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { usePathname } from 'next/navigation';
-import { useUser } from '@/context/UserContext';
-import { getAvatars } from '@/modules/apiClient';
-import { useEffect, useState } from 'react';
-import { avatarUrl } from '@/modules/apiTypes';
-import { Avatar, AvatarImage } from './ui/avatar';
-import { Skeleton } from './ui/skeleton';
+  NavigationLinksHomePage,
+  NavigationLinksMobile,
+} from './NavigationLinks';
 
 export function Navbar() {
-  const pathname = usePathname();
-  const { isLoggedIn } = useUser();
-
-  interface Link {
-    key: number;
-    href: string;
-    label: string;
-  }
-
-  const links: Link[] = [
-    { key: 0, href: '/', label: 'Hem' },
-    { key: 1, href: '/marshals', label: 'Marskalkar' },
-    { key: 2, href: '/about', label: 'Om oss' },
-    { key: 3, href: '/contact', label: 'Kontakta oss' },
-  ];
-
   return (
     <header className="container mx-auto sticky z-50 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           href="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base">
-          <Package2 className="h-6 w-6" /> SKM
-          <span className="sr-only">Systrarna KM</span>
+          Systrarna KM
         </Link>
-        {links.map(({ key, href, label }) => (
-          <Link
-            key={key}
-            href={href}
-            className={`transition-colors ${
-              pathname === href ? 'text-foreground' : 'text-muted-foreground'
-            } hover:text-foreground`}>
-            {label}
-          </Link>
-        ))}
+        <NavigationLinksHomePage />
       </nav>
       <Sheet>
         <SheetTrigger asChild>
@@ -75,94 +32,18 @@ export function Navbar() {
             <Link
               href="/"
               className="flex items-center gap-2 text-lg font-semibold">
-              <Package2 className="h-6 w-6" />
+              Systrarna KM
               <span className="sr-only">Systrarna KM</span>
             </Link>
-            {links.map(({ key, href, label }) => (
-              <SheetClose key={key} asChild>
-                <Link
-                  href={href}
-                  className={`transition-colors ${
-                    pathname === href
-                      ? 'text-foreground'
-                      : 'text-muted-foreground'
-                  } hover:text-foreground`}>
-                  {label}
-                </Link>
-              </SheetClose>
-            ))}
+            <NavigationLinksMobile />
           </nav>
         </SheetContent>
       </Sheet>
       <div className="block md:hidden">Systrarna KM</div>
       <div className="flex items-center gap-4 ml-auto md:gap-2 lg:gap-4">
         <ModeToggle />
-        {isLoggedIn ? <ProfileMenu /> : <LoginButton />}
+        <AuthMenu />
       </div>
     </header>
-  );
-}
-
-export function LoginButton() {
-  return (
-    <Link href="/login" className={buttonVariants({ variant: 'default' })}>
-      Login
-    </Link>
-  );
-}
-
-export function ProfileMenu() {
-  const [avatar, setAvatar] = useState<string | undefined>(undefined);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const { signOut, user } = useUser();
-
-  useEffect(() => {
-    const fetchAvatarUrl = async () => {
-      if (user?.profile?.avatar_url) {
-        const avatar = (await getAvatars(user.profile.avatar_url)) as avatarUrl;
-        setAvatar(avatar.signedUrl);
-      }
-    };
-
-    void fetchAvatarUrl();
-  }, [user]);
-
-  async function handleSignOut() {
-    await signOut();
-  }
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon" className="rounded-full">
-          {avatar ? (
-            <Avatar>
-              {!isLoaded && (
-                <Skeleton className="w-[100px] h-[100px] rounded-full bg-white" />
-              )}
-              <AvatarImage
-                src={avatar}
-                onLoad={() => setIsLoaded(true)}
-                className={`${isLoaded ? 'block' : 'none'}`}
-              />
-            </Avatar>
-          ) : (
-            <CircleUser className="h-5 w-5" />
-          )}
-          <span className="sr-only">Toggle user menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Mitt konto</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/account">Min profil</Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <a onClick={() => void handleSignOut()}>Logga ut</a>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 }
