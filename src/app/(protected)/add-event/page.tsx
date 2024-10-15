@@ -1,4 +1,4 @@
-import EventForm from '@/app/add-event/event-form';
+import EventForm from './event-form';
 
 export default function AddEvent() {
   return <EventForm />;

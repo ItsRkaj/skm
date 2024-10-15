@@ -10,11 +10,12 @@ import React, {
 import { getUser, logInUser, signOutUser } from '@/modules/apiClient';
 import { useRouter } from 'next/navigation';
 import { UserProfile } from '@/modules/apiTypes';
+import { createClient } from '@/utils/supabase/client';
 
 interface UserContextType {
   isLoggedIn: boolean;
   user: UserProfile | undefined;
-  login: (credentials: { email: string; password: string }) => Promise<void>;
+  login: (credentials: { email: string; password: string }) => Promise<boolean>;
   signOut: () => Promise<void>;
   isLoading: boolean;
 }
@@ -26,14 +27,21 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserProfile | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const supabase = createClient();
 
   useEffect(() => {
     async function fetchUser() {
       setIsLoading(true);
       try {
-        const user = await getUser();
-        setIsLoggedIn(!!user);
-        setUser(user);
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (session) {
+          const user = await getUser();
+          setIsLoggedIn(!!user);
+          setUser(user);
+        }
       } catch (error) {
         console.error('Failed to fetch user session:', error);
       } finally {
@@ -42,7 +50,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     void fetchUser();
-  }, []);
+  }, [supabase.auth]);
 
   const login = async ({
     email,
@@ -50,17 +58,28 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }: {
     email: string;
     password: string;
-  }) => {
+  }): Promise<boolean> => {
     setIsLoading(true);
+
     try {
       const result = await logInUser({ email, password });
+
       if (result?.message === 'Login successful') {
         setIsLoggedIn(true);
-        setUser(await getUser());
+
+        const userData = await getUser();
+        setUser(userData);
+
         router.push('/account');
+
+        return true;
+      } else {
+        console.error('Login failed: Invalid credentials or other error.');
+        return false;
       }
     } catch (error) {
       console.error('Login error:', error);
+      return false;
     } finally {
       setIsLoading(false);
     }
@@ -74,6 +93,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggedIn(false);
         setUser(undefined);
         router.replace('/');
+        if (typeof window !== 'undefined') {
+          window.onpopstate = function () {
+            window.location.href = '/login';
+          };
+        }
       } else {
         console.error('Sign out failed');
       }

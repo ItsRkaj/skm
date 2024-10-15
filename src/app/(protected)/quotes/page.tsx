@@ -1,5 +1,5 @@
 import { addQuote, getQuotes } from '@/modules/apiClient';
-import QuotesTable from '../../components/quotes-page/QuotesTable';
+import QuotesTable from '@/components/quotes-page/QuotesTable';
 import QuotesForm from '@/components/quotes-page/QuotesForm';
 import { revalidatePath } from 'next/cache';
 
