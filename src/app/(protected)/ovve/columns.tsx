@@ -6,7 +6,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { ArrowDown } from 'lucide-react';
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { LeaderboardEntry } from '@/modules/apiTypes';
 
 interface ExtendedCellContext extends CellContext<LeaderboardEntry, unknown> {
@@ -93,14 +92,13 @@ export const columns: ColumnDef<LeaderboardEntry>[] = [
       const person: Person = row.getValue('person');
 
       return (
-        // ADD PROFILE LINK HERE
-        <Link href={'/'} className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2">
           <AvatarComponent avatarUrl={person.avatar} />
           <div className="flex flex-col">
             <span className="text-foreground">{person.name}</span>
             <span className="text-muted-foreground">{person.nickname}</span>
           </div>
-        </Link>
+        </div>
       );
     },
     filterFn: (row, columnId, filterValue: string) => {
