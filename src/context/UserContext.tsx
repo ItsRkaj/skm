@@ -10,6 +10,7 @@ import React, {
 import { getUser, logInUser, signOutUser } from '@/modules/apiClient';
 import { useRouter } from 'next/navigation';
 import { UserProfile } from '@/modules/apiTypes';
+import { createClient } from '@/utils/supabase/client';
 
 interface UserContextType {
   isLoggedIn: boolean;
@@ -26,14 +27,21 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserProfile | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const supabase = createClient();
 
   useEffect(() => {
     async function fetchUser() {
       setIsLoading(true);
       try {
-        const user = await getUser();
-        setIsLoggedIn(!!user);
-        setUser(user);
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+
+        if (session) {
+          const user = await getUser();
+          setIsLoggedIn(!!user);
+          setUser(user);
+        }
       } catch (error) {
         console.error('Failed to fetch user session:', error);
       } finally {

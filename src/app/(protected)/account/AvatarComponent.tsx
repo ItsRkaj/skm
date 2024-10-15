@@ -125,7 +125,7 @@ export default function AvatarComponent({
           (fetching && <Skeleton className="rounded-full bg-white" />)}
         <AvatarImage
           // eslint-disable-next-line
-          src={avatar!}
+          src={avatar ?? undefined}
           onLoad={() => setLoading(false)}
           className={`${!loading && !fetching ? 'block' : 'none'}`}
         />
