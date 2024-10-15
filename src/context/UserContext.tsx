@@ -85,6 +85,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggedIn(false);
         setUser(undefined);
         router.replace('/');
+        if (typeof window !== 'undefined') {
+          window.onpopstate = function () {
+            window.location.href = '/login';
+          };
+        }
       } else {
         console.error('Sign out failed');
       }
