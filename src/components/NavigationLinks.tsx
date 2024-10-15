@@ -33,7 +33,7 @@ const publicLinks: LinkItem[] = [
 const privateLinks: LinkItem[] = [
   ...publicLinks,
   { href: '/ovve', label: 'Ovve', icon: Shirt },
-  { href: '/add-event', label: 'Skapa event', icon: PartyPopper },
+  { href: '/events', label: 'Evenemang', icon: PartyPopper },
   { href: '/addnews', label: 'Skapa nyhet', icon: Newspaper },
   { href: '/addmarshal', label: 'Skapa marskalk', icon: User },
   { href: '/quotes', label: 'Citat', icon: Quote },

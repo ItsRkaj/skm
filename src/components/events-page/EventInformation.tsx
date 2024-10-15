@@ -50,7 +50,7 @@ const EventInformation: React.FC<EventInformationProps> = ({
   const { user } = useUser();
 
   if (!user) {
-    throw new Error('User is not defined');
+    return null;
   }
 
   const [registered, setRegistered] = useState(() => {

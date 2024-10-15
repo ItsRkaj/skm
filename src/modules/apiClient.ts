@@ -282,13 +282,14 @@ export async function addNews(newNews: NewsInsert) {
     const response = await client.POST('/api/news', { body: newNews });
 
     if (response.response.status === 200) {
-      return { message: 'News added successfully' };
+      return true;
     } else {
       console.error('Unexpected response status:', response.response.status);
-      return { message: 'Failed to add news' };
+      return false;
     }
   } catch (error) {
     console.error('Error adding news:', error);
+    return false;
   }
 }
 

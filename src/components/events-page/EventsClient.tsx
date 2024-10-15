@@ -45,31 +45,29 @@ function EventCard({ event, removeEvent }: EventCardProps) {
         </div>
       </div>
       <div className="flex items-center justify-center pr-4 z-50">
-        {user?.profile?.role === 1 && (
-          <Button
-            variant="destructive"
-            size="icon"
-            onClick={(e) => {
-              e.preventDefault();
+        <Button
+          variant="destructive"
+          size="icon"
+          onClick={(e) => {
+            e.preventDefault();
 
-              const handleRemoveEvent = async () => {
-                const success = await removeEvent(String(event.id));
-                if (success) {
-                  toast({
-                    description: 'Evenemang borttaget.',
-                  });
-                } else {
-                  toast({
-                    description: 'Något gick fel.',
-                  });
-                }
-              };
+            const handleRemoveEvent = async () => {
+              const success = await removeEvent(String(event.id));
+              if (success) {
+                toast({
+                  description: 'Evenemang borttaget.',
+                });
+              } else {
+                toast({
+                  description: 'Något gick fel.',
+                });
+              }
+            };
 
-              void handleRemoveEvent();
-            }}>
-            <TrashIcon className="h-4 w-4" />
-          </Button>
-        )}
+            void handleRemoveEvent();
+          }}>
+          <TrashIcon className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
@@ -88,7 +86,9 @@ function EventsClient({
     <div className="container mx-auto py-8 flex flex-col gap-8">
       <div className="flex justify-between">
         <h2 className="text-2xl font-serif mb-6">KOMMANDE EVENEMANG</h2>
-        {user?.profile?.role === 1 && <Button>Skapa event</Button>}
+        <Link href="/add-event">
+          <Button>Skapa event</Button>
+        </Link>
       </div>
       {events?.map((event) => {
         return (

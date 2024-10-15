@@ -26,7 +26,6 @@ export async function POST(request: Request) {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { name, phone, email, location } = await request.json();
-    console.log(name);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const supabase = createClient();
 
