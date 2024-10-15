@@ -9,5 +9,5 @@ const updateEvents = async () => {
 /* eslint-enable */
 
 export default function AddEvent() {
-  return <EventForm updateEvents={() => void updateEvents} />;
+  return <EventForm updateEvents={updateEvents} />;
 }

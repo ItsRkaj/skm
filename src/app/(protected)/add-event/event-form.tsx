@@ -30,7 +30,7 @@ interface EventFormData {
 export default function EventForm({
   updateEvents,
 }: {
-  updateEvents: () => void;
+  updateEvents: () => Promise<void>;
 }) {
   const [formData, setFormData] = useState<EventFormData>({
     title: '',
@@ -84,7 +84,7 @@ export default function EventForm({
       toast({
         description: 'Event tillagt!',
       });
-      updateEvents();
+      void updateEvents();
       router.push('/events');
     }
     setLoading(false);
