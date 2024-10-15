@@ -50,7 +50,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     void fetchUser();
-  }, []);
+  }, [supabase.auth]);
 
   const login = async ({
     email,
