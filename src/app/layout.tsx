@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: 'Välkommen till Systrarna KM',
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
