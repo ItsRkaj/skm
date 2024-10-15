@@ -6,7 +6,6 @@ import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { TrashIcon } from '@radix-ui/react-icons';
 import { useToast } from '@/hooks/use-toast';
-import { useUser } from '@/context/UserContext';
 import Link from 'next/link';
 
 interface EventCardProps {
@@ -22,7 +21,6 @@ function EventCard({ event, removeEvent }: EventCardProps) {
   } = formatDate(new Date(event.start_time));
   const { time: endTime } = formatDate(new Date(event.end_time));
 
-  const { user } = useUser();
   const { toast } = useToast();
 
   return (
@@ -80,8 +78,6 @@ function EventsClient({
   events: Event[];
   deleteEvent: (eventId: string) => Promise<boolean>;
 }) {
-  const { user } = useUser();
-
   return (
     <div className="container mx-auto py-8 flex flex-col gap-8">
       <div className="flex justify-between">

@@ -48,16 +48,15 @@ const EventInformation: React.FC<EventInformationProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
+  const [registered, setRegistered] = useState(() => {
+    return (
+      attendees.findIndex((attendee) => attendee.user_id === user?.id) !== -1
+    );
+  });
 
   if (!user) {
     return null;
   }
-
-  const [registered, setRegistered] = useState(() => {
-    return (
-      attendees.findIndex((attendee) => attendee.user_id === user.id) !== -1
-    );
-  });
 
   const handleRegister = async () => {
     setLoading(true);

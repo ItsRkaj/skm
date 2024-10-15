@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@radix-ui/react-dropdown-menu';
@@ -69,6 +69,7 @@ export default function EventForm({
     const formDataToSubmit = {
       ...formData,
       price: parseInt(formData.price),
+      // eslint-disable-next-line
       publisher: user.id!,
     };
 
