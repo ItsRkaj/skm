@@ -4,7 +4,10 @@ import { createClient } from '@/utils/supabase/server';
 export async function GET() {
   try {
     const supabase = createClient();
-    const { data, error } = await supabase.from('quotes').select('*');
+    const { data, error } = await supabase
+      .from('quotes')
+      .select('*')
+      .order('id', { ascending: true });
     if (error) {
       console.error('Error:', error);
       return NextResponse.json(
