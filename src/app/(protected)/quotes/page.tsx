@@ -2,6 +2,15 @@ import { addQuote, getQuotes } from '@/modules/apiClient';
 import QuotesTable from '@/components/quotes-page/QuotesTable';
 import QuotesForm from '@/components/quotes-page/QuotesForm';
 import { revalidatePath } from 'next/cache';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Citat | Systrarna KM',
+  description: 'Systrarna KMs citat',
+};
+
+// Don't cache the quotes page
+export const revalidate = 0;
 
 const handleSubmit = async (quote: string, author: string) => {
   'use server';
