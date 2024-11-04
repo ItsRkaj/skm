@@ -58,7 +58,7 @@
     "@types/react-dom": "^18",
     "@types/testing-library__jest-dom": "^5.14.9",
     "@typescript-eslint/eslint-plugin": "^8.11.0",
-    "@typescript-eslint/parser": "^8.10.0",
+    "@typescript-eslint/parser": "^8.12.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.15",
     "eslint-config-prettier": "^9.1.0",
